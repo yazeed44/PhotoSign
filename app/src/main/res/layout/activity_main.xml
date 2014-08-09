@@ -9,6 +9,7 @@
     tools:context=".MainActivity">
 
     <Button
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="إضغط لاختيار الصورة الاولى"
@@ -17,7 +18,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="116dp" />
 
-    <TextView
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text=""
@@ -25,4 +26,6 @@
         android:layout_below="@+id/chooseImgBtn"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="140dp" />
+
+
 </RelativeLayout>
