@@ -27,6 +27,8 @@ public class MyDBHelper extends SQLiteOpenHelper {
     public static final String COLUMN_OPACITY = "opacity";
     public static final String COLUMN_PATH = "path";
     public static final String COLUMN_RAW_ID = "_idRaw";
+    public static final String COLUMN_WIDTH = "width";
+    public static final String COLUMN_HEIGHT = "height";
 
 
     public MyDBHelper(Context context){
@@ -40,7 +42,8 @@ public class MyDBHelper extends SQLiteOpenHelper {
 
         sqLiteDatabase.execSQL("CREATE TABLE " + TABLE_SIGNS_RAW + "(" + COLUMN_ID +" INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_NAME  +
                 " TEXT NOT NULL , " + COLUMN_TEXT + " TEXT NOT NULL," + COLUMN_STYLE + "INTEGER NOT NULL , " + COLUMN_FONT + " TEXT NOT NULL , "
-        + COLUMN_COLOR + " INTEGER NOT NULL , " + COLUMN_TEXT_SIZE + " INTEGER NOT NULL , " + COLUMN_OPACITY + " INTEGER NOT NULL);"
+        + COLUMN_COLOR + " INTEGER NOT NULL , " + COLUMN_TEXT_SIZE + " INTEGER NOT NULL , " + COLUMN_OPACITY + " INTEGER NOT NULL " +", " + COLUMN_WIDTH + "INTEGER NOT NULL" +
+                        ", " + COLUMN_HEIGHT + " INTEGER NOT NULL" +");"
         +"CREATE TABLE " + TABLE_SIGNS + "("+COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_NAME  +"TEXT NOT NULL,"+COLUMN_PATH + "TEXT NOT NULL , " + COLUMN_RAW_ID +
                         " INTEGER NOT NULL" +");"
         );

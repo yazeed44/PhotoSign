@@ -6,6 +6,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="gallery_name">Gallery</string>
     <string name="sign_text_view">your name :</string>
-
+     <string name="sign_name_hint">enter the signature name</string>
+     <string name="file_saved">File saved to : </string>
 
 </resources>

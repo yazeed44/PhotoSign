@@ -10,14 +10,17 @@ import android.graphics.Typeface;
 public final class SignRaw {
 
     private String text = "Test";
-    private  Paint paint = new Paint();
+    private final Paint paint = new Paint();
     private int  color = Color.BLACK;
-    private int textSize = 22;
-    private int opacity = 0;
+    private int textSize = 20;
+    private int opacity = 100;
     private int style = Typeface.NORMAL;
+
     private String font = "";
-    private String name = "";
-    private int id;
+    private String name = "Test-name";
+    private int id = -1;
+
+    private int width = 100,height = 100;
 
     public void setText(String text){
         this.text = text;
@@ -42,11 +45,15 @@ public final class SignRaw {
     }
     public void setName(String name){this.name = name;}
     public void setId(int id){this.id = id;}
+    public void setHeight(int height){this.height = height;}
+    public void setWidth(int width){this.width = width;}
     public Paint getPaint(){
-        paint.setColor(color);
-        paint.setTextSize(textSize);
-        paint.setTypeface(Typeface.create(font, style));
-        paint.setAlpha(opacity);
+
+        paint.setColor(getColor());
+        paint.setTextSize(getTextSize());
+        paint.setTypeface(Typeface.create(getFont(), getStyle()));
+        paint.setAlpha(getOpacity());
+
        return paint;
     }
 
@@ -55,7 +62,8 @@ public final class SignRaw {
     }
 
     public int getOpacity(){
-        return this.opacity;
+
+        return Math.round((float)opacity/100*255);
     }
 
     public int getColor(){
@@ -73,5 +81,8 @@ public final class SignRaw {
     }
     public String getName(){return this.name;}
     public int getId(){return this.id;}
+    public int getWidth(){return this.width;}
+    public int getHeight(){return this.height;}
+
 
 }

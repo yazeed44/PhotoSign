@@ -125,6 +125,8 @@ public final class SignsDB {
         raw.setText(cursor.getString(cursor.getColumnIndex(COLUMN_TEXT)));
         raw.setTextSize(cursor.getInt(cursor.getColumnIndex(COLUMN_TEXT_SIZE)));
         raw.setId(cursor.getInt(cursor.getColumnIndex(COLUMN_ID)));
+        raw.setWidth(cursor.getInt(cursor.getColumnIndex(COLUMN_WIDTH)));
+        raw.setHeight(cursor.getInt(cursor.getColumnIndex(COLUMN_HEIGHT)));
         return raw;
     }
 }

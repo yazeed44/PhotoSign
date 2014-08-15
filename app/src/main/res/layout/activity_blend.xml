@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:background="#000fff"
+        android:layout_height="wrap_content">
+
+        </LinearLayout>
+
+    <net.whitedesert.photosign.views.BlendView
+        android:id="@+id/blendView"
+        android:background="#FFFFFFFF"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="20dp"
+
+        android:layout_marginTop="20dp"
+        />
+
+
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:background="@color/light_black"
+        android:layout_height="match_parent"></LinearLayout>
+</LinearLayout>

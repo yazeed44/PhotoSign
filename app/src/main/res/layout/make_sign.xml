@@ -6,9 +6,9 @@
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:layout_marginTop="150dp"
         >
     <TextView
@@ -19,9 +19,11 @@
         android:layout_height="wrap_content" />
 
         <EditText
-            android:layout_width="wrap_content"
-            android:text="wd"
+            android:layout_width="match_parent"
+            android:hint="@string/sign_name_hint"
+            style="@style/text_edit"
             android:layout_height="wrap_content" />
+
 
 
 

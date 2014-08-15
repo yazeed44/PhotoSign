@@ -32,7 +32,7 @@
         <activity android:name=".activities.GalleryActivity"
             ></activity>
         
-
+           <activity android:name=".activities.BlendActivity" />
           <activity
             android:name="com.luminous.pick.MainActivity"
             android:label="@string/gallery_name" >
