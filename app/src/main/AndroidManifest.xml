@@ -17,6 +17,10 @@
 
         >
 
+        <activity android:name="net.whitedesert.photosign.activities.DrawSignActivity"
+            android:screenOrientation="landscape"
+
+            />
 
         <activity
             android:name="net.whitedesert.photosign.activities.MainActivity"
@@ -30,7 +34,14 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.GalleryActivity"
-            ></activity>
+
+            >
+            <intent-filter
+                >
+                <category android:name="android.intent.category.APP_GALLERY" />
+                </intent-filter>
+
+            </activity>
         
            <activity android:name=".activities.BlendActivity" />
           <activity

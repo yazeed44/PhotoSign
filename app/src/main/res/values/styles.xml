@@ -15,7 +15,10 @@
     <!-- Application theme. -->
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+
     </style>
+
+
 
     <style name="text_view"
         >
@@ -28,6 +31,13 @@
         <item name="android:textColor" >#ffff</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="sign_draw_title_bar_text">
+        <item name="android:textColor">#ffff</item>
+         <item name="android:textStyle">bold</item>
+         <item name="android:textSize">20sp</item>
+         <item name="android:background">#222326</item>
     </style>
 
 </resources>

@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.ImageView;
 
+import net.whitedesert.photosign.utils.BlendUtil;
 import net.whitedesert.photosign.utils.SignRaw;
 import net.whitedesert.photosign.utils.XY;
 
@@ -40,18 +41,26 @@ public class BlendView extends ImageView {
        Log.i("Blend View", "Width  :  " + w + "    , height :  " + h);
 
        photo = Bitmap.createScaledBitmap(photo,w,h,true);
-       // reDraw(BlendUtil.getCenter(photo));
+
         this.setImageBitmap(photo);
+
+        if(signBitmap != null){
+            reDraw(BlendUtil.getCenter(photo));
+        }
+
     }
 
 
     @Override
     public void onDraw(Canvas canvas){
+
        super.onDraw(canvas);
+
 
         if(photo != null && x != -1 && y != -1 ){
             canvas.drawBitmap(signBitmap,x,y,null);
         }
+
 
     }
 
@@ -69,17 +78,12 @@ public class BlendView extends ImageView {
                 break;
         }
 
-       Log.i("Blend view : onTouchEvent : " , "Photo width   :   " + photo.getWidth() + "   ,   Photo height  :  " + photo.getHeight() +
-              "    Width  :  " + this.getWidth() + "    ,   Height  :  " + this.getHeight() );
-
         return true;
 
     }
 
     public void setPhoto(Bitmap bitmap){
         this.photo = bitmap;
-
-
     }
 
     public void setSign(Bitmap sign){

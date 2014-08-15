@@ -8,5 +8,9 @@
     <string name="sign_text_view">your name :</string>
      <string name="sign_name_hint">enter the signature name</string>
      <string name="file_saved">File saved to : </string>
+     <string name="sign_draw_titlebar_text">Sign using your finger</string>
+    <string name="reset_desc">Reset the sign</string>
+    <string name="text_customize_desc">Customize the text</string>
+    <string name="sign_draw_reminder">When you are done signing click the save button</string>
 
 </resources>

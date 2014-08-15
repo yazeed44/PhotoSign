@@ -7,7 +7,7 @@ android {
     defaultConfig {
         applicationId "net.whitedesert.photosign"
         minSdkVersion 15
-        targetSdkVersion 20
+        targetSdkVersion 19
         versionCode 1
         versionName "1.0"
     }
