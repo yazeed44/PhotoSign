@@ -12,5 +12,11 @@
     <string name="reset_desc">Reset the sign</string>
     <string name="text_customize_desc">Customize the text</string>
     <string name="sign_draw_reminder">When you are done signing click the save button</string>
-
+     <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="save_title">Save the sign</string>
+    <string name="save_message">Enter the sign name , it must be unique</string>
+    <string name="error_title">Error</string>
+    <string name="error_name_empty">The name is empty , you have to type a name</string>
+    <string name="error_name_repeated">This name is used , please type another name</string>
 </resources>

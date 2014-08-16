@@ -19,7 +19,7 @@ public class MyDBHelper extends SQLiteOpenHelper {
     public static final String TABLE_SIGNS = "signs";
     public static final String COLUMN_ID = "_id";
     public static final String COLUMN_NAME = "name";
-    public static final String COLUMN_TEXT = "text";
+    public static final String COLUMN_TEXT = "signText";
     public static final String COLUMN_STYLE = "style";
     public static final String COLUMN_FONT = "font";
     public static final String COLUMN_COLOR = "color";
@@ -31,6 +31,7 @@ public class MyDBHelper extends SQLiteOpenHelper {
     public static final String COLUMN_HEIGHT = "height";
 
 
+
     public MyDBHelper(Context context){
         super(context,DB_NAME,null,DB_VERSION);
 
@@ -40,13 +41,18 @@ public class MyDBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
 
-        sqLiteDatabase.execSQL("CREATE TABLE " + TABLE_SIGNS_RAW + "(" + COLUMN_ID +" INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_NAME  +
-                " TEXT NOT NULL , " + COLUMN_TEXT + " TEXT NOT NULL," + COLUMN_STYLE + "INTEGER NOT NULL , " + COLUMN_FONT + " TEXT NOT NULL , "
-        + COLUMN_COLOR + " INTEGER NOT NULL , " + COLUMN_TEXT_SIZE + " INTEGER NOT NULL , " + COLUMN_OPACITY + " INTEGER NOT NULL " +", " + COLUMN_WIDTH + "INTEGER NOT NULL" +
-                        ", " + COLUMN_HEIGHT + " INTEGER NOT NULL" +");"
-        +"CREATE TABLE " + TABLE_SIGNS + "("+COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_NAME  +"TEXT NOT NULL,"+COLUMN_PATH + "TEXT NOT NULL , " + COLUMN_RAW_ID +
-                        " INTEGER NOT NULL" +");"
-        );
+        String createSignsRaw = "CREATE TABLE " + TABLE_SIGNS_RAW + "(" + COLUMN_ID +" INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_NAME  +
+                " TEXT NOT NULL UNIQUE , " + COLUMN_TEXT + " TEXT NOT NULL," + COLUMN_STYLE + " INTEGER NOT NULL , " + COLUMN_FONT + " TEXT NOT NULL , "
+                + COLUMN_COLOR + " INTEGER NOT NULL , " + COLUMN_TEXT_SIZE + " INTEGER NOT NULL , " + COLUMN_OPACITY + " INTEGER NOT NULL " +", " + COLUMN_WIDTH + " INTEGER NOT NULL" +
+                ", " + COLUMN_HEIGHT + " INTEGER NOT NULL" +");";
+
+
+        sqLiteDatabase.execSQL(createSignsRaw);
+
+        String createSigns =  "CREATE TABLE " + TABLE_SIGNS + "("+COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_NAME  +" TEXT NOT NULL UNIQUE,"+COLUMN_PATH + " TEXT NOT NULL , " + COLUMN_RAW_ID +
+                " INTEGER NOT NULL" +");";
+
+        sqLiteDatabase.execSQL(createSigns);
     }
 
     @Override

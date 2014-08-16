@@ -1,7 +1,11 @@
 package net.whitedesert.photosign.utils;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteConstraintException;
+import android.graphics.Color;
+import android.graphics.Paint;
 
+import net.whitedesert.photosign.R;
 import net.whitedesert.photosign.database.SignsDB;
 
 import java.util.ArrayList;
@@ -34,7 +38,12 @@ public final class SignUtil {
     public static void addSign(Sign sign , Context context){
         SignsDB db = new SignsDB(context);
         db.open();
-        db.insertSign(sign);
+        try {
+            db.insertSign(sign);
+        }
+        catch(SQLiteConstraintException ex){
+            DialogUtil.createErrorDialog(R.string.error_name_repeated,context).show();
+        }
         db.close();
     }
 
@@ -79,6 +88,25 @@ public final class SignUtil {
         ArrayList<Sign> signsList = db.getSigns();
         db.close();
         return signsList;
+    }
+
+    public static void dropEverything(Context context){
+        SignsDB db = new SignsDB(context);
+        db.open();
+        db.dropAll();
+        db.close();
+    }
+
+    public static Paint getDefaultPaintForDraw(){
+        Paint paint = new Paint();
+        paint.setColor(Color.BLACK);
+        paint.setAntiAlias(true);
+        paint.setStrokeWidth(20);
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setStrokeJoin(Paint.Join.ROUND);
+        paint.setStrokeCap(Paint.Cap.ROUND);
+
+        return paint;
     }
 
 

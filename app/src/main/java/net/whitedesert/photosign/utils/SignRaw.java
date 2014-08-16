@@ -54,6 +54,7 @@ public final class SignRaw {
         paint.setTypeface(Typeface.create(getFont(), getStyle()));
         paint.setAlpha(getOpacity());
 
+
        return paint;
     }
 
@@ -75,7 +76,6 @@ public final class SignRaw {
     public int getTextSize(){
         return this.textSize;
     }
-
     public int getStyle(){
         return this.style;
     }

@@ -3,12 +3,15 @@ package net.whitedesert.photosign.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
 import net.whitedesert.photosign.R;
+import net.whitedesert.photosign.utils.Sign;
+import net.whitedesert.photosign.utils.SignUtil;
 
 
 public class MainActivity extends Activity {
@@ -56,6 +59,9 @@ private ImageView view;
         i.putExtra("type","single");
         startActivity(i);*/
 
+            for(Sign sign : SignUtil.getSigns(this)){
+                Log.i("Main Activity : " , sign.getName());
+            }
         Intent i = new Intent(this,DrawSignActivity.class);
         startActivity(i);
     }

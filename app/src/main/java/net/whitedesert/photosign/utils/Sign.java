@@ -6,7 +6,7 @@ package net.whitedesert.photosign.utils;
 public class Sign {
 
     private String path;
-    private int rawId;
+    private int rawId = -1;
     private String name;
 
     public void setPath(String path){
