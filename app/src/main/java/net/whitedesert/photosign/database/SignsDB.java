@@ -3,15 +3,19 @@ package net.whitedesert.photosign.database;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.CursorIndexOutOfBoundsException;
+import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 
 import net.whitedesert.photosign.utils.Sign;
-import net.whitedesert.photosign.utils.SignRaw;
 
 import java.util.ArrayList;
 
-import static net.whitedesert.photosign.database.MyDBHelper.*;
+import static net.whitedesert.photosign.database.MyDBHelper.COLUMN_ID;
+import static net.whitedesert.photosign.database.MyDBHelper.COLUMN_NAME;
+import static net.whitedesert.photosign.database.MyDBHelper.COLUMN_PATH;
+import static net.whitedesert.photosign.database.MyDBHelper.TABLE_SIGNS;
 
 
 /**
@@ -35,42 +39,13 @@ public final class SignsDB {
         helper.close();
     }
 
-    public void insertSignRaw(SignRaw sign) throws SQLiteException{
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_NAME,sign.getName());
-        values.put(COLUMN_COLOR,sign.getColor());
-        values.put(COLUMN_FONT,sign.getFont());
-        values.put(COLUMN_OPACITY,sign.getOpacity());
-        values.put(COLUMN_STYLE,sign.getStyle());
-        values.put(COLUMN_TEXT,sign.getText());
-        values.put(COLUMN_TEXT_SIZE,sign.getTextSize());
-        db.insert(TABLE_SIGNS_RAW,null,values);
-    }
 
-    public void insertSign(Sign sign) throws SQLiteException{
+    public long insertSign(Sign sign) throws SQLiteConstraintException {
         ContentValues values = new ContentValues();
         values.put(COLUMN_PATH,sign.getPath());
-        values.put(COLUMN_RAW_ID,sign.getRawId());
         values.put(COLUMN_NAME,sign.getName());
-        db.insert(TABLE_SIGNS,null,values);
-    }
+        return db.insert(TABLE_SIGNS, null, values);
 
-
-
-    public SignRaw getSignRaw(String name) throws SQLiteException{
-        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_SIGNS_RAW + " WHERE " + COLUMN_NAME + " = " + "'" + name + "'" + ";",null);
-        cursor.moveToFirst();
-        SignRaw raw = initSignRaw(cursor);
-        cursor.close();
-        return raw;
-    }
-
-    public SignRaw getSignRaw(int id) throws SQLiteException{
-        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_SIGNS_RAW + " WHERE " + COLUMN_ID + " = " +  + id +  ";",null);
-        cursor.moveToFirst();
-        SignRaw raw = initSignRaw(cursor);
-        cursor.close();
-        return raw;
     }
 
 
@@ -111,27 +86,26 @@ public final class SignsDB {
     public Sign initSign(Cursor cursor){
         Sign sign = new Sign();
         sign.setPath(cursor.getString(cursor.getColumnIndex(COLUMN_PATH)));
-        sign.setRawId(cursor.getInt(cursor.getColumnIndex(COLUMN_RAW_ID)));
         sign.setName(cursor.getString(cursor.getColumnIndex(COLUMN_NAME)));
         return sign;
     }
 
-    public SignRaw initSignRaw(Cursor cursor){
-        SignRaw raw = new SignRaw();
-        raw.setOpacity(cursor.getInt(cursor.getColumnIndex(COLUMN_OPACITY)));
-        raw.setColor(cursor.getInt(cursor.getColumnIndex(COLUMN_COLOR)));
-        raw.setFont(cursor.getString(cursor.getColumnIndex(COLUMN_FONT)));
-        raw.setName(cursor.getString(cursor.getColumnIndex(COLUMN_NAME)));
-        raw.setStyle(cursor.getInt(cursor.getColumnIndex(COLUMN_STYLE)));
-        raw.setText(cursor.getString(cursor.getColumnIndex(COLUMN_TEXT)));
-        raw.setTextSize(cursor.getInt(cursor.getColumnIndex(COLUMN_TEXT_SIZE)));
-        raw.setId(cursor.getInt(cursor.getColumnIndex(COLUMN_ID)));
-        raw.setWidth(cursor.getInt(cursor.getColumnIndex(COLUMN_WIDTH)));
-        raw.setHeight(cursor.getInt(cursor.getColumnIndex(COLUMN_HEIGHT)));
-        return raw;
-    }
 
     public void dropAll(){
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_SIGNS + "," + TABLE_SIGNS_RAW + ";");
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_SIGNS + ";");
+    }
+
+    public boolean isDuplicatedSign(String name, String table) {
+        Cursor cursor = db.rawQuery("SELECT " + COLUMN_NAME + " FROM " + table + " WHERE " + COLUMN_NAME + " = '" + name + "'" + ";", null);
+        cursor.moveToFirst();
+        boolean isDuplicated;
+        try {
+            isDuplicated = cursor.isNull(cursor.getColumnIndex(COLUMN_ID));
+        } catch (CursorIndexOutOfBoundsException ex) {
+            isDuplicated = false;
+        }
+        return isDuplicated;
+
+
     }
 }

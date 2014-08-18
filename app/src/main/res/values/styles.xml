@@ -19,25 +19,24 @@
     </style>
 
 
-
-    <style name="text_view"
-        >
-        <item name="android:textColor" >#ffff</item>
+    <style name="text_view">
+        <item name="android:textColor">#ffff</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">22sp</item>
-        </style>
-    <style name="text_edit"
-        >
-        <item name="android:textColor" >#ffff</item>
+        <item name="android:background">#000000</item>
+    </style>
+
+    <style name="text_edit">
+        <item name="android:textColor">#ffff</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textSize">18sp</item>
     </style>
 
     <style name="sign_draw_title_bar_text">
         <item name="android:textColor">#ffff</item>
-         <item name="android:textStyle">bold</item>
-         <item name="android:textSize">20sp</item>
-         <item name="android:background">#222326</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:background">#222326</item>
     </style>
 
 </resources>

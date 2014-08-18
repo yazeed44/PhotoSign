@@ -2,19 +2,33 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical" android:layout_width="match_parent"
 
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
+
+    android:orientation="vertical"
     tools:context=".activities.DrawSignActivity">
 
     <include layout="@layout/sign_draw_titlebar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />
-     <net.whitedesert.photosign.views.DrawSignView
-         android:layout_width="match_parent"
-         android:layout_height="match_parent"
+
+    <TextView
+
+        style="@style/text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:gravity="center"
+        android:text="@string/sign_draw_reminder"
+
+        />
+
+    <net.whitedesert.photosign.views.DrawSignView
          android:id="@+id/drawView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
          />
 
 

@@ -12,24 +12,28 @@ import net.whitedesert.photosign.R;
  */
 public final class DialogUtil {
 
-    public static Dialog createErrorDialog(String message,Context context){
+    public static final DialogInterface.OnClickListener DISMISS_LISTENER = new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialogInterface, int i) {
+            dialogInterface.dismiss();
+        }
+    };
+
+    public static Dialog createErrorDialog(String message, Context context) {
 
         AlertDialog.Builder dialog = new AlertDialog.Builder(context);
         dialog.setMessage(message);
         dialog.setTitle(R.string.error_title);
         dialog.setIcon(android.R.drawable.ic_dialog_alert);
-        dialog.setPositiveButton(R.string.ok,new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-               dialogInterface.dismiss();
-            }
-        });
+        dialog.setPositiveButton(R.string.ok, DISMISS_LISTENER);
 
         return dialog.create();
 
     }
 
-    public static Dialog createErrorDialog(int resId,Context context){
-        return createErrorDialog(context.getResources().getString(resId),context);
+    public static Dialog createErrorDialog(int resId, Context context) {
+        return createErrorDialog(context.getResources().getString(resId), context);
     }
+
+
 }

@@ -17,14 +17,11 @@ import net.whitedesert.photosign.utils.SignUtil;
 public class MainActivity extends Activity {
 
 
-private ImageView view;
-
-    private String selectedImagePath;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-          view = (ImageView)this.findViewById(R.id.yoNigga);
+        ImageView view = (ImageView) this.findViewById(R.id.yoNigga);
 
 
 
@@ -64,7 +61,7 @@ private ImageView view;
             }
         Intent i = new Intent(this,DrawSignActivity.class);
         startActivity(i);
-    }
 
+    }
 
 }
