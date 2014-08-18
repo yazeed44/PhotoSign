@@ -23,7 +23,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         ImageView view = (ImageView) this.findViewById(R.id.yoNigga);
 
-
+ // yo my nigga
 
 
     }
