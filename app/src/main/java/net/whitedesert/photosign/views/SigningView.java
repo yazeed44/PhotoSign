@@ -8,24 +8,22 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.ImageView;
 
-import net.whitedesert.photosign.utils.BlendUtil;
-import net.whitedesert.photosign.utils.SignRaw;
+import net.whitedesert.photosign.utils.SigningUtil;
 import net.whitedesert.photosign.utils.XY;
 
 /**
  * Created by yazeed44 on 8/9/14.
  */
-public class BlendView extends ImageView {
+public class SigningView extends ImageView {
 
 
     private Bitmap photo;
     private Bitmap signBitmap;
-    private SignRaw signRaw;
 
 
     private float x = -1,y = -1;
 
-    public BlendView(Context context, AttributeSet attrs){
+    public SigningView(Context context, AttributeSet attrs) {
         super(context, attrs);
         setupDrawing();
 
@@ -40,14 +38,15 @@ public class BlendView extends ImageView {
 
        Log.i("Blend View", "Width  :  " + w + "    , height :  " + h);
 
-       photo = Bitmap.createScaledBitmap(photo,w,h,true);
+        if (photo != null) {
+            photo = Bitmap.createScaledBitmap(photo, w, h, true);
 
-        this.setImageBitmap(photo);
+            this.setImageBitmap(photo);
 
-        if(signBitmap != null){
-            reDraw(BlendUtil.getCenter(photo));
+            if (signBitmap != null) {
+                reDraw(SigningUtil.getCenter(photo));
+            }
         }
-
     }
 
 
@@ -90,9 +89,6 @@ public class BlendView extends ImageView {
        this.signBitmap = sign;
     }
 
-    public void setSignRaw(SignRaw raw){
-        this.signRaw = raw;
-    }
 
     private void reDraw(float x,float y){
         this.x = x;

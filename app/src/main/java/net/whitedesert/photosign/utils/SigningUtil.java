@@ -12,17 +12,18 @@ import android.util.Log;
 /**
  * Created by yazeed44 on 8/6/14.
  */
-public final class BlendUtil {
+public final class SigningUtil {
 
 
+    private SigningUtil() {
+        throw new AssertionError();
+    }
 
-    //unused
-    public static Bitmap combineImages(Bitmap c, Bitmap s,float x,float y)
-    {
-        BlendUtil util = new BlendUtil();
+
+    public static Bitmap combineImages(Bitmap c, Bitmap s, float x, float y) {
         Bitmap cs = null;
 
-        int width = getWidthHeight(c,s).getX(), height = getWidthHeight(c,s).getY();
+        int width = getWidthHeight(c, s).getX(), height = getWidthHeight(c, s).getY();
 
         cs = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
 
@@ -34,11 +35,11 @@ public final class BlendUtil {
         return cs;
     }
 
-    public static XY getWidthHeight(Bitmap c , Bitmap s){
+    public static XY getWidthHeight(Bitmap c, Bitmap s) {
 
         int width, height = 0;
 
-        if(c.getWidth() > s.getWidth()) {
+        if (c.getWidth() > s.getWidth()) {
             width = c.getWidth() /*+ s.getWidth()*/;
             height = c.getHeight();
         } else {
@@ -46,20 +47,20 @@ public final class BlendUtil {
             height = c.getHeight();
         }
 
-        XY xy = new XY(width,height);
+        XY xy = new XY(width, height);
         return xy;
     }
 
-    public static XY getCenter(Bitmap photo){
+    public static XY getCenter(Bitmap photo) {
 
-        return getCenter(photo.getWidth(),photo.getHeight());
+        return getCenter(photo.getWidth(), photo.getHeight());
     }
 
-    public static XY getCenter(int width , int height){
+    public static XY getCenter(int width, int height) {
         int x = (width) / 2;
-        int y = height /2;
-        Log.i("Blend Util : left corner" , "X = " + x + "  ,  Y  = " + y );
-        return new XY(x,y);
+        int y = height / 2;
+        Log.i("Blend Util : left corner", "X = " + x + "  ,  Y  = " + y);
+        return new XY(x, y);
     }
 
 
@@ -74,8 +75,8 @@ public final class BlendUtil {
     }
 
     //unused
-    public  Bitmap writeOnDrawable(Bitmap bm, Paint paint,String text){
-        Bitmap bitmap = bm.copy(Bitmap.Config.ARGB_8888,true);
+    public static Bitmap writeOnDrawable(Bitmap bm, Paint paint, String text) {
+        Bitmap bitmap = bm.copy(Bitmap.Config.ARGB_8888, true);
 
         Canvas canvas = new Canvas(bitmap);
         XY corner = getCenter(bitmap);
@@ -86,20 +87,18 @@ public final class BlendUtil {
 
     //unused
 
-    public static Bitmap writeOnPhoto(Activity activity , String text ,String path){
-        BlendUtil util = new BlendUtil();
+    public static Bitmap writeOnPhoto(Activity activity, String text, String path) {
+        SigningUtil util = new SigningUtil();
         Bitmap bitmap = BitmapFactory.decodeFile(path);
 
         Paint paint = new Paint();
         paint.setColor(Color.BLACK);
         paint.setTextSize(40f);
         paint.setTypeface(Typeface.create("", Typeface.BOLD));
-        Bitmap drawable = util.writeOnDrawable(bitmap,paint,text);
-String pathToBlended  =         PhotoUtil.savePicFromBitmap(drawable, activity,PhotoUtil.BLENDED_DIR);
+        Bitmap drawable = util.writeOnDrawable(bitmap, paint, text);
+        String pathToBlended = PhotoUtil.savePicFromBitmap(drawable, activity, PhotoUtil.SIGNED_PHOTO_DIR);
         return drawable;
     }
-
-
 
 
 }

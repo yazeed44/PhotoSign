@@ -80,7 +80,7 @@ public class GalleryActivity extends com.luminous.pick.MainActivity {
     }
 
     private void openBlendSingle(){
-        Intent i = new Intent(this,BlendActivity.class);
+        Intent i = new Intent(this, SigningActivity.class);
         i.putExtra("path",this.path);
         startActivity(i);
     }

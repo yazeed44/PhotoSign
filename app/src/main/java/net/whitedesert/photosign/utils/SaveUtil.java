@@ -14,6 +14,9 @@ import net.whitedesert.photosign.R;
  */
 public final class SaveUtil {
 
+    private SaveUtil() {
+        throw new AssertionError();
+    }
     public static void askNameAndAddSign(final View drawView, final Activity activity) {
 
         final AlertDialog.Builder dialog = new AlertDialog.Builder(activity);
@@ -23,6 +26,7 @@ public final class SaveUtil {
 
         final EditText nameInput = new EditText(activity);
         dialog.setView(nameInput);
+        nameInput.requestFocus();
         dialog.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {

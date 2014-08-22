@@ -4,10 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Environment;
@@ -28,7 +24,6 @@ import java.util.Random;
  */
 public final class PhotoUtil {
 
-  public static final String BLENDED_DIR = "/blended_images";
 
     public static final String SIGNS_DIR = "/signs";
 
@@ -91,33 +86,14 @@ public final class PhotoUtil {
 
     public static String savePicFromView(View drawView,Activity activity,String dir){
 
-        Bitmap drawBitmap = getBitmapFromView(drawView);
-        Canvas canvas = new Canvas(drawBitmap);
-        canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
-        drawBitmap.eraseColor(Color.TRANSPARENT);
+        drawView.setDrawingCacheEnabled(true);
+        String path = savePicFromBitmap(drawView.getDrawingCache(true), activity, dir);
+        drawView.setDrawingCacheEnabled(false);
 
-        return savePicFromBitmap(drawBitmap,activity,dir);
+        return path;
 
     }
 
-    public static Bitmap getBitmapFromView(View view) {
-        //Define a bitmap with the same size as the view
-        Bitmap returnedBitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(),Bitmap.Config.ARGB_8888);
-        //Bind a canvas to it
-        Canvas canvas = new Canvas(returnedBitmap);
-        //Get the view's background
-        Drawable bgDrawable =view.getBackground();
-        if (bgDrawable!=null)
-            //has background drawable, then draw it on the canvas
-            bgDrawable.draw(canvas);
-        else
-            //does not have background drawable, then draw white background on the canvas
-            canvas.drawColor(Color.WHITE);
-        // draw the view on the canvas
-        view.draw(canvas);
-        //return the bitmap
-        return returnedBitmap;
-    }
 
     public static void openPhoto(String path,final Activity a){
 

@@ -1,9 +1,12 @@
 package net.whitedesert.photosign.utils;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
 /**
  * Created by yazeed44 on 8/9/14.
  */
-public class Sign {
+public final class Sign {
 
     private String path;
     private String name;
@@ -22,5 +25,9 @@ public class Sign {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Bitmap getBitmap() {
+        return BitmapFactory.decodeFile(path);
     }
 }

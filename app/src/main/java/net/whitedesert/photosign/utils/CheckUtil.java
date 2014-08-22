@@ -12,6 +12,10 @@ import net.whitedesert.photosign.R;
  */
 public final class CheckUtil {
 
+    private CheckUtil() {
+        throw new AssertionError();
+    }
+
     public static boolean checkSign(final String name, final View drawView, final Activity activity) {
 
 

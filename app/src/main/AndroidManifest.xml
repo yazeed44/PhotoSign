@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="net.whitedesert.photosign" >
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    package="net.whitedesert.photosign">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-sdk android:minSdkVersion="9"
+
+    <uses-sdk
+        android:minSdkVersion="9"
         android:targetSdkVersion="19" />
 
     <application
@@ -17,15 +20,16 @@
 
         >
 
-        <activity android:name="net.whitedesert.photosign.activities.DrawSignActivity"
+        <activity
+            android:name="net.whitedesert.photosign.activities.DrawSignActivity"
             android:screenOrientation="landscape"
 
             />
 
         <activity
             android:name="net.whitedesert.photosign.activities.MainActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -36,24 +40,23 @@
         <activity android:name=".activities.GalleryActivity"
 
             >
-            <intent-filter
-                >
+            <intent-filter>
                 <category android:name="android.intent.category.APP_GALLERY" />
-                </intent-filter>
+            </intent-filter>
 
-            </activity>
-        
-           <activity android:name=".activities.BlendActivity" />
-          <activity
+        </activity>
+
+        <activity android:name=".activities.SigningActivity" />
+        <activity
             android:name="com.luminous.pick.MainActivity"
-            android:label="@string/gallery_name" >
+            android:label="@string/gallery_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.luminous.pick.CustomGalleryActivity" >
+        <activity android:name="com.luminous.pick.CustomGalleryActivity">
             <intent-filter>
                 <action android:name="luminous.ACTION_PICK" />
                 <action android:name="luminous.ACTION_MULTIPLE_PICK" />

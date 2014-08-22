@@ -14,6 +14,9 @@ import java.util.ArrayList;
  */
 public final class SignUtil {
 
+    private SignUtil() {
+        throw new AssertionError();
+    }
 
     public static long addSign(Sign sign, Context context) {
         SignsDB db = new SignsDB(context);

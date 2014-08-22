@@ -2,6 +2,7 @@ package net.whitedesert.photosign.utils;
 
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.Typeface;
 
 /**
@@ -9,9 +10,9 @@ import android.graphics.Typeface;
  */
 public final class SignRaw {
 
-    private String text = "Test";
     private final Paint paint = new Paint();
-    private int  color = Color.BLACK;
+    private String text = "Test";
+    private int color = Color.BLACK;
     private int textSize = 20;
     private int opacity = 100;
     private int style = Typeface.NORMAL;
@@ -20,34 +21,7 @@ public final class SignRaw {
     private String name = "Test-name";
     private int id = -1;
 
-    private int width = 100,height = 100;
-
-    public void setText(String text){
-        this.text = text;
-    }
-    public void setColor(int color){
-        this.color = color;
-    }
-    public void setTextSize(int textSize){
-        this.textSize = textSize;
-    }
-
-    public void setOpacity(int opacity){
-        this.opacity = opacity;
-    }
-
-    public void setStyle(int style){
-        this.style = style;
-    }
-
-    public void setFont(String font){
-        this.font = font;
-    }
-    public void setName(String name){this.name = name;}
-    public void setId(int id){this.id = id;}
-    public void setHeight(int height){this.height = height;}
-    public void setWidth(int width){this.width = width;}
-    public Paint getPaint(){
+    public Paint getPaint() {
 
         paint.setColor(getColor());
         paint.setTextSize(getTextSize());
@@ -55,34 +29,87 @@ public final class SignRaw {
         paint.setAlpha(getOpacity());
 
 
-       return paint;
+        return paint;
     }
 
-    public String getText(){
+    public String getText() {
         return this.text;
     }
 
-    public int getOpacity(){
-
-        return Math.round((float)opacity/100*255);
+    public void setText(String text) {
+        this.text = text;
     }
 
-    public int getColor(){
+    public int getOpacity() {
+
+        return Math.round((float) opacity / 100 * 255);
+    }
+
+    public void setOpacity(int opacity) {
+        this.opacity = opacity;
+    }
+
+    public int getColor() {
         return this.color;
     }
-    public String getFont(){
+
+    public void setColor(int color) {
+        this.color = color;
+    }
+
+    public String getFont() {
         return this.font;
     }
-    public int getTextSize(){
+
+    public void setFont(String font) {
+        this.font = font;
+    }
+
+    public int getTextSize() {
         return this.textSize;
     }
-    public int getStyle(){
+
+    public void setTextSize(int textSize) {
+        this.textSize = textSize;
+    }
+
+    public int getStyle() {
         return this.style;
     }
-    public String getName(){return this.name;}
-    public int getId(){return this.id;}
-    public int getWidth(){return this.width;}
-    public int getHeight(){return this.height;}
+
+    public void setStyle(int style) {
+        this.style = style;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getId() {
+        return this.id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getWidth() {
+        Rect rect = new Rect();
+
+        getPaint().getTextBounds(getText(), 0, getText().length(), rect);
+        return rect.width() + 15;
+    }
+
+    public int getHeight() {
+        Rect rect = new Rect();
+
+        getPaint().getTextBounds(getText(), 0, getText().length(), rect);
+        return rect.height() + 15;
+    }
 
 
 }

@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 
 import net.whitedesert.photosign.R;
 import net.whitedesert.photosign.utils.Sign;
@@ -21,9 +20,7 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ImageView view = (ImageView) this.findViewById(R.id.yoNigga);
-
- // yo my nigga
+        // ImageView view = (ImageView) this.findViewById(R.id.yoNigga);
 
 
     }
@@ -52,15 +49,15 @@ public class MainActivity extends Activity {
 
 
     public void onClickChoose(View view){
-      /*  Intent i = new Intent(this,GalleryActivity.class);
+        Intent i = new Intent(this, GalleryActivity.class);
         i.putExtra("type","single");
-        startActivity(i);*/
+        startActivity(i);
 
             for(Sign sign : SignUtil.getSigns(this)){
                 Log.i("Main Activity : " , sign.getName());
             }
-        Intent i = new Intent(this,DrawSignActivity.class);
-        startActivity(i);
+        /*Intent i = new Intent(this,DrawSignActivity.class);
+        startActivity(i);*/
 
     }
 

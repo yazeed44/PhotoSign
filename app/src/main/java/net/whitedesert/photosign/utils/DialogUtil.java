@@ -12,12 +12,17 @@ import net.whitedesert.photosign.R;
  */
 public final class DialogUtil {
 
+
     public static final DialogInterface.OnClickListener DISMISS_LISTENER = new DialogInterface.OnClickListener() {
         @Override
         public void onClick(DialogInterface dialogInterface, int i) {
             dialogInterface.dismiss();
         }
     };
+
+    private DialogUtil() {
+        throw new AssertionError();
+    }
 
     public static Dialog createErrorDialog(String message, Context context) {
 
