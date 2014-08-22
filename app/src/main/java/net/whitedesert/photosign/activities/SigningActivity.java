@@ -1,6 +1,5 @@
 package net.whitedesert.photosign.activities;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -14,7 +13,7 @@ import net.whitedesert.photosign.views.SigningView;
 /**
  * Created by yazeed44 on 8/10/14.
  */
-public class SigningActivity extends Activity {
+public class SigningActivity extends AdActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

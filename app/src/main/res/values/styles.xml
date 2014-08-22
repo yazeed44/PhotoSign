@@ -16,6 +16,7 @@
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
 
+        <item name="android:background">#000000</item>
     </style>
 
 
@@ -23,7 +24,14 @@
         <item name="android:textColor">#ffff</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">22sp</item>
-        <item name="android:background">#000000</item>
+        <item name="android:background">#222326</item>
+    </style>
+
+    <style name="button">
+        <item name="android:textColor">#ffff</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">30sp</item>
+        <item name="android:background">#222326</item>
     </style>
 
     <style name="text_edit">
@@ -37,6 +45,12 @@
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">20sp</item>
         <item name="android:background">#222326</item>
+    </style>
+
+    <style name="list_view">
+        <item name="android:textColor">#ffff</item>
+        <item name="android:background">#222326</item>
+        <item name="android:textSize">18sp</item>
     </style>
 
 </resources>

@@ -11,6 +11,9 @@ import android.util.Log;
 public final class SigningUtil {
 
 
+    public static final int DEFAULT_SIGN_HEIGHT = 480;
+    public static final int DEFAULT_SIGN_WIDTH = 320;
+
     private SigningUtil() {
         throw new AssertionError();
     }
@@ -35,7 +38,7 @@ public final class SigningUtil {
 
     public static XY getWidthHeight(Bitmap first, Bitmap second) {
         XY xy = new XY();
-        int width, height = 0;
+        int width, height;
 
         if (first.getWidth() > second.getWidth()) {
             width = first.getWidth() /*+ s.getWidth()*/;

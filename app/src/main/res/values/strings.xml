@@ -6,17 +6,22 @@
     <string name="hello_world">Hello world!</string>
     <string name="gallery_name">Gallery</string>
     <string name="sign_text_view">your name :</string>
-     <string name="sign_name_hint">enter the signature name</string>
-     <string name="file_saved">File saved to : </string>
-     <string name="sign_draw_titlebar_text">Sign using your finger</string>
+    <string name="sign_name_hint">enter the signature name</string>
+    <string name="file_saved">File saved to : </string>
+    <string name="sign_draw_titlebar_text">Sign using your finger</string>
     <string name="reset_desc">Reset the sign</string>
     <string name="text_customize_desc">Customize the text</string>
     <string name="sign_draw_reminder">When you are done signing click the save button</string>
-     <string name="ok">OK</string>
+    <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="save_title">Save the sign</string>
     <string name="save_message">Enter the sign name , it must be unique</string>
     <string name="error_title">Error</string>
     <string name="error_name_empty">The name is empty , you have to type a name</string>
     <string name="error_name_repeated">This name is used , please type another name</string>
+    <string name="sign_method_title">Creating a sign</string>
+    <string name="sign_method_message">Choose your method to create a sign</string>
+    <string name="draw_sign_btn">Draw a sign using your finger</string>
+    <string name="ext_sign_btn">Import a picture</string>
+    <string name="text_sign_btn">Sign using customized text</string>
 </resources>

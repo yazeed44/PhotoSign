@@ -18,27 +18,24 @@ public final class CheckUtil {
 
     public static boolean checkSign(final String name, final View drawView, final Activity activity) {
 
+        final DialogInterface.OnDismissListener askAgain = new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface1) {
+                SaveUtil.askNameAndAddSign(drawView, activity);
+            }
+        };
 
         if (name.length() == 0) {
 
 
             Dialog errorDialog = DialogUtil.createErrorDialog(R.string.error_name_empty, activity);
-            errorDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                @Override
-                public void onDismiss(DialogInterface dialogInterface1) {
-                    SaveUtil.askNameAndAddSign(drawView, activity);
-                }
-            });
+            errorDialog.setOnDismissListener(askAgain);
+
             errorDialog.show();
             return false;
         } else if (SignUtil.isDuplicatedSign(name, activity)) {
             Dialog error = DialogUtil.createErrorDialog(R.string.error_name_repeated, activity);
-            error.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                @Override
-                public void onDismiss(DialogInterface dialogInterface) {
-                    SaveUtil.askNameAndAddSign(drawView, activity);
-                }
-            });
+            error.setOnDismissListener(askAgain);
             error.show();
             return false;
 
@@ -47,4 +44,11 @@ public final class CheckUtil {
         return true;
 
     }
+
+
+    public static boolean noSigns(final Activity activity) {
+        return SignUtil.getSigns(activity).isEmpty();
+    }
+
+
 }

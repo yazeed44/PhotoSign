@@ -21,7 +21,7 @@ public class SigningView extends ImageView {
     private Bitmap signBitmap;
 
 
-    private float x = -1,y = -1;
+    private float x = -1, y = -1;
 
     public SigningView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -32,30 +32,37 @@ public class SigningView extends ImageView {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
 //view given size
-        super.onSizeChanged(w,h,oldw,oldh);
+        super.onSizeChanged(w, h, oldw, oldh);
 
-       Log.i("Blend View", "Width  :  " + w + "    , height :  " + h);
+        Log.i("Blend View", "Width  :  " + w + "    , height :  " + h);
 
         if (photo != null) {
             photo = Bitmap.createScaledBitmap(photo, w, h, true);
 
+
             this.setImageBitmap(photo);
 
             if (signBitmap != null) {
+
+
                 reDraw(SigningUtil.getCenter(photo));
+
             }
         }
     }
 
 
     @Override
-    public void onDraw(Canvas canvas){
+    public void onDraw(Canvas canvas) {
 
-       super.onDraw(canvas);
+        super.onDraw(canvas);
 
 
-        if(photo != null && x != -1 && y != -1 ){
-            canvas.drawBitmap(signBitmap,x,y,null);
+        if (photo != null && x != -1 && y != -1) {
+         /*   XY.Float xy = correct(x,y);
+            float x = xy.getX();
+            float y = xy.getY();*/
+            canvas.drawBitmap(signBitmap, x, y, null);
             Log.i("SigningView", "Signing at X : " + x + "  , Y : " + y);
         }
     }
@@ -65,9 +72,9 @@ public class SigningView extends ImageView {
     public boolean onTouchEvent(MotionEvent event) {
 //detect user touch
 
-       final float touchX = event.getX();
+        final float touchX = event.getX();
         final float touchY = event.getY();
-        switch(event.getAction()){
+        switch (event.getAction()) {
 
             case MotionEvent.ACTION_UP:
                 reDraw(touchX, touchY);
@@ -78,25 +85,38 @@ public class SigningView extends ImageView {
 
     }
 
-    public void setPhoto(Bitmap bitmap){
+    public void setPhoto(Bitmap bitmap) {
         this.photo = bitmap;
         setImageBitmap(photo);
     }
 
-    public void setSign(Bitmap sign){
-       this.signBitmap = sign;
+    public void setSign(Bitmap sign) {
+        this.signBitmap = sign;
     }
 
 
-    private void reDraw(float x,float y){
+    private void reDraw(float x, float y) {
         this.x = x;
         this.y = y;
         invalidate();
     }
 
-    private void reDraw( XY xy){
-        reDraw(xy.getX(),xy.getY());
+    private void reDraw(XY.Float xy) {
+        reDraw(xy.getX(), xy.getY());
     }
 
+    private void reDraw(XY xy) {
+        reDraw(xy.getX(), xy.getY());
+    }
+
+    private XY.Float correct(float x, float y) {
+        XY.Float xy = new XY.Float();
+        float dx = (float) signBitmap.getWidth() / (float) this.getWidth();
+        float dy = (float) signBitmap.getHeight() / (float) this.getHeight();
+        xy.setX(dx * x);
+        xy.setY(dy * y);
+        return xy;
+
+    }
 
 }

@@ -1,6 +1,5 @@
 package net.whitedesert.photosign.activities;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -12,7 +11,7 @@ import net.whitedesert.photosign.views.DrawSignView;
 /**
  * Created by yazeed44 on 8/15/14.
  */
-public class DrawSignActivity extends Activity {
+public class DrawSignActivity extends AdActivity {
 
     private DrawSignView draw;
 
