@@ -60,9 +60,10 @@ public final class DialogUtil {
         final AlertDialog.Builder dialog = new AlertDialog.Builder(activity);
         final View listDialog = activity.getLayoutInflater().inflate(R.layout.dialog_list, null);
         final ListView list = (ListView) listDialog.findViewById(R.id.dialogList);
-        final ArrayAdapter adapter = new ArrayAdapter(activity, android.R.layout.simple_list_item_1, texts);
+        final ArrayAdapter adapter = new ArrayAdapter(activity, android.R.layout.select_dialog_singlechoice, texts);
         list.setOnItemClickListener(listener);
         list.setAdapter(adapter);
+
         dialog.setView(listDialog);
         return dialog;
     }

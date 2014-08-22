@@ -4,15 +4,16 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
+import android.widget.AdapterView;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 
 import net.whitedesert.photosign.R;
 import net.whitedesert.photosign.activities.DrawSignActivity;
+
+import java.util.ArrayList;
 
 /**
  * Created by yazeed44 on 8/16/14.
@@ -60,53 +61,39 @@ public final class SaveUtil {
 
     //the user choose how to sign
     public static void selectMethodSign(final Activity activity) {
-        final AlertDialog.Builder dialog = new AlertDialog.Builder(activity);
-        ListView view = null;
+        final Resources res = activity.getResources();
+        final ArrayList<String> methods = new ArrayList<String>();
+        final String text = res.getString(R.string.text_sign_btn);
+        methods.add(text);
 
-        final String drawTag = "draw", externalTag = "external", textTag = "text";
-        View.OnClickListener listener = new View.OnClickListener() {
+        final String draw = res.getString(R.string.draw_sign_btn);
+        methods.add(draw);
+
+        final String external = res.getString(R.string.ext_sign_btn);
+        methods.add(external);
+
+        final AdapterView.OnItemClickListener listener = new AdapterView.OnItemClickListener() {
             @Override
-            public void onClick(View view) {
-                if (view.getTag() == drawTag) {
+            public void onItemClick(android.widget.AdapterView<?> adapterView, android.view.View view, int position, long id) {
+                String method = methods.get(position);
+
+                if (method.equals(text)) {
+
+                } else if (method.equals(draw)) {
                     Intent i = new Intent(activity, DrawSignActivity.class);
                     activity.startActivity(i);
-                } else if (view.getTag() == externalTag) {
-
-                } else if (view.getTag() == textTag) {
+                } else if (method.equals(external)) {
 
                 }
             }
+
+            ;
+
         };
 
-        dialog.setIcon(android.R.drawable.ic_input_add);
+        final AlertDialog.Builder dialog = DialogUtil.getListDialog(methods, listener, activity);
         dialog.setTitle(R.string.sign_method_title);
         dialog.setMessage(R.string.sign_method_message);
-        LinearLayout layout = new LinearLayout(activity);
-        layout.setOrientation(LinearLayout.VERTICAL);
-        //the methods of creating a sign
-        Button text = new Button(activity);
-        text.setTag(textTag);
-        text.setClickable(false);//for now
-        text.setOnClickListener(listener);
-        text.setText(R.string.text_sign_btn);
-        layout.addView(text);
-
-        Button draw = new Button(activity);
-        draw.setOnClickListener(listener);
-        draw.setText(R.string.draw_sign_btn);
-        draw.setTag(drawTag);
-        layout.addView(draw);
-
-        Button external = new Button(activity);
-        external.setOnClickListener(listener);
-        external.setText(R.string.ext_sign_btn);
-        external.setTag(externalTag);
-        layout.addView(external);
-
-        DialogUtil.styleAll(R.style.button, activity, text, draw, external);
-        dialog.setView(layout);
-
-        dialog.setNegativeButton(R.string.cancel, DialogUtil.DISMISS_LISTENER);
         dialog.show();
     }
 }
