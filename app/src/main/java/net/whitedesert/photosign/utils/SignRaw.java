@@ -10,6 +10,7 @@ import android.graphics.Typeface;
  */
 public final class SignRaw {
 
+
     private final Paint paint = new Paint();
     private String text = "Test";
     private int color = Color.BLACK;
@@ -19,7 +20,6 @@ public final class SignRaw {
 
     private String font = "";
     private String name = "Test-name";
-    private int id = -1;
 
     public Paint getPaint() {
 
@@ -89,26 +89,19 @@ public final class SignRaw {
         this.name = name;
     }
 
-    public int getId() {
-        return this.id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
+    public Rect getRect() {
+        Rect rect = new Rect();
+        getPaint().getTextBounds(getText(), 0, getText().length(), rect);
+        return rect;
     }
 
     public int getWidth() {
-        Rect rect = new Rect();
 
-        getPaint().getTextBounds(getText(), 0, getText().length(), rect);
-        return rect.width() + 15;
+        return getRect().width() + 15;
     }
 
     public int getHeight() {
-        Rect rect = new Rect();
-
-        getPaint().getTextBounds(getText(), 0, getText().length(), rect);
-        return rect.height() + 15;
+        return getRect().height() + 15;
     }
 
 

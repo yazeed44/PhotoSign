@@ -1,12 +1,8 @@
 package net.whitedesert.photosign.utils;
 
-import android.app.Activity;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Typeface;
 import android.util.Log;
 
 /**
@@ -20,34 +16,37 @@ public final class SigningUtil {
     }
 
 
-    public static Bitmap combineImages(Bitmap c, Bitmap s, float x, float y) {
-        Bitmap cs = null;
+    public static Bitmap signOnPhoto(Bitmap photo, Bitmap sign, float x, float y) {
+        Bitmap signed;
 
-        int width = getWidthHeight(c, s).getX(), height = getWidthHeight(c, s).getY();
+        XY xy = getWidthHeight(photo, sign);
+        int width = xy.getX(), height = xy.getY();
 
-        cs = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        signed = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
 
-        Canvas comboImage = new Canvas(cs);
+        Canvas comboImage = new Canvas(signed);
 
-        comboImage.drawBitmap(c, 0f, 0f, null);
-        comboImage.drawBitmap(s, x, y, null);
+        comboImage.drawBitmap(photo, 0f, 0f, null);
+        comboImage.drawBitmap(sign, x, y, null);
 
-        return cs;
+        return signed;
     }
 
-    public static XY getWidthHeight(Bitmap c, Bitmap s) {
 
+    public static XY getWidthHeight(Bitmap first, Bitmap second) {
+        XY xy = new XY();
         int width, height = 0;
 
-        if (c.getWidth() > s.getWidth()) {
-            width = c.getWidth() /*+ s.getWidth()*/;
-            height = c.getHeight();
+        if (first.getWidth() > second.getWidth()) {
+            width = first.getWidth() /*+ s.getWidth()*/;
+            height = first.getHeight();
         } else {
-            width = s.getWidth() + s.getWidth();
-            height = c.getHeight();
+            width = second.getWidth() + second.getWidth();
+            height = first.getHeight();
         }
 
-        XY xy = new XY(width, height);
+        xy.setX(width);
+        xy.setY(height);
         return xy;
     }
 
@@ -59,12 +58,13 @@ public final class SigningUtil {
     public static XY getCenter(int width, int height) {
         int x = (width) / 2;
         int y = height / 2;
+
         Log.i("Blend Util : left corner", "X = " + x + "  ,  Y  = " + y);
         return new XY(x, y);
     }
 
 
-    public static Bitmap createSign(SignRaw signRaw) {
+    public static Bitmap createBitmap(SignRaw signRaw) {
         Paint paint = signRaw.getPaint();
 
         float baseline = (int) (-paint.ascent() + 0.5f); // ascent() is negative
@@ -73,32 +73,4 @@ public final class SigningUtil {
         canvas.drawText(signRaw.getText(), 0, baseline, paint);
         return image;
     }
-
-    //unused
-    public static Bitmap writeOnDrawable(Bitmap bm, Paint paint, String text) {
-        Bitmap bitmap = bm.copy(Bitmap.Config.ARGB_8888, true);
-
-        Canvas canvas = new Canvas(bitmap);
-        XY corner = getCenter(bitmap);
-        canvas.drawText(text, corner.getX(), corner.getY(), paint);
-
-        return bitmap;
-    }
-
-    //unused
-
-    public static Bitmap writeOnPhoto(Activity activity, String text, String path) {
-        SigningUtil util = new SigningUtil();
-        Bitmap bitmap = BitmapFactory.decodeFile(path);
-
-        Paint paint = new Paint();
-        paint.setColor(Color.BLACK);
-        paint.setTextSize(40f);
-        paint.setTypeface(Typeface.create("", Typeface.BOLD));
-        Bitmap drawable = util.writeOnDrawable(bitmap, paint, text);
-        String pathToBlended = PhotoUtil.savePicFromBitmap(drawable, activity, PhotoUtil.SIGNED_PHOTO_DIR);
-        return drawable;
-    }
-
-
 }

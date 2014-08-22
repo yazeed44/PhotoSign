@@ -25,11 +25,9 @@ public class SigningView extends ImageView {
 
     public SigningView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        setupDrawing();
 
     }
-    private void setupDrawing(){
-    }
+
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
@@ -58,9 +56,8 @@ public class SigningView extends ImageView {
 
         if(photo != null && x != -1 && y != -1 ){
             canvas.drawBitmap(signBitmap,x,y,null);
+            Log.i("SigningView", "Signing at X : " + x + "  , Y : " + y);
         }
-
-
     }
 
 
@@ -73,7 +70,7 @@ public class SigningView extends ImageView {
         switch(event.getAction()){
 
             case MotionEvent.ACTION_UP:
-                reDraw((touchX ) , (touchY ));
+                reDraw(touchX, touchY);
                 break;
         }
 
@@ -83,6 +80,7 @@ public class SigningView extends ImageView {
 
     public void setPhoto(Bitmap bitmap){
         this.photo = bitmap;
+        setImageBitmap(photo);
     }
 
     public void setSign(Bitmap sign){

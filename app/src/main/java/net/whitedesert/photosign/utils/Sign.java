@@ -28,6 +28,6 @@ public final class Sign {
     }
 
     public Bitmap getBitmap() {
-        return BitmapFactory.decodeFile(path);
+        return BitmapFactory.decodeFile(getPath());
     }
 }

@@ -15,31 +15,31 @@ import net.whitedesert.photosign.views.DrawSignView;
 public class DrawSignActivity extends Activity {
 
     private DrawSignView draw;
+
     @Override
     public void onCreate(Bundle savedInstance) {
+
         super.onCreate(savedInstance);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_sign_drawing);
-        draw = (DrawSignView)this.findViewById(R.id.drawView);
+        draw = (DrawSignView) this.findViewById(R.id.drawView);
 
 
     }
 
 
-    public void onClickTextCustomize(View view){
+    public void onClickTextCustomize(View view) {
 
     }
 
-    public void onClickReset(View view){
+    public void onClickReset(View view) {
         draw.reset();
     }
 
-    public void onClickSave(View view){
+    public void onClickSave(View view) {
         SaveUtil.askNameAndAddSign(draw, this);
 
     }
-
-
 
 
 }

@@ -5,17 +5,30 @@ package net.whitedesert.photosign.utils;
  */
 public final class XY {
 
-    private int x,y;
+    private int x, y;
 
-    public XY(int x, int y){
-     this.x = x;
+    public XY(int x, int y) {
+        this.x = x;
         this.y = y;
     }
 
-    public int getX(){
+    public XY() {
+
+    }
+
+    public int getX() {
         return x;
     }
-    public int getY(){
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public int getY() {
         return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
     }
 }

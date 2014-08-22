@@ -17,6 +17,7 @@ public final class SaveUtil {
     private SaveUtil() {
         throw new AssertionError();
     }
+
     public static void askNameAndAddSign(final View drawView, final Activity activity) {
 
         final AlertDialog.Builder dialog = new AlertDialog.Builder(activity);
@@ -36,9 +37,10 @@ public final class SaveUtil {
                     return;
                 }
 
-                String path = PhotoUtil.savePicFromView(drawView, activity, PhotoUtil.SIGNS_DIR);
+
                 Sign sign = new Sign();
                 sign.setName(name);
+                String path = PhotoUtil.savePicFromView(drawView, activity, PhotoUtil.SIGNS_DIR, sign.getName());
                 sign.setPath(path);
                 Log.i("DrawSignActivity : onClickSave", "sign name : " + sign.getName() + " ,  sign Path  :  " + sign.getPath());
                 SignUtil.addSign(sign, activity);

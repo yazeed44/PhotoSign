@@ -29,10 +29,10 @@ public class SigningActivity extends Activity {
         final Bitmap photo = BitmapFactory.decodeFile(path);
 
 
-        final Bitmap sign = SignUtil.getSign("dbb", this).getBitmap();
-        Log.i("Signing activity : ", "Width =  " + sign.getWidth() + "   ,  Height  =  " + sign.getHeight());
+        final Bitmap sign = SignUtil.getSign("test", this).getBitmap();
+        Log.i("Signing activity : Sign : ", "Width =  " + sign.getWidth() + "   ,  Height  =  " + sign.getHeight());
         signingView.setSign(sign);
-        signingView.setImageBitmap(photo);
+        signingView.setPhoto(photo);
 
 
     }

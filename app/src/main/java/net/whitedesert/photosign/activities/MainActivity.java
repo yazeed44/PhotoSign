@@ -2,11 +2,13 @@ package net.whitedesert.photosign.activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 
 import net.whitedesert.photosign.R;
 import net.whitedesert.photosign.utils.Sign;
@@ -20,9 +22,9 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        // ImageView view = (ImageView) this.findViewById(R.id.yoNigga);
-
-
+        ImageView view = (ImageView) this.findViewById(R.id.yoNigga);
+        final Bitmap sign = SignUtil.getSign("test", this).getBitmap().copy(Bitmap.Config.ARGB_8888, true);
+        view.setImageBitmap(sign);
     }
 
 
@@ -54,11 +56,11 @@ public class MainActivity extends Activity {
         startActivity(i);
 
             for(Sign sign : SignUtil.getSigns(this)){
-                Log.i("Main Activity : " , sign.getName());
+                Log.i("Main Activity : ", sign.getName());
             }
         /*Intent i = new Intent(this,DrawSignActivity.class);
-        startActivity(i);*/
-
+        startActivity(i);
+*/
     }
 
 }

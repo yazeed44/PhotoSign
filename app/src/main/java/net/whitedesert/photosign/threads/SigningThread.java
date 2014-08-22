@@ -26,17 +26,18 @@ public class SigningThread extends Thread {
         this.activity = activity;
         this.xy = xy;
     }
+
     @Override
-    public void run(){
+    public void run() {
 
 
-        Bitmap blended = SigningUtil.combineImages(photo, sign.getBitmap(), xy.getX(), xy.getY());
-        pathBlended = PhotoUtil.savePicFromBitmap(blended, activity, PhotoUtil.SIGNED_PHOTO_DIR);
+        Bitmap blended = SigningUtil.signOnPhoto(photo, sign.getBitmap(), xy.getX(), xy.getY());
+        pathBlended = PhotoUtil.savePicFromBitmap(blended, activity, PhotoUtil.SIGNED_PHOTO_DIR, sign.getName());
 
 
     }
 
-    public String getPath(){
+    public String getPath() {
         return pathBlended;
     }
 }
