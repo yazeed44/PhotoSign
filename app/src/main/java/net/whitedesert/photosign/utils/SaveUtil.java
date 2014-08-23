@@ -2,13 +2,12 @@ package net.whitedesert.photosign.utils;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.EditText;
 
 import net.whitedesert.photosign.R;
 import net.whitedesert.photosign.activities.DrawSignActivity;
@@ -24,76 +23,60 @@ public final class SaveUtil {
         throw new AssertionError();
     }
 
-    public static void askNameAndAddSign(final View drawView, final Activity activity) {
+    public static void askNameAndAddSign(final Bitmap bitmap, final Activity activity) {
 
-        final AlertDialog.Builder dialog = new AlertDialog.Builder(activity);
-
-        dialog.setTitle(R.string.save_title);
-        dialog.setMessage(R.string.save_message);
-
-        final EditText nameInput = new EditText(activity);
-        dialog.setView(nameInput);
-        nameInput.requestFocus();
-        dialog.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                String name = nameInput.getText().toString();
-
-                if (!CheckUtil.checkSign(name, drawView, activity)) {
-                    return;
+        String name = DialogUtil.askUser(R.string.save_title, R.string.save_message, activity);
+        if (name == null) {
+            askNameAndAddSign(bitmap, activity);
+        }
+        if (!CheckUtil.checkSign(name, bitmap, activity)) {
+            askNameAndAddSign(bitmap, activity);
                 }
-
 
                 Sign sign = new Sign();
                 sign.setName(name);
-                String path = PhotoUtil.savePicFromView(drawView, activity, PhotoUtil.SIGNS_DIR, sign.getName());
+        String path = PhotoUtil.savePicFromBitmap(bitmap, activity, PhotoUtil.SIGNS_DIR, sign.getName());
                 sign.setPath(path);
                 Log.i("DrawSignActivity : onClickSave", "sign name : " + sign.getName() + " ,  sign Path  :  " + sign.getPath());
                 SignUtil.addSign(sign, activity);
 
-            }
-        });
+    }
 
-        dialog.setNegativeButton(R.string.cancel, DialogUtil.DISMISS_LISTENER);
-
-        dialog.show();
+    public static void askNameAndAddSign(final View drawView, final Activity activity) {
+        askNameAndAddSign(drawView.getDrawingCache(true), activity);
     }
 
     //the user choose how to sign
     public static void selectMethodSign(final Activity activity) {
         final Resources res = activity.getResources();
         final ArrayList<String> methods = new ArrayList<String>();
-        final String text = res.getString(R.string.text_sign_btn);
+        final String text = res.getString(R.string.text_sign);
         methods.add(text);
 
-        final String draw = res.getString(R.string.draw_sign_btn);
+        final String draw = res.getString(R.string.draw_sign);
         methods.add(draw);
 
-        final String external = res.getString(R.string.ext_sign_btn);
+        final String external = res.getString(R.string.ext_sign);
         methods.add(external);
 
         final AdapterView.OnItemClickListener listener = new AdapterView.OnItemClickListener() {
+
             @Override
-            public void onItemClick(android.widget.AdapterView<?> adapterView, android.view.View view, int position, long id) {
+            public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
                 String method = methods.get(position);
-
-                if (method.equals(text)) {
-
-                } else if (method.equals(draw)) {
+                if (method.equals(draw)) {
                     Intent i = new Intent(activity, DrawSignActivity.class);
                     activity.startActivity(i);
+                } else if (method.equals(text)) {
+                    ToastUtil.toastUnsupported(activity);
                 } else if (method.equals(external)) {
-
+                    ToastUtil.toastUnsupported(activity);
                 }
             }
-
-            ;
-
         };
 
-        final AlertDialog.Builder dialog = DialogUtil.getListDialog(methods, listener, activity);
-        dialog.setTitle(R.string.sign_method_title);
-        dialog.setMessage(R.string.sign_method_message);
+        final AlertDialog.Builder dialog = DialogUtil.getListDialog(methods, R.string.sign_method_title, R.string.sign_method_message, listener, activity);
+
         dialog.show();
     }
 }

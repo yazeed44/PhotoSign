@@ -3,6 +3,8 @@ package net.whitedesert.photosign.utils;
 import android.app.Activity;
 import android.widget.Toast;
 
+import net.whitedesert.photosign.R;
+
 /**
  * Created by yazeed44 on 8/22/14.
  */
@@ -36,5 +38,9 @@ public final class ToastUtil {
 
     public static void showToastLong(final int resId, final Activity activity) {
         showToastLong(activity.getResources().getString(resId), activity);
+    }
+
+    public static void toastUnsupported(final Activity activity) {
+        showToastShort(R.string.unsupported, activity);
     }
 }

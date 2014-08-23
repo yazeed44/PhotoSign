@@ -21,7 +21,10 @@
     <string name="error_name_repeated">This name is used , please type another name</string>
     <string name="sign_method_title">Creating a sign</string>
     <string name="sign_method_message">Choose your method to create a sign</string>
-    <string name="draw_sign_btn">Draw a sign using your finger</string>
-    <string name="ext_sign_btn">Import a picture</string>
-    <string name="text_sign_btn">Sign using customized text</string>
+    <string name="draw_sign">Draw a sign using your finger</string>
+    <string name="ext_sign">Import a picture</string>
+    <string name="text_sign">Sign using customized text</string>
+    <string name="list_view_default_title">Choose</string>
+    <string name="list_view_default_message">Choose an item</string>
+    <string name="unsupported">This feature is not available</string>
 </resources>
