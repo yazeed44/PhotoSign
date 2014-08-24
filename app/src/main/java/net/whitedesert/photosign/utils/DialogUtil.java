@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.res.Resources;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -54,6 +55,7 @@ public final class DialogUtil {
         return dialog.create();
 
     }
+
 
     public static Dialog createErrorDialog(int resId, Context context) {
         return createErrorDialog(context.getResources().getString(resId), context);
@@ -116,6 +118,23 @@ public final class DialogUtil {
         Resources r = activity.getResources();
         String message = r.getString(msgId), title = r.getString(titleId);
         return getInputDialog(title, message, "", posListener, userInput, activity);
+    }
+
+
+    public static AlertDialog.Builder getSingleChooseDialog(String title, String message, String[] choices, OnClickListener listener, final Activity activity) {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(activity);
+        initDialog(dialog, title, message, android.R.drawable.ic_dialog_info);
+        dialog.setNegativeButton(R.string.cancel, DISMISS_LISTENER);
+        dialog.setSingleChoiceItems(choices, -1, listener);
+        Log.i("DialogUtil : getSingleChooseDialog : ", "We got " + choices.length + " choices !");
+        return dialog;
+    }
+
+    public static AlertDialog.Builder getSingleChooseDialog(int titleId, int msgId, int choicesId, OnClickListener listener, final Activity activity) {
+        Resources r = activity.getResources();
+        String title = r.getString(titleId), message = r.getString(msgId);
+        String[] choices = r.getStringArray(choicesId);
+        return getSingleChooseDialog(title, message, choices, listener, activity);
     }
 
 }

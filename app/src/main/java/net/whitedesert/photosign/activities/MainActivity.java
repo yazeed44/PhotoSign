@@ -1,6 +1,5 @@
 package net.whitedesert.photosign.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -8,9 +7,10 @@ import android.view.MenuItem;
 import android.view.View;
 
 import net.whitedesert.photosign.R;
-import net.whitedesert.photosign.utils.SaveUtil;
+import net.whitedesert.photosign.utils.AskUtil;
 import net.whitedesert.photosign.utils.Sign;
 import net.whitedesert.photosign.utils.SignUtil;
+import net.whitedesert.photosign.utils.SigningUtil;
 
 
 public class MainActivity extends AdActivity {
@@ -20,6 +20,7 @@ public class MainActivity extends AdActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        AskUtil.getWannaSignDialog(this).create().show();
     }
 
 
@@ -46,9 +47,7 @@ public class MainActivity extends AdActivity {
 
 
     public void onClickChoose(View view){
-        Intent i = new Intent(this, GalleryActivity.class);
-        i.putExtra(Types.TYPE, Types.OPEN_GALLERY_SINGLE_BLEND_TYPE);
-        startActivity(i);
+        SigningUtil.openGalleryToSignSingle(this);
 
             for(Sign sign : SignUtil.getSigns(this)){
                 Log.i("Main Activity : ", sign.getName());
@@ -58,7 +57,7 @@ public class MainActivity extends AdActivity {
     }
 
     public void onClickCreateSign(View view) {
-        SaveUtil.selectMethodSign(this);
+        AskUtil.selectMethodSign(this);
     }
 
 }

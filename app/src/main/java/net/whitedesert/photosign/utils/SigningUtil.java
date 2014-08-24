@@ -1,9 +1,14 @@
 package net.whitedesert.photosign.utils;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.Log;
+
+import net.whitedesert.photosign.activities.GalleryActivity;
+import net.whitedesert.photosign.activities.Types;
 
 /**
  * Created by yazeed44 on 8/6/14.
@@ -75,5 +80,11 @@ public final class SigningUtil {
         Canvas canvas = new Canvas(image);
         canvas.drawText(signRaw.getText(), 0, baseline, paint);
         return image;
+    }
+
+    public static void openGalleryToSignSingle(final Activity activity) {
+        Intent i = new Intent(activity, GalleryActivity.class);
+        i.putExtra(Types.TYPE, Types.OPEN_GALLERY_SINGLE_BLEND_TYPE);
+        activity.startActivity(i);
     }
 }
