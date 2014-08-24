@@ -87,12 +87,12 @@ public final class SignUtil {
         return duplicated;
     }
 
-    public static String getLatestSignName(Activity activity) {
+    public static Sign getLatestSign(Activity activity) {
         SignsDB db = new SignsDB(activity);
         db.open();
-        String name = db.getLatestSign().getName();
+        Sign sign = db.getLatestSign();
         db.close();
-        return name;
+        return sign;
     }
 
 

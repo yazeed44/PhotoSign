@@ -61,7 +61,6 @@ public final class DialogUtil {
     }
 
 
-
     public static AlertDialog.Builder getListDialog(ArrayList<String> texts, String title, String message, AdapterView.OnItemClickListener listener, Activity activity) {
         final AlertDialog.Builder dialog = new AlertDialog.Builder(activity);
         dialog.setNegativeButton(R.string.cancel, DialogUtil.DISMISS_LISTENER);
@@ -96,7 +95,7 @@ public final class DialogUtil {
      * @param activity
      * @return A dialog with one input
      */
-    public static AlertDialog.Builder getInput(String title, String message, String inputHint, OnClickListener posListener, EditText userInput, final Activity activity) {
+    public static AlertDialog.Builder getInputDialog(String title, String message, String inputHint, OnClickListener posListener, EditText userInput, final Activity activity) {
         AlertDialog.Builder dialog = new AlertDialog.Builder(activity);
         initDialog(dialog, title, message, android.R.drawable.ic_input_add);
         userInput.setHint(inputHint);
@@ -107,16 +106,16 @@ public final class DialogUtil {
 
     }
 
-    public static AlertDialog.Builder getInput(int titleId, int msgId, int inputHintId, OnClickListener posListener, EditText userInput, final Activity activity) {
+    public static AlertDialog.Builder getInputDialog(int titleId, int msgId, int inputHintId, OnClickListener posListener, EditText userInput, final Activity activity) {
         Resources r = activity.getResources();
         String title = r.getString(titleId), message = r.getString(msgId), inputHint = r.getString(inputHintId);
-        return getInput(title, message, inputHint, posListener, userInput, activity);
+        return getInputDialog(title, message, inputHint, posListener, userInput, activity);
     }
 
-    public static AlertDialog.Builder getInput(int titleId, int msgId, OnClickListener posListener, EditText userInput, final Activity activity) {
+    public static AlertDialog.Builder getInputDialog(int titleId, int msgId, OnClickListener posListener, EditText userInput, final Activity activity) {
         Resources r = activity.getResources();
         String message = r.getString(msgId), title = r.getString(titleId);
-        return getInput(title, message, "", posListener, userInput, activity);
+        return getInputDialog(title, message, "", posListener, userInput, activity);
     }
 
 }

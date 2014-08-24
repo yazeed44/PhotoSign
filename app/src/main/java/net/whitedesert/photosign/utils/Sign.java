@@ -35,6 +35,14 @@ public final class Sign {
 
     }
 
+    public Bitmap getBitmap(boolean originalSize) {
+        if (originalSize) {
+            return BitmapFactory.decodeFile(getPath());
+        } else {
+            return getBitmap();
+        }
+    }
+
     public Bitmap getBitmap(int width, int height) {
         return Bitmap.createScaledBitmap(BitmapFactory.decodeFile(getPath()), width, height, true);
     }

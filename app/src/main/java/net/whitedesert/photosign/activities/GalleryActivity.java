@@ -10,7 +10,6 @@ import com.luminous.pick.Action;
 import com.luminous.pick.CustomGallery;
 
 import net.whitedesert.photosign.utils.SaveUtil;
-import net.whitedesert.photosign.utils.SignUtil;
 
 import java.util.ArrayList;
 
@@ -33,7 +32,7 @@ public class GalleryActivity extends com.luminous.pick.MainActivity {
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-       // super.onActivityResult(requestCode, resultCode, data);
+        // super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == 100 && resultCode == Activity.RESULT_OK) {
             adapter.clear();
@@ -47,7 +46,7 @@ public class GalleryActivity extends com.luminous.pick.MainActivity {
             } else if (type.equals(Types.OPEN_GALLERY_SINGLE_CHOOSE_TYPE)) {
                 SaveUtil.askNameAndAddSign(BitmapFactory.decodeFile(path), this);
             }
-            Log.i("Gallery Activity : " , "Got picture  " + path);
+            Log.i("Gallery Activity : ", "Got picture  " + path);
 
         } else if (requestCode == 200 && resultCode == Activity.RESULT_OK) {
             //isn't complete yet
@@ -66,16 +65,7 @@ public class GalleryActivity extends com.luminous.pick.MainActivity {
             viewSwitcher.setDisplayedChild(0);
             adapter.addAll(dataT);
 
-            if (type.equals(Types.OPEN_GALLERY_MULTI_CHOOSE_TYPE)) {
-                SaveUtil.askNameAndAddSign(BitmapFactory.decodeFile(paths.get(0)), this);
-                String name = SignUtil.getLatestSignName(this);
-                for (int i = 1; i < paths.size(); i++) {
-                    String path = paths.get(i);
-                    SignUtil.addSign(name, path, this);
-                }
-            } else if (type.equals(Types.OPEN_GALLERY_MULTI_BLEND_TYPE)) {
-                //Uncompleted
-            }
+
         }
     }
 
@@ -87,14 +77,14 @@ public class GalleryActivity extends com.luminous.pick.MainActivity {
         return path != null ? path : null;
     }
 
-    public  ArrayList<String> openGalleryMulti(){
+    public void openGalleryMulti() {
 
         // For multiple images
-        Intent i = new Intent(Action.ACTION_MULTIPLE_PICK);
-        startActivityForResult(i, 200);
-        return !paths.isEmpty() ? paths : null;
+        Intent intent = new Intent(Action.ACTION_MULTIPLE_PICK);
+        startActivityForResult(intent, 200);
 
     }
+
 
     private void openBlendSingle(){
         Intent i = new Intent(this, SigningActivity.class);
@@ -104,17 +94,14 @@ public class GalleryActivity extends com.luminous.pick.MainActivity {
 
 
     private void setType(String type) {
+        this.type = type;
         if (type.equals(Types.OPEN_GALLERY_MULTI_BLEND_TYPE)) {
-            this.type = type;
             openGalleryMulti();
         } else if (type.equals(Types.OPEN_GALLERY_MULTI_CHOOSE_TYPE)) {
-            this.type = type;
             openGalleryMulti();
         } else if (type.equals(Types.OPEN_GALLERY_SINGLE_BLEND_TYPE)) {
-            this.type = type;
             openGallerySingle();
         } else if (type.equals(Types.OPEN_GALLERY_SINGLE_CHOOSE_TYPE)) {
-            this.type = type;
             openGallerySingle();
         }
 

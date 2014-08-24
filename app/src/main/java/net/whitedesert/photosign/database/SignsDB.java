@@ -66,7 +66,7 @@ public final class SignsDB {
     }
 
     public Sign getLatestSign() {
-        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_SIGNS + " ORDER BY column " + COLUMN_NAME + " LIMIT 1;", null);
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_SIGNS + " WHERE " + COLUMN_ID + " = (SELECT MAX(" + COLUMN_ID + ") FROM " + TABLE_SIGNS + ");", null);
         cursor.moveToFirst();
         Sign sign = initSign(cursor);
         cursor.close();

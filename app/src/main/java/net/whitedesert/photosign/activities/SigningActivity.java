@@ -28,7 +28,7 @@ public class SigningActivity extends AdActivity {
         final Bitmap photo = BitmapFactory.decodeFile(path);
 
 
-        final Bitmap sign = SignUtil.getSign("test", this).getBitmap();
+        final Bitmap sign = SignUtil.getLatestSign(this).getBitmap();
         Log.i("Signing activity : Sign : ", "Width =  " + sign.getWidth() + "   ,  Height  =  " + sign.getHeight());
         signingView.setSign(sign);
         signingView.setPhoto(photo);
