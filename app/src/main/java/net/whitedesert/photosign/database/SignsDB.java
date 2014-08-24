@@ -65,6 +65,13 @@ public final class SignsDB {
         return sign;
     }
 
+    public Sign getLatestSign() {
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_SIGNS + " ORDER BY column " + COLUMN_NAME + " LIMIT 1;", null);
+        cursor.moveToFirst();
+        Sign sign = initSign(cursor);
+        cursor.close();
+        return sign;
+    }
     public ArrayList<Sign> getSigns() throws SQLiteException{
         ArrayList<Sign> signs = new ArrayList<Sign>();
 
@@ -108,4 +115,6 @@ public final class SignsDB {
 
 
     }
+
+
 }

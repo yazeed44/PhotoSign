@@ -5,8 +5,8 @@
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     <string name="gallery_name">Gallery</string>
-    <string name="sign_text_view">your name :</string>
-    <string name="sign_name_hint">enter the signature name</string>
+    <string name="sign_text_view">Your name :</string>
+    <string name="sign_name_hint">Enter the signature name</string>
     <string name="file_saved">File saved to : </string>
     <string name="sign_draw_titlebar_text">Sign using your finger</string>
     <string name="reset_desc">Reset the sign</string>
@@ -14,17 +14,19 @@
     <string name="sign_draw_reminder">When you are done signing click the save button</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
-    <string name="save_title">Save the sign</string>
-    <string name="save_message">Enter the sign name , it must be unique</string>
+    <string name="save_title">Save the signature</string>
+    <string name="save_message">Enter the signature name , it must be unique</string>
     <string name="error_title">Error</string>
     <string name="error_name_empty">The name is empty , you have to type a name</string>
     <string name="error_name_repeated">This name is used , please type another name</string>
-    <string name="sign_method_title">Creating a sign</string>
-    <string name="sign_method_message">Choose your method to create a sign</string>
+    <string name="sign_method_title">Creating a signature</string>
+    <string name="sign_method_message">Choose your method to create a signature</string>
     <string name="draw_sign">Draw a sign using your finger</string>
     <string name="ext_sign">Import a picture</string>
     <string name="text_sign">Sign using customized text</string>
     <string name="list_view_default_title">Choose</string>
     <string name="list_view_default_message">Choose an item</string>
-    <string name="unsupported">This feature is not available</string>
+    <string name="unsupported">This feature is not available right now</string>
+    <string name="error_save_sign">Error while saving the signature</string>
+    <string name="saved_sign_success">Saved signature successfully</string>
 </resources>

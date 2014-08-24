@@ -13,7 +13,7 @@ public final class ToastUtil {
         throw new AssertionError();
     }
 
-    public static void showToastShort(final String message, final Activity activity) {
+    public static void toastShort(final String message, final Activity activity) {
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -23,11 +23,11 @@ public final class ToastUtil {
 
     }
 
-    public static void showToastShort(final int resId, final Activity activity) {
-        showToastShort(activity.getResources().getString(resId), activity);
+    public static void toastShort(final int resId, final Activity activity) {
+        toastShort(activity.getResources().getString(resId), activity);
     }
 
-    public static void showToastLong(final String message, final Activity activity) {
+    public static void toastLong(final String message, final Activity activity) {
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -36,11 +36,16 @@ public final class ToastUtil {
         });
     }
 
-    public static void showToastLong(final int resId, final Activity activity) {
-        showToastLong(activity.getResources().getString(resId), activity);
+    public static void toastLong(final int resId, final Activity activity) {
+        toastLong(activity.getResources().getString(resId), activity);
     }
 
     public static void toastUnsupported(final Activity activity) {
-        showToastShort(R.string.unsupported, activity);
+        toastShort(R.string.unsupported, activity);
     }
+
+    public static void toastSavedSignSuccess(final Activity activity) {
+        toastShort(R.string.saved_sign_success, activity);
+    }
+
 }

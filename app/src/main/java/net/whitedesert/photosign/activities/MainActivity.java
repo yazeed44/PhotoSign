@@ -47,7 +47,7 @@ public class MainActivity extends AdActivity {
 
     public void onClickChoose(View view){
         Intent i = new Intent(this, GalleryActivity.class);
-        i.putExtra("type","single");
+        i.putExtra(Types.TYPE, Types.OPEN_GALLERY_SINGLE_BLEND_TYPE);
         startActivity(i);
 
             for(Sign sign : SignUtil.getSigns(this)){

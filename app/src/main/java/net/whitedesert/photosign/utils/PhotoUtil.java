@@ -25,7 +25,7 @@ public final class PhotoUtil {
     public static final String SIGNED_PHOTO_DIR = "/signed_photos";
 
 
-    public static String savePicFromBitmap(Bitmap finalBitmap, Activity activity, String dir, String name) {
+    public static String savePicFromBitmap(Bitmap finalBitmap, Activity activity, String dir, String name, boolean toast) {
 
 
         String root = Environment.getExternalStorageDirectory().toString();
@@ -41,7 +41,8 @@ public final class PhotoUtil {
             out.flush();
             out.close();
             Log.i("Photo Util : ", "saved the photo successfully to  " + myDir + "/" + fname);
-            ToastUtil.showToastShort(savedFileStr + fname, activity);
+            if (toast)
+                ToastUtil.toastShort(savedFileStr + myDir + "/" + fname, activity);
 
             MediaScannerConnection.scanFile(activity, new String[]{myDir + "/" + fname}, new String[]{"image/jpeg"}, null);
             return myDir + "/" + fname;
@@ -52,10 +53,10 @@ public final class PhotoUtil {
         return null;
     }
 
-    public static String savePicFromView(View drawView, Activity activity, String dir, String name) {
+    public static String savePicFromView(View drawView, Activity activity, String dir, String name, boolean toast) {
 
         drawView.setDrawingCacheEnabled(true);
-        String path = savePicFromBitmap(drawView.getDrawingCache(true), activity, dir, name);
+        String path = savePicFromBitmap(drawView.getDrawingCache(true), activity, dir, name, toast);
         drawView.setDrawingCacheEnabled(false);
         return path;
     }

@@ -46,6 +46,21 @@ public final class CheckUtil {
         return checkSign(name, drawView.getDrawingCache(true), activity);
     }
 
+    public static boolean checkSign(final String path, Activity activity) {
+        final Dialog errorDialog = DialogUtil.createErrorDialog(R.string.error_save_sign, activity);
+
+        if (path == null) {
+            errorDialog.show();
+            return false;
+        } else if (path.length() == 0) {
+            errorDialog.show();
+            return false;
+        }
+
+        return true;
+
+    }
+
     public static boolean noSigns(final Activity activity) {
         return SignUtil.getSigns(activity).isEmpty();
     }

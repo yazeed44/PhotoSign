@@ -32,7 +32,7 @@ public class SigningThread extends Thread {
 
 
         Bitmap blended = SigningUtil.signOnPhoto(photo, sign.getBitmap(), xy.getX(), xy.getY());
-        pathBlended = PhotoUtil.savePicFromBitmap(blended, activity, PhotoUtil.SIGNED_PHOTO_DIR, sign.getName());
+        pathBlended = PhotoUtil.savePicFromBitmap(blended, activity, PhotoUtil.SIGNED_PHOTO_DIR, sign.getName(), true);
 
 
     }

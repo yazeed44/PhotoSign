@@ -2,15 +2,19 @@ package net.whitedesert.photosign.utils;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
 
 import net.whitedesert.photosign.R;
 import net.whitedesert.photosign.activities.DrawSignActivity;
+import net.whitedesert.photosign.activities.GalleryActivity;
+import net.whitedesert.photosign.activities.Types;
 
 import java.util.ArrayList;
 
@@ -23,28 +27,64 @@ public final class SaveUtil {
         throw new AssertionError();
     }
 
+
     public static void askNameAndAddSign(final Bitmap bitmap, final Activity activity) {
-
-        String name = DialogUtil.askUser(R.string.save_title, R.string.save_message, activity);
-        if (name == null) {
-            askNameAndAddSign(bitmap, activity);
-        }
-        if (!CheckUtil.checkSign(name, bitmap, activity)) {
-            askNameAndAddSign(bitmap, activity);
+        final EditText nameInput = new EditText(activity);
+        DialogInterface.OnClickListener posListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                String name = nameInput.getText().toString();
+                if (!CheckUtil.checkSign(name, bitmap, activity)) {
+                    return;
                 }
-
                 Sign sign = new Sign();
                 sign.setName(name);
-        String path = PhotoUtil.savePicFromBitmap(bitmap, activity, PhotoUtil.SIGNS_DIR, sign.getName());
+                String path = PhotoUtil.savePicFromBitmap(bitmap, activity, PhotoUtil.SIGNS_DIR, sign.getName(), false);
+                if (!CheckUtil.checkSign(path, activity)) {
+                    return;
+                }
+
                 sign.setPath(path);
-                Log.i("DrawSignActivity : onClickSave", "sign name : " + sign.getName() + " ,  sign Path  :  " + sign.getPath());
+                Log.i("DrawSignActivity : onClickSave", "sign name : " + sign.getName() + " , sign Path : " + sign.getPath());
                 SignUtil.addSign(sign, activity);
+            }
+        };
+
+        AlertDialog.Builder dialog = DialogUtil.getInput(R.string.save_title, R.string.save_message, posListener, nameInput, activity);
+        dialog.show();
 
     }
 
     public static void askNameAndAddSign(final View drawView, final Activity activity) {
-        askNameAndAddSign(drawView.getDrawingCache(true), activity);
+
+
+        final EditText nameInput = new EditText(activity);
+
+        DialogInterface.OnClickListener posListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                String name = nameInput.getText().toString();
+                if (!CheckUtil.checkSign(name, drawView, activity)) {
+                    return;
+                }
+                Sign sign = new Sign();
+                sign.setName(name);
+                String path = PhotoUtil.savePicFromView(drawView, activity, PhotoUtil.SIGNS_DIR, sign.getName(), false);
+                if (!CheckUtil.checkSign(path, activity)) {
+                    return;
+                }
+
+                sign.setPath(path);
+                Log.i("DrawSignActivity : onClickSave", "sign name : " + sign.getName() + " , sign Path : " + sign.getPath());
+                SignUtil.addSign(sign, activity);
+            }
+        };
+
+        AlertDialog.Builder dialog = DialogUtil.getInput(R.string.save_title, R.string.save_message, posListener, nameInput, activity);
+
+        dialog.show();
     }
+
 
     //the user choose how to sign
     public static void selectMethodSign(final Activity activity) {
@@ -70,7 +110,9 @@ public final class SaveUtil {
                 } else if (method.equals(text)) {
                     ToastUtil.toastUnsupported(activity);
                 } else if (method.equals(external)) {
-                    ToastUtil.toastUnsupported(activity);
+                    Intent i = new Intent(activity, GalleryActivity.class);
+                    i.putExtra(Types.TYPE, Types.OPEN_GALLERY_MULTI_CHOOSE_TYPE);
+                    activity.startActivity(i);
                 }
             }
         };
@@ -79,4 +121,6 @@ public final class SaveUtil {
 
         dialog.show();
     }
+
+
 }

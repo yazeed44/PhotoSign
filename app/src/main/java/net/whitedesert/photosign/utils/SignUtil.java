@@ -1,8 +1,10 @@
 package net.whitedesert.photosign.utils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.util.Log;
 
 import net.whitedesert.photosign.database.MyDBHelper;
 import net.whitedesert.photosign.database.SignsDB;
@@ -18,20 +20,26 @@ public final class SignUtil {
         throw new AssertionError();
     }
 
-    public static long addSign(Sign sign, Context context) {
-        SignsDB db = new SignsDB(context);
+    public static long addSign(Sign sign, Activity activity) {
+        SignsDB db = new SignsDB(activity);
         db.open();
 
         long id = db.insertSign(sign);
+        if (id != -1) {
+            Log.i("SignUtil : addSign : ", "Added Sign successfully  : " + sign.getName());
+            ToastUtil.toastSavedSignSuccess(activity);
+        } else {
+            Log.e("SignUtil : addSign : ", "failed to add sign !!");
+        }
         db.close();
         return id;
     }
 
-    public static long addSign(String name, String path, Context context) {
+    public static long addSign(String name, String path, Activity activity) {
         Sign sign = new Sign();
         sign.setName(name);
         sign.setPath(path);
-        return addSign(sign, context);
+        return addSign(sign, activity);
     }
 
 
@@ -77,6 +85,14 @@ public final class SignUtil {
         boolean duplicated = db.isDuplicatedSign(name, MyDBHelper.TABLE_SIGNS);
         db.close();
         return duplicated;
+    }
+
+    public static String getLatestSignName(Activity activity) {
+        SignsDB db = new SignsDB(activity);
+        db.open();
+        String name = db.getLatestSign().getName();
+        db.close();
+        return name;
     }
 
 
