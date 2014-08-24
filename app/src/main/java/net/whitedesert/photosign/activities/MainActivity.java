@@ -20,7 +20,7 @@ public class MainActivity extends AdActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        AskUtil.getWannaSignDialog(this).create().show();
+        AskUtil.getWannaSignDialog(this).show();
     }
 
 

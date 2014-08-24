@@ -29,8 +29,7 @@
     <string name="unsupported">This feature is not available right now</string>
     <string name="error_save_sign">Error while saving the signature</string>
     <string name="saved_sign_success">Saved signature successfully</string>
-    <string name="wanna_sign_title">OK you have made your own signature</string>
-    <string name="wanna_sign_message">You can make another signature , or sign a photo</string>
+    <string name="wanna_sign_title">You can make another signature , or sign a photo</string>
     <string-array name="wanna_sign_choices">
         <item>Make another sign</item>
         <item>Sign one of your photos</item>

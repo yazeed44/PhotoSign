@@ -34,7 +34,7 @@ public final class DialogUtil {
         throw new AssertionError();
     }
 
-    public static void initDialog(AlertDialog.Builder dialog, String title, String message, int iconId) {
+    public static void initDialog(final AlertDialog.Builder dialog, String title, String message, int iconId) {
         dialog.setTitle(title);
         dialog.setMessage(message);
         dialog.setIcon(iconId);
@@ -121,20 +121,25 @@ public final class DialogUtil {
     }
 
 
-    public static AlertDialog.Builder getSingleChooseDialog(String title, String message, String[] choices, OnClickListener listener, final Activity activity) {
+    public static AlertDialog.Builder getSingleChooseDialog(String title, String[] choices, OnClickListener listener, final Activity activity) {
         AlertDialog.Builder dialog = new AlertDialog.Builder(activity);
-        initDialog(dialog, title, message, android.R.drawable.ic_dialog_info);
+
+        dialog.setTitle(title);
+        dialog.setIcon(android.R.drawable.ic_dialog_info);
         dialog.setNegativeButton(R.string.cancel, DISMISS_LISTENER);
         dialog.setSingleChoiceItems(choices, -1, listener);
+
         Log.i("DialogUtil : getSingleChooseDialog : ", "We got " + choices.length + " choices !");
+
+
         return dialog;
     }
 
-    public static AlertDialog.Builder getSingleChooseDialog(int titleId, int msgId, int choicesId, OnClickListener listener, final Activity activity) {
+    public static AlertDialog.Builder getSingleChooseDialog(int titleId, int choicesId, OnClickListener listener, final Activity activity) {
         Resources r = activity.getResources();
-        String title = r.getString(titleId), message = r.getString(msgId);
+        String title = r.getString(titleId);
         String[] choices = r.getStringArray(choicesId);
-        return getSingleChooseDialog(title, message, choices, listener, activity);
+        return getSingleChooseDialog(title, choices, listener, activity);
     }
 
 }

@@ -82,7 +82,7 @@ public final class SaveUtil {
                 sign.setPath(path);
                 Log.i("DrawSignActivity : onClickSave", "sign name : " + sign.getName() + " , sign Path : " + sign.getPath());
                 SignUtil.addSign(sign, activity);
-                //getWannaSignDialog(activity).create().show();
+                AskUtil.getWannaSignDialog(activity).show();
 
             }
         };
