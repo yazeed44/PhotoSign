@@ -26,13 +26,14 @@ public class DrawSignView extends View {
     private Bitmap canvasBitmap;
 
 
-    public DrawSignView(Context context, AttributeSet attrs){
+    public DrawSignView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         setupDrawing();
 
     }
-    private void setupDrawing(){
+
+    private void setupDrawing() {
         drawPath = new Path();
         drawPaint = SignUtil.getDefaultPaintForDraw();
         canvasPaint = new Paint(Paint.DITHER_FLAG);
@@ -52,8 +53,8 @@ public class DrawSignView extends View {
 //draw view
 
 
-            canvas.drawBitmap(canvasBitmap, 0, 0, canvasPaint);
-            canvas.drawPath(drawPath, drawPaint);
+        canvas.drawBitmap(canvasBitmap, 0, 0, canvasPaint);
+        canvas.drawPath(drawPath, drawPaint);
 
 
     }
@@ -81,14 +82,10 @@ public class DrawSignView extends View {
         return true;
     }
 
-    public void reset(){
-        canvasBitmap =  Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
+    public void reset() {
+        canvasBitmap = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
         drawCanvas = new Canvas(canvasBitmap);
         invalidate();
     }
 
-    public Bitmap getBitmap(){
-        Bitmap b = canvasBitmap.copy(Bitmap.Config.ARGB_8888,false);
-        return b;
-    }
 }

@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 
@@ -27,9 +26,7 @@ public final class AskUtil {
     public static AlertDialog.Builder getWannaSignDialog(final Activity activity) {
         final Resources r = activity.getResources();
         final String[] choices = r.getStringArray(R.array.wanna_sign_choices);
-
         final String makeSign = choices[0];
-        Log.i("AskUtil : getWannaSign : ", "Make sign :  " + makeSign);
         final String signPhoto = choices[1];
 
         final DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {

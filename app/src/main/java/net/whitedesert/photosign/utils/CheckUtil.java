@@ -26,15 +26,20 @@ public final class CheckUtil {
             }
         };
 
-        final Dialog errorDialog = DialogUtil.createErrorDialog(R.string.error_name_empty, activity);
+        final Dialog errorDialog = DialogUtil.createErrorDialog(R.string.error_title, activity);
         errorDialog.setOnDismissListener(askAgain);
 
 
         if (name.length() == 0) {
+            errorDialog.setTitle(R.string.error_name_empty);
+
             errorDialog.show();
+            ToastUtil.toastShort(R.string.error_name_empty, activity);
             return false;
         } else if (SignUtil.isDuplicatedSign(name, activity)) {
+            errorDialog.setTitle(R.string.error_name_repeated);
             errorDialog.show();
+            ToastUtil.toastShort(R.string.error_name_repeated, activity);
             return false;
 
         }

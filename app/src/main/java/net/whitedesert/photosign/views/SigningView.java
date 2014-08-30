@@ -37,16 +37,12 @@ public class SigningView extends ImageView {
         Log.i("Blend View", "Width  :  " + w + "    , height :  " + h);
 
         if (photo != null) {
-            photo = Bitmap.createScaledBitmap(photo, w, h, true);
-
-
+            photo = Bitmap.createScaledBitmap(photo, w - 25, h - 25, true);
             this.setImageBitmap(photo);
 
             if (signBitmap != null) {
-
-
-                reDraw(SigningUtil.getCenter(photo));
-
+                setXY(SigningUtil.getCenter(photo));
+                invalidate();
             }
         }
     }
@@ -59,9 +55,6 @@ public class SigningView extends ImageView {
 
 
         if (photo != null && x != -1 && y != -1) {
-         /*   XY.Float xy = correct(x,y);
-            float x = xy.getX();
-            float y = xy.getY();*/
             canvas.drawBitmap(signBitmap, x, y, null);
             Log.i("SigningView", "Signing at X : " + x + "  , Y : " + y);
         }
@@ -76,8 +69,23 @@ public class SigningView extends ImageView {
         final float touchY = event.getY();
         switch (event.getAction()) {
 
+            case MotionEvent.ACTION_DOWN:
+                //finger touches the screen
+                break;
+
             case MotionEvent.ACTION_UP:
-                reDraw(touchX, touchY);
+                //finger leaves the screen
+
+                break;
+
+            case MotionEvent.ACTION_MOVE:
+                //finger moves on the screen
+                XY.Float touches = new XY.Float();
+                touches.setX(touchX);
+                touches.setY(touchY);
+                fixXY(touches);
+                setXY(touches);
+                invalidate();
                 break;
         }
 
@@ -94,28 +102,22 @@ public class SigningView extends ImageView {
         this.signBitmap = sign;
     }
 
-
-    private void reDraw(float x, float y) {
-        this.x = x;
-        this.y = y;
-        invalidate();
+    private void setXY(XY xy) {
+        this.x = xy.getX();
+        this.y = xy.getY();
     }
 
-    private void reDraw(XY.Float xy) {
-        reDraw(xy.getX(), xy.getY());
+    private void setXY(XY.Float xy) {
+        this.x = xy.getX();
+        this.y = xy.getY();
     }
 
-    private void reDraw(XY xy) {
-        reDraw(xy.getX(), xy.getY());
-    }
 
-    private XY.Float correct(float x, float y) {
-        XY.Float xy = new XY.Float();
-        float dx = (float) signBitmap.getWidth() / (float) this.getWidth();
-        float dy = (float) signBitmap.getHeight() / (float) this.getHeight();
-        xy.setX(dx * x);
-        xy.setY(dy * y);
-        return xy;
+    private void fixXY(XY.Float touches) {
+
+        final int signW = signBitmap.getWidth(), signH = signBitmap.getHeight();
+        touches.setX(touches.getX() - signW / 2);
+        touches.setY(touches.getY() - signH / 2);
 
     }
 

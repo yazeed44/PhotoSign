@@ -23,42 +23,42 @@ import static net.whitedesert.photosign.database.MyDBHelper.TABLE_SIGNS;
  */
 public final class SignsDB {
 
+    private final MyDBHelper helper;
     private SQLiteDatabase db;
-    private MyDBHelper helper;
 
-      public SignsDB(Context context){
-          helper = new MyDBHelper(context);
+    public SignsDB(Context context) {
+        helper = new MyDBHelper(context);
 
-      }
+    }
 
-    public void open(){
+    public void open() {
         db = helper.getWritableDatabase();
     }
 
-    public void close(){
+    public void close() {
         helper.close();
     }
 
 
     public long insertSign(Sign sign) throws SQLiteConstraintException {
         ContentValues values = new ContentValues();
-        values.put(COLUMN_PATH,sign.getPath());
-        values.put(COLUMN_NAME,sign.getName());
+        values.put(COLUMN_PATH, sign.getPath());
+        values.put(COLUMN_NAME, sign.getName());
         return db.insert(TABLE_SIGNS, null, values);
 
     }
 
 
-    public Sign getSign(int id) throws SQLiteException{
-        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_SIGNS + " WHERE " + COLUMN_ID + " = " + id,null);
+    public Sign getSign(int id) throws SQLiteException {
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_SIGNS + " WHERE " + COLUMN_ID + " = " + id, null);
         cursor.moveToFirst();
         Sign sign = initSign(cursor);
         cursor.close();
         return sign;
     }
 
-    public Sign getSign(String name) throws SQLiteException{
-        Cursor cursor = db.rawQuery("SELECT * FROM "+ TABLE_SIGNS + " WHERE " + COLUMN_NAME + " = " + "'" + name +"'" + ";",null);
+    public Sign getSign(String name) throws SQLiteException {
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_SIGNS + " WHERE " + COLUMN_NAME + " = " + "'" + name + "'" + ";", null);
         cursor.moveToFirst();
         Sign sign = initSign(cursor);
         cursor.close();
@@ -72,14 +72,15 @@ public final class SignsDB {
         cursor.close();
         return sign;
     }
-    public ArrayList<Sign> getSigns() throws SQLiteException{
+
+    public ArrayList<Sign> getSigns() throws SQLiteException {
         ArrayList<Sign> signs = new ArrayList<Sign>();
 
-        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_SIGNS ,null);
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_SIGNS, null);
 
         cursor.moveToFirst();
 
-        while(!cursor.isAfterLast()){
+        while (!cursor.isAfterLast()) {
             Sign sign = initSign(cursor);
             signs.add(sign);
             cursor.moveToNext();
@@ -90,7 +91,7 @@ public final class SignsDB {
     }
 
 
-    public Sign initSign(Cursor cursor){
+    public Sign initSign(Cursor cursor) {
         Sign sign = new Sign();
         sign.setPath(cursor.getString(cursor.getColumnIndex(COLUMN_PATH)));
         sign.setName(cursor.getString(cursor.getColumnIndex(COLUMN_NAME)));
@@ -98,7 +99,7 @@ public final class SignsDB {
     }
 
 
-    public void dropAll(){
+    public void dropAll() {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_SIGNS + ";");
     }
 

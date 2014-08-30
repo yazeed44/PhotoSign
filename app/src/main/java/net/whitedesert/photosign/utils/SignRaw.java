@@ -17,6 +17,7 @@ public final class SignRaw {
     private int textSize = 20;
     private int opacity = 100;
     private int style = Typeface.NORMAL;
+    private int width, height;
 
     private String font = "";
     private String name = "Test-name";
@@ -89,20 +90,35 @@ public final class SignRaw {
         this.name = name;
     }
 
-    public Rect getRect() {
+    private Rect getRect() {
         Rect rect = new Rect();
         getPaint().getTextBounds(getText(), 0, getText().length(), rect);
         return rect;
     }
 
-    public int getWidth() {
+    public int getMeasuredWidth() {
 
         return getRect().width() + 15;
     }
 
-    public int getHeight() {
+    public int getMeasuredHeight() {
         return getRect().height() + 15;
     }
 
+    public int getWidth() {
+        return this.width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public int getHeight() {
+        return this.height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
 
 }

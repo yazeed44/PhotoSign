@@ -21,7 +21,7 @@
     <string name="error_name_repeated">This name is used , please type another name</string>
     <string name="sign_method_title">Creating a signature</string>
     <string name="sign_method_message">Choose your method to create a signature</string>
-    <string name="draw_sign">Draw a sign using your finger</string>
+    <string name="draw_sign">Draw a signature using your finger</string>
     <string name="ext_sign">Import a picture</string>
     <string name="text_sign">Sign using customized text</string>
     <string name="list_view_default_title">Choose</string>
@@ -30,8 +30,12 @@
     <string name="error_save_sign">Error while saving the signature</string>
     <string name="saved_sign_success">Saved signature successfully</string>
     <string name="wanna_sign_title">You can make another signature , or sign a photo</string>
+    <string name="oops_no_sign">Oops !! you don\'t have signatures</string>
+
     <string-array name="wanna_sign_choices">
         <item>Make another sign</item>
         <item>Sign one of your photos</item>
     </string-array>
+
+
 </resources>

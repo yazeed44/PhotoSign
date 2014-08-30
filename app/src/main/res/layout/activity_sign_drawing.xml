@@ -9,10 +9,10 @@
     android:orientation="vertical"
     tools:context=".activities.DrawSignActivity">
 
-    <include layout="@layout/sign_draw_titlebar"
+    <include
+        layout="@layout/sign_draw_titlebar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        />
+        android:layout_height="wrap_content" />
 
     <TextView
 
@@ -26,10 +26,11 @@
         />
 
     <net.whitedesert.photosign.views.DrawSignView
-         android:id="@+id/drawView"
+        android:id="@+id/drawView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-         />
+
+        />
 
 
 </LinearLayout>

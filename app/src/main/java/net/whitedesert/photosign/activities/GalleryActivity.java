@@ -18,8 +18,8 @@ import java.util.ArrayList;
  */
 public class GalleryActivity extends com.luminous.pick.MainActivity {
 
-   private String path;
-   private ArrayList<String> paths = new ArrayList<String>();
+    private final ArrayList<String> paths = new ArrayList<String>();
+    private String path;
     private String type;
 
     @Override
@@ -30,6 +30,7 @@ public class GalleryActivity extends com.luminous.pick.MainActivity {
         setType(type);
 
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // super.onActivityResult(requestCode, resultCode, data);
@@ -41,7 +42,7 @@ public class GalleryActivity extends com.luminous.pick.MainActivity {
             String single_path = data.getStringExtra("single_path");
             imageLoader.displayImage("file://" + single_path, imgSinglePick);
             this.path = single_path;
-            if (type.equals(Types.OPEN_GALLERY_SINGLE_BLEND_TYPE)) {
+            if (type.equals(Types.OPEN_GALLERY_SINGLE_SIGNING_TYPE)) {
                 openBlendSingle();
             } else if (type.equals(Types.OPEN_GALLERY_SINGLE_CHOOSE_TYPE)) {
                 SaveUtil.askNameAndAddSign(BitmapFactory.decodeFile(path), this);
@@ -69,11 +70,11 @@ public class GalleryActivity extends com.luminous.pick.MainActivity {
         }
     }
 
-    public  String openGallerySingle(){
+    public String openGallerySingle() {
 
         // For single image
         Intent i = new Intent(Action.ACTION_PICK);
-      startActivityForResult(i, 100);
+        startActivityForResult(i, 100);
         return path != null ? path : null;
     }
 
@@ -86,20 +87,20 @@ public class GalleryActivity extends com.luminous.pick.MainActivity {
     }
 
 
-    private void openBlendSingle(){
+    private void openBlendSingle() {
         Intent i = new Intent(this, SigningActivity.class);
-        i.putExtra("path",this.path);
+        i.putExtra("path", this.path);
         startActivity(i);
     }
 
 
     private void setType(String type) {
         this.type = type;
-        if (type.equals(Types.OPEN_GALLERY_MULTI_BLEND_TYPE)) {
+        if (type.equals(Types.OPEN_GALLERY_MULTI_SIGNING_TYPE)) {
             openGalleryMulti();
         } else if (type.equals(Types.OPEN_GALLERY_MULTI_CHOOSE_TYPE)) {
             openGalleryMulti();
-        } else if (type.equals(Types.OPEN_GALLERY_SINGLE_BLEND_TYPE)) {
+        } else if (type.equals(Types.OPEN_GALLERY_SINGLE_SIGNING_TYPE)) {
             openGallerySingle();
         } else if (type.equals(Types.OPEN_GALLERY_SINGLE_CHOOSE_TYPE)) {
             openGallerySingle();

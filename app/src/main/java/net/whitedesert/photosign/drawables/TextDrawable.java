@@ -1,16 +1,9 @@
 package net.whitedesert.photosign.drawables;
 
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.ColorFilter;
-import android.graphics.Paint;
-import android.graphics.PixelFormat;
-import android.graphics.drawable.Drawable;
-
 /**
  * Created by yazeed44 on 8/7/14.
  */
-public class TextDrawable extends Drawable {
+public class TextDrawable {/* extends Drawable {
     private String text = "Test";
     private final Paint paint;
     private int  color = Color.BLACK;
@@ -82,6 +75,6 @@ paint.setColorFilter(colorFilter);
         return color;
     }
 
-
+*/
 
 }

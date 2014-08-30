@@ -7,9 +7,9 @@ public final class Types {
 
     public static final String TYPE = "type";
 
-    public static final String OPEN_GALLERY_SINGLE_BLEND_TYPE = "singleBlend";
+    public static final String OPEN_GALLERY_SINGLE_SIGNING_TYPE = "singleSigning";
 
-    public static final String OPEN_GALLERY_MULTI_BLEND_TYPE = "multiBlend";
+    public static final String OPEN_GALLERY_MULTI_SIGNING_TYPE = "multiSigning";
 
     public static final String OPEN_GALLERY_SINGLE_CHOOSE_TYPE = "singleChoose";
 

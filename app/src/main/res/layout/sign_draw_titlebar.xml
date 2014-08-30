@@ -1,52 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="#000000"
-    android:weightSum="100"
-    android:layout_height="match_parent">
+    android:orientation="horizontal"
+    android:weightSum="100">
 
 
     <TextView
+        style="@style/sign_draw_title_bar_text"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_marginRight="20dp"
-      android:layout_weight="40"
-        android:maxLines="1"
         android:layout_marginEnd="20dp"
+
+        android:layout_marginRight="20dp"
+        android:layout_weight="40"
+
+
         android:text="@string/sign_draw_titlebar_text"
 
-        style="@style/sign_draw_title_bar_text"
-
 
         />
-
-         <ImageView
-             android:contentDescription="@string/reset_desc"
-             android:src="@drawable/reset_icon"
-             android:layout_width="0dp"
-             android:layout_height="match_parent"
-             android:layout_weight="20"
-
-             android:onClick="onClickReset"
-              />
 
     <ImageView
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:src="@drawable/text_customize_icon"
-        android:contentDescription="@string/text_customize_desc"
-        android:layout_marginStart="40dp"
-        android:onClick="onClickTextCustomize"
         android:layout_weight="20"
-        />
+        android:contentDescription="@string/reset_desc"
+        android:onClick="onClickReset"
+
+        android:src="@drawable/reset_icon" />
 
     <ImageView
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:src="@android:drawable/ic_menu_save"
+        android:layout_marginStart="40dp"
+        android:layout_weight="20"
+        android:contentDescription="@string/text_customize_desc"
+        android:onClick="onClickTextCustomize"
+        android:src="@drawable/text_customize_icon" />
+
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
         android:layout_weight="20"
         android:onClick="onClickSave"
+        android:src="@android:drawable/ic_menu_save"
 
         />
 

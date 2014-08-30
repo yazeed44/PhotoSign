@@ -40,25 +40,20 @@ public final class DialogUtil {
         dialog.setIcon(iconId);
     }
 
-    public static void initDialog(AlertDialog.Builder dialog, int titleId, int msgId, int iconId) {
-        Resources r = dialog.getContext().getResources();
-        String title = r.getString(titleId), message = r.getString(msgId);
-        initDialog(dialog, title, message, iconId);
-    }
 
     public static Dialog createErrorDialog(String message, Context context) {
 
         AlertDialog.Builder dialog = new AlertDialog.Builder(context);
         String title = context.getResources().getString(R.string.error_title);
-        initDialog(dialog, message, title, android.R.drawable.ic_dialog_alert);
+        initDialog(dialog, title, message, android.R.drawable.ic_dialog_alert);
         dialog.setPositiveButton(R.string.ok, DISMISS_LISTENER);
         return dialog.create();
 
     }
 
 
-    public static Dialog createErrorDialog(int resId, Context context) {
-        return createErrorDialog(context.getResources().getString(resId), context);
+    public static Dialog createErrorDialog(int msgId, Context context) {
+        return createErrorDialog(context.getResources().getString(msgId), context);
 
     }
 
@@ -92,9 +87,9 @@ public final class DialogUtil {
 
 
     /**
-     * @param title
-     * @param message
-     * @param activity
+     * @param title    title of dialog
+     * @param message  message of the dialog
+     * @param activity the activity is important to lanuch the dialog
      * @return A dialog with one input
      */
     public static AlertDialog.Builder getInputDialog(String title, String message, String inputHint, OnClickListener posListener, EditText userInput, final Activity activity) {
@@ -121,13 +116,13 @@ public final class DialogUtil {
     }
 
 
-    public static AlertDialog.Builder getSingleChooseDialog(String title, String[] choices, OnClickListener listener, final Activity activity) {
+    public static AlertDialog.Builder getSingleChooseDialog(String title, String[] choices, OnClickListener choiceListener, final Activity activity) {
         AlertDialog.Builder dialog = new AlertDialog.Builder(activity);
-
+        //the choices won't appear if you set a message !!
         dialog.setTitle(title);
         dialog.setIcon(android.R.drawable.ic_dialog_info);
         dialog.setNegativeButton(R.string.cancel, DISMISS_LISTENER);
-        dialog.setSingleChoiceItems(choices, -1, listener);
+        dialog.setSingleChoiceItems(choices, -1, choiceListener);
 
         Log.i("DialogUtil : getSingleChooseDialog : ", "We got " + choices.length + " choices !");
 
@@ -141,5 +136,9 @@ public final class DialogUtil {
         String[] choices = r.getStringArray(choicesId);
         return getSingleChooseDialog(title, choices, listener, activity);
     }
+
+    /*public static AlertDialog.Builder getAreYouSureDialog(String title , String message , final Activity activity){
+
+    }*/
 
 }

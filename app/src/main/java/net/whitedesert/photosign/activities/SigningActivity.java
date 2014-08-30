@@ -18,7 +18,7 @@ public class SigningActivity extends AdActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.setContentView(R.layout.activity_blend);
+        this.setContentView(R.layout.activity_signing);
         final SigningView signingView = (SigningView) this.findViewById(R.id.blendView);
         final Intent i = this.getIntent();
 

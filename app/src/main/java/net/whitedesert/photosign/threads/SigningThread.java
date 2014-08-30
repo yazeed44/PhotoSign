@@ -14,11 +14,11 @@ import net.whitedesert.photosign.utils.XY;
 public class SigningThread extends Thread {
 
 
-    private Activity activity;
-    private Sign sign;
-    private Bitmap photo;
+    private final Activity activity;
+    private final Sign sign;
+    private final Bitmap photo;
+    private final XY xy;
     private String pathBlended;
-    private XY xy;
 
     public SigningThread(Bitmap photo, Sign sign, Activity activity, XY xy) {
         this.sign = sign;

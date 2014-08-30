@@ -35,13 +35,6 @@ public final class SignUtil {
         return id;
     }
 
-    public static long addSign(String name, String path, Activity activity) {
-        Sign sign = new Sign();
-        sign.setName(name);
-        sign.setPath(path);
-        return addSign(sign, activity);
-    }
-
 
     public static Sign getSign(String name, Context context) {
         SignsDB db = new SignsDB(context);
@@ -75,6 +68,7 @@ public final class SignUtil {
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeJoin(Paint.Join.ROUND);
         paint.setStrokeCap(Paint.Cap.ROUND);
+        paint.setAlpha(255);
 
         return paint;
     }

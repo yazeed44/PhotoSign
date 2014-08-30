@@ -20,7 +20,7 @@ public class MainActivity extends AdActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        AskUtil.getWannaSignDialog(this).show();
+
     }
 
 
@@ -47,6 +47,8 @@ public class MainActivity extends AdActivity {
 
 
     public void onClickChoose(View view){
+
+
         SigningUtil.openGalleryToSignSingle(this);
 
             for(Sign sign : SignUtil.getSigns(this)){

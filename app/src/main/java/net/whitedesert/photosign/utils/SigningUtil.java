@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.Log;
 
+import net.whitedesert.photosign.R;
 import net.whitedesert.photosign.activities.GalleryActivity;
 import net.whitedesert.photosign.activities.Types;
 
@@ -58,10 +59,7 @@ public final class SigningUtil {
         return xy;
     }
 
-    public static XY getCenter(Bitmap photo) {
 
-        return getCenter(photo.getWidth(), photo.getHeight());
-    }
 
     public static XY getCenter(int width, int height) {
         int x = (width) / 2;
@@ -71,20 +69,33 @@ public final class SigningUtil {
         return new XY(x, y);
     }
 
+    public static XY getCenter(Bitmap photo) {
 
-    public static Bitmap createBitmap(SignRaw signRaw) {
+        return getCenter(photo.getWidth(), photo.getHeight());
+    }
+
+    public static Bitmap createBitmap(SignRaw signRaw, int width, int height) {
         Paint paint = signRaw.getPaint();
 
         float baseline = (int) (-paint.ascent() + 0.5f); // ascent() is negative
-        Bitmap image = Bitmap.createBitmap(signRaw.getWidth(), signRaw.getHeight(), Bitmap.Config.ARGB_8888);
+        Bitmap image = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(image);
         canvas.drawText(signRaw.getText(), 0, baseline, paint);
         return image;
     }
 
+    public static Bitmap createBitmap(SignRaw signRaw) {
+        return createBitmap(signRaw, signRaw.getMeasuredWidth(), signRaw.getMeasuredHeight());
+    }
+
     public static void openGalleryToSignSingle(final Activity activity) {
+        if (CheckUtil.noSigns(activity)) {
+            ToastUtil.toastShort(R.string.oops_no_sign, activity);
+            AskUtil.selectMethodSign(activity);
+            return;
+        }
         Intent i = new Intent(activity, GalleryActivity.class);
-        i.putExtra(Types.TYPE, Types.OPEN_GALLERY_SINGLE_BLEND_TYPE);
+        i.putExtra(Types.TYPE, Types.OPEN_GALLERY_SINGLE_SIGNING_TYPE);
         activity.startActivity(i);
     }
 }
