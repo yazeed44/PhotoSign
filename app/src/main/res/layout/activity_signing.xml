@@ -4,22 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#000000"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:weightSum="1">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#000fff">
-
-    </LinearLayout>
 
     <net.whitedesert.photosign.views.SigningView
         android:id="@+id/blendView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="20dp"
-        android:layout_marginTop="20dp"
-
+        android:layout_weight="0.06"
 
         android:background="#FFFFFFFF" />
 
@@ -28,5 +21,27 @@
 
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/light_black"></LinearLayout>
+        android:layout_marginBottom="60dp"
+        android:layout_weight="0.2"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/opacity_text"
+            style="@style/text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/opacity_text"
+
+            />
+
+        <SeekBar
+            android:id="@+id/opacity_seek"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:layout_marginStart="40dp"
+
+            />
+
+    </LinearLayout>
 </LinearLayout>

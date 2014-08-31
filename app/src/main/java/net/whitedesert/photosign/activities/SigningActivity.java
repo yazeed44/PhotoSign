@@ -4,9 +4,12 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.util.Log;
+import android.widget.SeekBar;
+import android.widget.TextView;
 
 import net.whitedesert.photosign.R;
+import net.whitedesert.photosign.utils.SetListenUtil;
+import net.whitedesert.photosign.utils.Sign;
 import net.whitedesert.photosign.utils.SignUtil;
 import net.whitedesert.photosign.views.SigningView;
 
@@ -20,6 +23,11 @@ public class SigningActivity extends AdActivity {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_signing);
         final SigningView signingView = (SigningView) this.findViewById(R.id.blendView);
+        final SeekBar opacitySeek = (SeekBar) this.findViewById(R.id.opacity_seek);
+        final TextView opacityText = (TextView) this.findViewById(R.id.opacity_text);
+        opacitySeek.setMax(255);
+        opacitySeek.setProgress(opacitySeek.getMax());
+        opacityText.setText(this.getString(R.string.opacity_text) + " : " + opacitySeek.getMax());
         final Intent i = this.getIntent();
 
         final String path = i.getStringExtra("path");
@@ -28,11 +36,13 @@ public class SigningActivity extends AdActivity {
         final Bitmap photo = BitmapFactory.decodeFile(path);
 
 
-        final Bitmap sign = SignUtil.getLatestSign(this).getBitmap();
-        Log.i("Signing activity : Sign : ", "Width =  " + sign.getWidth() + "   ,  Height  =  " + sign.getHeight());
-        signingView.setSign(sign);
+        final Sign sign = SignUtil.getLatestSign(this);
+
+
+        signingView.setSign(sign.getBitmap());
         signingView.setPhoto(photo);
 
+        SetListenUtil.setUpOpacitySeek(opacitySeek, opacityText, signingView, this, sign);
 
     }
 }

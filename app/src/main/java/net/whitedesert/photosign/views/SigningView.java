@@ -8,7 +8,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.ImageView;
 
-import net.whitedesert.photosign.utils.SigningUtil;
+import net.whitedesert.photosign.utils.PhotoUtil;
 import net.whitedesert.photosign.utils.XY;
 
 /**
@@ -41,7 +41,7 @@ public class SigningView extends ImageView {
             this.setImageBitmap(photo);
 
             if (signBitmap != null) {
-                setXY(SigningUtil.getCenter(photo));
+                setXY(PhotoUtil.getCenter(photo));
                 invalidate();
             }
         }
@@ -56,7 +56,7 @@ public class SigningView extends ImageView {
 
         if (photo != null && x != -1 && y != -1) {
             canvas.drawBitmap(signBitmap, x, y, null);
-            Log.i("SigningView", "Signing at X : " + x + "  , Y : " + y);
+            //Log.i("SigningView", "Signing at X : " + x + "  , Y : " + y);
         }
     }
 

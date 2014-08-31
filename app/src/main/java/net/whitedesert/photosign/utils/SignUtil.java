@@ -2,6 +2,8 @@ package net.whitedesert.photosign.utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.Log;
@@ -15,6 +17,9 @@ import java.util.ArrayList;
  * Created by yazeed44 on 8/8/14.
  */
 public final class SignUtil {
+
+    public static final int DEFAULT_SIGN_HEIGHT = 480;
+    public static final int DEFAULT_SIGN_WIDTH = 320;
 
     private SignUtil() {
         throw new AssertionError();
@@ -87,6 +92,20 @@ public final class SignUtil {
         Sign sign = db.getLatestSign();
         db.close();
         return sign;
+    }
+
+    public static Bitmap createBitmap(SignRaw signRaw, int width, int height) {
+        Paint paint = signRaw.getPaint();
+
+        float baseline = (int) (-paint.ascent() + 0.5f); // ascent() is negative
+        Bitmap image = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(image);
+        canvas.drawText(signRaw.getText(), 0, baseline, paint);
+        return image;
+    }
+
+    public static Bitmap createBitmap(SignRaw signRaw) {
+        return createBitmap(signRaw, signRaw.getMeasuredWidth(), signRaw.getMeasuredHeight());
     }
 
 

@@ -3,8 +3,8 @@ package net.whitedesert.photosign.utils;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
-import static net.whitedesert.photosign.utils.SigningUtil.DEFAULT_SIGN_HEIGHT;
-import static net.whitedesert.photosign.utils.SigningUtil.DEFAULT_SIGN_WIDTH;
+import static net.whitedesert.photosign.utils.SignUtil.DEFAULT_SIGN_HEIGHT;
+import static net.whitedesert.photosign.utils.SignUtil.DEFAULT_SIGN_WIDTH;
 
 /**
  * Created by yazeed44 on 8/9/14.

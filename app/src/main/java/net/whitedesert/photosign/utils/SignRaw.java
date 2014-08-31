@@ -15,9 +15,9 @@ public final class SignRaw {
     private String text = "Test";
     private int color = Color.BLACK;
     private int textSize = 20;
-    private int opacity = 100;
+    private int opacity = 255;
     private int style = Typeface.NORMAL;
-    private int width, height;
+    private int width = SigningUtil.DEFAULT_SIGN_WIDTH, height = SigningUtil.DEFAULT_SIGN_HEIGHT;
 
     private String font = "";
     private String name = "Test-name";
@@ -43,7 +43,7 @@ public final class SignRaw {
 
     public int getOpacity() {
 
-        return Math.round((float) opacity / 100 * 255);
+        return this.opacity;
     }
 
     public void setOpacity(int opacity) {

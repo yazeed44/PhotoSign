@@ -1,10 +1,10 @@
 package net.whitedesert.photosign.utils;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.media.MediaScannerConnection;
-import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
@@ -62,15 +62,50 @@ public final class PhotoUtil {
     }
 
 
-    public static void openPhoto(String path, final Activity a) {
+    public static Paint getPaint(int opacity) {
+        Paint paint = new Paint();
+        paint.setAlpha(opacity);
+        return paint;
+    }
+
+    public static Bitmap updateOpacity(final Bitmap bitmap, final int opacity) {
+        int width = bitmap.getWidth(), height = bitmap.getHeight();
+        Bitmap transBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(transBitmap);
+        canvas.drawARGB(0, 0, 0, 0);
+        // config paint
+        final Paint paint = getPaint(opacity);
+        canvas.drawBitmap(bitmap, 0, 0, paint);
+        return transBitmap;
+
+    }
+
+    public static XY getWidthHeight(Bitmap first, Bitmap second) {
+        XY xy = new XY();
+        int width, height;
+
+        if (first.getWidth() > second.getWidth()) {
+            width = first.getWidth();
+            height = first.getHeight();
+        } else {
+            width = second.getWidth() + second.getWidth();
+            height = first.getHeight();
+        }
+
+        xy.setX(width);
+        xy.setY(height);
+        return xy;
+    }
 
 
-        final Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_VIEW);
-        intent.setDataAndType(Uri.parse("file://" + path), "image/*");
+    public static XY getCenter(int width, int height) {
+        int x = (width) / 2;
+        int y = height / 2;
+        return new XY(x, y);
+    }
 
-        a.startActivity(intent);
+    public static XY getCenter(Bitmap photo) {
 
-
+        return getCenter(photo.getWidth(), photo.getHeight());
     }
 }
