@@ -2,8 +2,6 @@ package net.whitedesert.photosign.utils;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.media.MediaScannerConnection;
 import android.os.Environment;
 import android.util.Log;
@@ -61,24 +59,6 @@ public final class PhotoUtil {
         return path;
     }
 
-
-    public static Paint getPaint(int opacity) {
-        Paint paint = new Paint();
-        paint.setAlpha(opacity);
-        return paint;
-    }
-
-    public static Bitmap updateOpacity(final Bitmap bitmap, final int opacity) {
-        int width = bitmap.getWidth(), height = bitmap.getHeight();
-        Bitmap transBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(transBitmap);
-        canvas.drawARGB(0, 0, 0, 0);
-        // config paint
-        final Paint paint = getPaint(opacity);
-        canvas.drawBitmap(bitmap, 0, 0, paint);
-        return transBitmap;
-
-    }
 
     public static XY getWidthHeight(Bitmap first, Bitmap second) {
         XY xy = new XY();

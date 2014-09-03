@@ -31,7 +31,9 @@
         <item name="android:textColor">#ffff</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">30sp</item>
-        <item name="android:background">#222326</item>
+        <item name="android:background">@drawable/button_selector</item>
+
+
     </style>
 
     <style name="text_edit">

@@ -32,6 +32,7 @@
     <string name="wanna_sign_title">You can make another signature , or sign a photo</string>
     <string name="oops_no_sign">Oops !! you don\'t have signatures</string>
     <string name="opacity_text">Opacity</string>
+    <string name="done_signing_text">Done</string>
 
     <string-array name="wanna_sign_choices">
         <item>Make another sign</item>

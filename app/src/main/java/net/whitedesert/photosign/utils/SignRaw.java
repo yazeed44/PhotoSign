@@ -17,7 +17,7 @@ public final class SignRaw {
     private int textSize = 20;
     private int opacity = 255;
     private int style = Typeface.NORMAL;
-    private int width = SigningUtil.DEFAULT_SIGN_WIDTH, height = SigningUtil.DEFAULT_SIGN_HEIGHT;
+    private int width = SignUtil.DEFAULT_SIGN_WIDTH, height = SignUtil.DEFAULT_SIGN_HEIGHT;
 
     private String font = "";
     private String name = "Test-name";

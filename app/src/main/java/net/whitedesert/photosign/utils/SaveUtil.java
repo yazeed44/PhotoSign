@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.EditText;
 
 import net.whitedesert.photosign.R;
+import net.whitedesert.photosign.threads.SigningThread;
+import net.whitedesert.photosign.views.SigningView;
 
 /**
  * Created by yazeed44 on 8/16/14.
@@ -91,7 +93,19 @@ public final class SaveUtil {
     }
 
 
+    public static void saveSignedPhoto(final SigningView signingView, final Activity activity) {
+        final Sign sign = signingView.getSign();
+        final Bitmap photo = signingView.getPhoto(), signBitmap = signingView.getSignBitmap();
+        final XY.Float xy = signingView.getXY();
+        SigningThread signThread = new SigningThread(photo, signBitmap, sign.getName(), activity, xy);
+        signThread.start();
+        ThreadUtil.join(signThread);
+        final String path = signThread.getPath();
+        if (!CheckUtil.checkSign(path, activity)) {
+            return;
+        }
 
+    }
 
 
 }

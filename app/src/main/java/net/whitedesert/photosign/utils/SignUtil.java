@@ -18,8 +18,8 @@ import java.util.ArrayList;
  */
 public final class SignUtil {
 
-    public static final int DEFAULT_SIGN_HEIGHT = 480;
-    public static final int DEFAULT_SIGN_WIDTH = 320;
+    public static final int DEFAULT_SIGN_HEIGHT = 200;
+    public static final int DEFAULT_SIGN_WIDTH = 200;
 
     private SignUtil() {
         throw new AssertionError();

@@ -1,10 +1,6 @@
 package net.whitedesert.photosign.utils;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-
-import static net.whitedesert.photosign.utils.SignUtil.DEFAULT_SIGN_HEIGHT;
-import static net.whitedesert.photosign.utils.SignUtil.DEFAULT_SIGN_WIDTH;
 
 /**
  * Created by yazeed44 on 8/9/14.
@@ -31,19 +27,19 @@ public final class Sign {
     }
 
     public Bitmap getBitmap() {
-        return Bitmap.createScaledBitmap(BitmapFactory.decodeFile(getPath()), DEFAULT_SIGN_WIDTH, DEFAULT_SIGN_HEIGHT, true);
+        return BitmapUtil.decodeFile(getPath(), SignUtil.DEFAULT_SIGN_WIDTH, SignUtil.DEFAULT_SIGN_HEIGHT);
 
     }
 
     public Bitmap getBitmap(boolean originalSize) {
         if (originalSize) {
-            return BitmapFactory.decodeFile(getPath());
+            return BitmapUtil.decodeFile(getPath());
         } else {
             return getBitmap();
         }
     }
 
     public Bitmap getBitmap(int width, int height) {
-        return Bitmap.createScaledBitmap(BitmapFactory.decodeFile(getPath()), width, height, true);
+        return BitmapUtil.decodeFile(getPath(), width, height);
     }
 }

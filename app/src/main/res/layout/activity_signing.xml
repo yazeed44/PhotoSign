@@ -4,15 +4,45 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#000000"
+
     android:orientation="vertical"
     android:weightSum="1">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="1"
+
+        >
+
+        <Button
+            style="@style/button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_weight="0.50"
+            android:drawableLeft="@drawable/check_mark"
+            android:drawableStart="@drawable/check_mark"
+            android:maxLines="1"
+            android:onClick="onClickDoneSigning"
+            android:text="@string/done_signing_text"
+            android:textColorLink="#ffffff"
+            android:textSize="20sp"
+
+
+            />
+
+
+    </LinearLayout>
+
 
     <net.whitedesert.photosign.views.SigningView
-        android:id="@+id/blendView"
+        android:id="@+id/signingView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="0.06"
+        android:layout_gravity="center"
+        android:layout_weight="0.15"
 
         android:background="#FFFFFFFF" />
 
@@ -21,8 +51,7 @@
 
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="60dp"
-        android:layout_weight="0.2"
+        android:layout_weight="0.85"
         android:orientation="horizontal">
 
         <TextView

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <drawable name="button_background">#222326</drawable>
+    <drawable name="button_pressed_background">#ff57585b</drawable>
+</resources>

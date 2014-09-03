@@ -4,40 +4,48 @@ import android.app.Activity;
 import android.graphics.Bitmap;
 
 import net.whitedesert.photosign.utils.PhotoUtil;
-import net.whitedesert.photosign.utils.Sign;
 import net.whitedesert.photosign.utils.SigningUtil;
 import net.whitedesert.photosign.utils.XY;
+
+import java.util.Random;
 
 /**
  * Created by yazeed44 on 8/7/14.
  */
-public class SigningThread extends Thread {
+public final class SigningThread extends Thread {
 
 
     private final Activity activity;
-    private final Sign sign;
-    private final Bitmap photo;
-    private final XY xy;
-    private String pathBlended;
+    private final String signName;
 
-    public SigningThread(Bitmap photo, Sign sign, Activity activity, XY xy) {
-        this.sign = sign;
+    private final Bitmap photo, signBitmap;
+    private final XY.Float xy;
+    private String pathSigned;
+
+    public SigningThread(Bitmap photo, Bitmap signBitmap, String signName, Activity activity, XY.Float xy) {
+        this.signName = signName;
+        this.signBitmap = signBitmap;
         this.photo = photo;
         this.activity = activity;
         this.xy = xy;
+        this.setName("Signing Thread - " + signName);
     }
 
     @Override
     public void run() {
 
+        final XY.Float fixedXy = new XY.Float();
+        final float x = xy.getX(), y = xy.getY();
+        fixedXy.setX(x);
+        fixedXy.setY(y);
 
-        Bitmap blended = SigningUtil.signOnPhoto(photo, sign.getBitmap(), xy.getX(), xy.getY());
-        pathBlended = PhotoUtil.savePicFromBitmap(blended, activity, PhotoUtil.SIGNED_PHOTO_DIR, sign.getName(), true);
+        final Bitmap blended = SigningUtil.signOnPhoto(photo, signBitmap, fixedXy.getX(), fixedXy.getY());
+        pathSigned = PhotoUtil.savePicFromBitmap(blended, activity, PhotoUtil.SIGNED_PHOTO_DIR, "Signed Photo - " + signName + new Random().nextInt((int) x), true);
 
 
     }
 
     public String getPath() {
-        return pathBlended;
+        return pathSigned;
     }
 }
