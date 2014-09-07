@@ -7,11 +7,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import net.whitedesert.photosign.R;
@@ -34,10 +36,12 @@ public final class DialogUtil {
         throw new AssertionError();
     }
 
-    public static void initDialog(final AlertDialog.Builder dialog, String title, String message, int iconId) {
+    public static void initDialog(final AlertDialog.Builder dialog, String title, String message, int iconId, boolean cancelBtn) {
         dialog.setTitle(title);
         dialog.setMessage(message);
         dialog.setIcon(iconId);
+        if (cancelBtn)
+            dialog.setNegativeButton(R.string.cancel, DISMISS_LISTENER);
     }
 
 
@@ -45,7 +49,7 @@ public final class DialogUtil {
 
         AlertDialog.Builder dialog = new AlertDialog.Builder(context);
         String title = context.getResources().getString(R.string.error_title);
-        initDialog(dialog, title, message, android.R.drawable.ic_dialog_alert);
+        initDialog(dialog, title, message, android.R.drawable.ic_dialog_alert, false);
         dialog.setPositiveButton(R.string.ok, DISMISS_LISTENER);
         return dialog.create();
 
@@ -60,8 +64,7 @@ public final class DialogUtil {
 
     public static AlertDialog.Builder getListDialog(ArrayList<String> texts, String title, String message, AdapterView.OnItemClickListener listener, Activity activity) {
         final AlertDialog.Builder dialog = new AlertDialog.Builder(activity);
-        dialog.setNegativeButton(R.string.cancel, DialogUtil.DISMISS_LISTENER);
-        initDialog(dialog, title, message, android.R.drawable.ic_dialog_info);
+        initDialog(dialog, title, message, android.R.drawable.ic_dialog_info, true);
         View listDialog = activity.getLayoutInflater().inflate(R.layout.dialog_list, null);
         ListView listView = (ListView) listDialog.findViewById(R.id.dialogList);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(listDialog.getContext(), android.R.layout.simple_list_item_1, texts); // i doubt this one
@@ -94,11 +97,10 @@ public final class DialogUtil {
      */
     public static AlertDialog.Builder getInputDialog(String title, String message, String inputHint, OnClickListener posListener, EditText userInput, final Activity activity) {
         AlertDialog.Builder dialog = new AlertDialog.Builder(activity);
-        initDialog(dialog, title, message, android.R.drawable.ic_input_add);
+        initDialog(dialog, title, message, android.R.drawable.ic_input_add, true);
         userInput.setHint(inputHint);
         dialog.setView(userInput);
         dialog.setPositiveButton(R.string.ok, posListener);
-        dialog.setNegativeButton(R.string.cancel, DISMISS_LISTENER);
         return dialog;
 
     }
@@ -137,8 +139,29 @@ public final class DialogUtil {
         return getSingleChooseDialog(title, choices, listener, activity);
     }
 
-    /*public static AlertDialog.Builder getAreYouSureDialog(String title , String message , final Activity activity){
+    public static AlertDialog.Builder getCustomViewDialog(String title, String message, View customView, final Activity activity) {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(activity);
+        initDialog(dialog, title, message, android.R.drawable.ic_dialog_info, true);
+        dialog.setView(customView);
+        return dialog;
+    }
 
-    }*/
+    public static AlertDialog.Builder getCustomViewDialog(int titleId, int messageId, View customView, final Activity activity) {
+        Resources r = activity.getResources();
+        String title = r.getString(titleId), message = r.getString(messageId);
+        return getCustomViewDialog(title, message, customView, activity);
+    }
+
+    public static AlertDialog.Builder getImageViewDialog(String title, String message, Bitmap image, final Activity activity) {
+        ImageView imageView = new ImageView(activity);
+        imageView.setImageBitmap(image);
+        return getCustomViewDialog(title, message, imageView, activity);
+    }
+
+    public static AlertDialog.Builder getImageViewDialog(int titleId, int messageId, Bitmap bitmap, final Activity activity) {
+        Resources r = activity.getResources();
+        String title = r.getString(titleId), message = r.getString(messageId);
+        return getImageViewDialog(title, message, bitmap, activity);
+    }
 
 }

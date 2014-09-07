@@ -70,6 +70,7 @@ public final class AskUtil {
                     activity.startActivity(i);
                 } else if (method.equals(text)) {
                     ToastUtil.toastUnsupported(activity);
+                    //TODO
                 } else if (method.equals(external)) {
                     Intent i = new Intent(activity, GalleryActivity.class);
                     i.putExtra(Types.TYPE, Types.OPEN_GALLERY_SINGLE_CHOOSE_TYPE);

@@ -59,7 +59,6 @@ public final class PhotoUtil {
         return path;
     }
 
-
     public static XY getWidthHeight(Bitmap first, Bitmap second) {
         XY xy = new XY();
         int width, height;

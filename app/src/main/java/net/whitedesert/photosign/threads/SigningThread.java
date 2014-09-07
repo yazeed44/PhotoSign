@@ -3,8 +3,10 @@ package net.whitedesert.photosign.threads;
 import android.app.Activity;
 import android.graphics.Bitmap;
 
+import net.whitedesert.photosign.utils.DialogUtil;
 import net.whitedesert.photosign.utils.PhotoUtil;
 import net.whitedesert.photosign.utils.SigningUtil;
+import net.whitedesert.photosign.utils.ThreadUtil;
 import net.whitedesert.photosign.utils.XY;
 
 import java.util.Random;
@@ -34,14 +36,13 @@ public final class SigningThread extends Thread {
     @Override
     public void run() {
 
-        final XY.Float fixedXy = new XY.Float();
         final float x = xy.getX(), y = xy.getY();
-        fixedXy.setX(x);
-        fixedXy.setY(y);
 
-        final Bitmap blended = SigningUtil.signOnPhoto(photo, signBitmap, fixedXy.getX(), fixedXy.getY());
-        pathSigned = PhotoUtil.savePicFromBitmap(blended, activity, PhotoUtil.SIGNED_PHOTO_DIR, "Signed Photo - " + signName + new Random().nextInt((int) x), true);
 
+        final Bitmap signed = SigningUtil.signOnPhoto(photo, signBitmap, x, y);
+        pathSigned = PhotoUtil.savePicFromBitmap(signed, activity, PhotoUtil.SIGNED_PHOTO_DIR, "Signed Photo - " + signName + new Random().nextInt((int) Math.abs(x + 1)), true);
+
+        ThreadUtil.showDialog(DialogUtil.getImageViewDialog("Test", "Test", signed, activity), activity);
 
     }
 

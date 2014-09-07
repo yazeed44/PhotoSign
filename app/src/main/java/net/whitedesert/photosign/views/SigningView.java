@@ -3,7 +3,9 @@ package net.whitedesert.photosign.views;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Matrix;
+import android.graphics.Point;
+import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -11,6 +13,7 @@ import android.widget.ImageView;
 
 import net.whitedesert.photosign.utils.PhotoUtil;
 import net.whitedesert.photosign.utils.Sign;
+import net.whitedesert.photosign.utils.ViewUtil;
 import net.whitedesert.photosign.utils.XY;
 
 /**
@@ -23,14 +26,13 @@ public class SigningView extends ImageView {
     private Bitmap signBitmap;
     private Sign sign;
 
-
     private float x = -1, y = -1;
+    private float touchX,touchY;
 
     public SigningView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
     }
-
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
@@ -39,9 +41,8 @@ public class SigningView extends ImageView {
 
         Log.i("Signing View : onSizeChanged", "Width  :  " + w + "    , height :  " + h);
 
+
         if (photo != null) {
-            //  photo = Bitmap.createScaledBitmap(photo, w - 25, h - 25, true);
-            // this.setImageBitmap(photo);
 
             if (signBitmap != null) {
                 setXY(PhotoUtil.getCenter(photo));
@@ -68,8 +69,11 @@ public class SigningView extends ImageView {
     public boolean onTouchEvent(MotionEvent event) {
 //detect user touch
 
-        final float touchX = event.getX();
-        final float touchY = event.getY();
+
+        touchX = event.getX();
+        touchY = event.getY();
+        Log.i("Original Touch Values", "X  = " + touchX + "  ,  Y   =  " + touchY);
+
         switch (event.getAction()) {
 
             case MotionEvent.ACTION_DOWN:
@@ -83,12 +87,7 @@ public class SigningView extends ImageView {
 
             case MotionEvent.ACTION_MOVE:
                 //finger moves on the screen
-                XY.Float touches = new XY.Float();
-                touches.setX(touchX);
-                touches.setY(touchY);
-                // fixXY(touches);
-                setXY(getPointerCoords(this, event));
-                invalidate();
+                setupXY();
 
                 break;
         }
@@ -129,10 +128,34 @@ public class SigningView extends ImageView {
         this.y = xy.getY();
     }
 
+    private void fixXY() {
+        final XY.Float touches = new XY.Float();
+        touches.setX(touchX);
+        touches.setY(touchY);
+        fixXY(touches);
+    }
+
+    private void setupXY() {
+        fixXY();
+        invalidate();
+
+    }
+
+    private void fixXY(XY.Float touches) {
+
+        final int signW = signBitmap.getWidth(), signH = signBitmap.getHeight();
+        touches.setX(touches.getX() - signW / 2);
+        touches.setY(touches.getY() - signH / 2);
+        setXY(touches);
+    }
+
+    private Rect getRect() {
+        return this.getDrawable().getBounds();
+    }
+
     public XY.Float getXY() {
-        XY.Float xy = new XY.Float();
-        xy.setX(this.x);
-        xy.setY(this.y);
+        XY.Float xy = fixXY(touchX, touchY, true);
+        Log.i("getXY : Fixed coordiantes to save a signed photo", xy.toString());
         return xy;
     }
 
@@ -141,25 +164,52 @@ public class SigningView extends ImageView {
         this.y = xy.getY();
     }
 
-    private void fixXY(XY.Float touches) {
+    private XY.Float fixXY(float touchX, float touchY, boolean random) {
+        Drawable drawable = this.getDrawable();
+        Rect imageBounds = drawable.getBounds();
+        Point display = ViewUtil.getDisplay(this.getContext());
+        Log.i("fixXy : Orignial values ", "Touch X  = " + touchX + "   , Touch Y  =  " + touchY);
 
-        final int signW = signBitmap.getWidth(), signH = signBitmap.getHeight();
-        touches.setX(touches.getX() - signW / 2);
-        touches.setY(touches.getY() - signH / 2);
+//original height and width of the bitmap
+        float intrinsicHeight = drawable.getIntrinsicHeight();
+        float intrinsicWidth = drawable.getIntrinsicWidth();
+        Log.i("fixXY : intrinsic", "Height  =  " + intrinsicHeight + "   ,  Width  =  " + intrinsicWidth);
+//height and width of the visible (scaled) image
+        float scaledHeight = this.getHeight();
+        float scaledWidth = this.getWidth();
+        Log.i("fixXY : Scaled ", "Height  =  " + scaledHeight + "   ,  Width  =  " + scaledWidth);
+//Find the ratio of the original image to the scaled image
+//Should normally be equal unless a disproportionate scaling
+//(e.g. fitXY) is used.
+        float heightRatio = intrinsicHeight / scaledHeight;
+        float widthRatio = intrinsicWidth / scaledWidth;
+        Log.i("fixXY : Ratio ", "Height  =  " + heightRatio + "   ,  Width  =  " + widthRatio);
+//do whatever magic to get your touch point
+//MotionEvent event;
 
-    }
+        float heightMinus = (this.getWidth() - photo.getWidth()) / 1.5F;
+        float widthMinus = (this.getHeight() - photo.getHeight()) / 1.5F;
 
-    public XY.Float getPointerCoords(ImageView view, MotionEvent e) {
-        final int index = e.getActionIndex();
-        final float[] coords = new float[]{e.getX(index), e.getY(index)};
-        Matrix matrix = new Matrix();
-        view.getImageMatrix().invert(matrix);
-        matrix.postTranslate(view.getScrollX(), view.getScrollY());
-        matrix.mapPoints(coords);
-        XY.Float coordsFloat = new XY.Float();
-        coordsFloat.setX(coords[0]);
-        coordsFloat.setY(coords[1]);
 
-        return coordsFloat;
+//get the distance from the left and top of the image bounds
+        float scaledImageOffsetX = touchX - imageBounds.left;
+        float scaledImageOffsetY = touchY - imageBounds.top;
+        if (heightMinus > 1 && widthMinus > 1 && scaledImageOffsetX - widthMinus > 1 && scaledImageOffsetY - heightMinus > 1) {
+            scaledImageOffsetX -= widthMinus;
+            scaledImageOffsetY -= heightMinus;
+        }
+        Log.i("fixXY : scaled Image Off set X ", "X  =  " + scaledImageOffsetX + "   ,  Y  =  " + scaledImageOffsetY);
+//scale these distances according to the ratio of your scaling
+//For example, if the original image is 1.5x the size of the scaled
+//image, and your offset is (10, 20), your original image offset
+//values should be (15, 30).
+        float originalImageOffsetX = scaledImageOffsetX * widthRatio;
+        float originalImageOffsetY = scaledImageOffsetY * heightRatio;
+
+        XY.Float xy = new XY.Float();
+        xy.setX(originalImageOffsetX);
+        xy.setY(originalImageOffsetY);
+
+        return xy;
     }
 }

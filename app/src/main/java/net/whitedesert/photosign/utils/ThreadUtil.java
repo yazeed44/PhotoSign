@@ -1,5 +1,7 @@
 package net.whitedesert.photosign.utils;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.util.Log;
 
 /**
@@ -18,5 +20,14 @@ public final class ThreadUtil {
             e.printStackTrace();
             Log.e("Thread Util : Join", e.getMessage());
         }
+    }
+
+    public static void showDialog(final AlertDialog.Builder dialog, final Activity activity) {
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                dialog.show();
+            }
+        });
     }
 }

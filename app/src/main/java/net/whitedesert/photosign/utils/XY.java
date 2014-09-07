@@ -32,6 +32,11 @@ public final class XY {
         this.y = y;
     }
 
+    @Override
+    public String toString() {
+        return "X  = " + getX() + "   ,  Y  =  " + getY();
+    }
+
     public static final class Float {
 
         private float x, y;
@@ -51,5 +56,12 @@ public final class XY {
         public void setY(float y) {
             this.y = y;
         }
+
+        @Override
+        public String toString() {
+            return "X  = " + getX() + "   ,  Y  =  " + getY();
+        }
     }
+
+
 }
