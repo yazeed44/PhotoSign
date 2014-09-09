@@ -1,12 +1,13 @@
 package net.whitedesert.photosign.database;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import net.whitedesert.photosign.utils.Sign;
 
@@ -23,20 +24,47 @@ import static net.whitedesert.photosign.database.MyDBHelper.TABLE_SIGNS;
  */
 public final class SignsDB {
 
-    private final MyDBHelper helper;
+    private static SQLiteOpenHelper mHelper;
+    private static SignsDB instance;
     private SQLiteDatabase db;
+    private int mOpenCounter;
 
-    public SignsDB(Context context) {
-        helper = new MyDBHelper(context);
 
+    public static synchronized void initializeInstance(SQLiteOpenHelper helper) {
+        if (instance == null) {
+            instance = new SignsDB();
+            mHelper = helper;
+        }
     }
 
-    public void open() {
-        db = helper.getWritableDatabase();
+    public static synchronized SignsDB getInstance() {
+        if (instance == null) {
+            throw new IllegalStateException(SignsDB.class.getSimpleName() +
+                    " is not initialized, call initializeInstance(..) method first.");
+        }
+
+        Log.i("SignsDB : getInstance", Thread.currentThread().getName() + "  is gonna take an instance!");
+
+        return instance;
     }
 
-    public void close() {
-        helper.close();
+    public synchronized SQLiteDatabase openDatabase() {
+        mOpenCounter++;
+        if (mOpenCounter == 1) {
+            // Opening new database
+            db = mHelper.getWritableDatabase();
+        }
+        Log.i("SignsDB : openDatabase", Thread.currentThread().getName() + "  is gonna open it's database");
+        return db;
+    }
+
+    public synchronized void closeDatabase() {
+        mOpenCounter--;
+        if (mOpenCounter == 0) {
+            // Closing database
+            db.close();
+            Log.i("SignsDB : closeDatabase", Thread.currentThread().getName() + "  did close it's database");
+        }
     }
 
 
@@ -98,10 +126,6 @@ public final class SignsDB {
         return sign;
     }
 
-
-    public void dropAll() {
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_SIGNS + ";");
-    }
 
     public boolean isDuplicatedSign(String name, String table) {
         Cursor cursor = db.rawQuery("SELECT " + COLUMN_NAME + " FROM " + table + " WHERE " + COLUMN_NAME + " = '" + name + "'" + ";", null);

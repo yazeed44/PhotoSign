@@ -3,7 +3,6 @@ package net.whitedesert.photosign.views;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
@@ -13,7 +12,6 @@ import android.widget.ImageView;
 
 import net.whitedesert.photosign.utils.PhotoUtil;
 import net.whitedesert.photosign.utils.Sign;
-import net.whitedesert.photosign.utils.ViewUtil;
 import net.whitedesert.photosign.utils.XY;
 
 /**
@@ -27,7 +25,7 @@ public class SigningView extends ImageView {
     private Sign sign;
 
     private float x = -1, y = -1;
-    private float touchX,touchY;
+    private float touchX, touchY;
 
     public SigningView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -149,10 +147,6 @@ public class SigningView extends ImageView {
         setXY(touches);
     }
 
-    private Rect getRect() {
-        return this.getDrawable().getBounds();
-    }
-
     public XY.Float getXY() {
         XY.Float xy = fixXY(touchX, touchY, true);
         Log.i("getXY : Fixed coordiantes to save a signed photo", xy.toString());
@@ -165,38 +159,40 @@ public class SigningView extends ImageView {
     }
 
     private XY.Float fixXY(float touchX, float touchY, boolean random) {
-        Drawable drawable = this.getDrawable();
-        Rect imageBounds = drawable.getBounds();
-        Point display = ViewUtil.getDisplay(this.getContext());
+        //TODO
+        //This method needs a serious fix , the x and y isn't accurate at all !!
+
+        final Drawable drawable = this.getDrawable();
+        final Rect imageBounds = drawable.getBounds();
         Log.i("fixXy : Orignial values ", "Touch X  = " + touchX + "   , Touch Y  =  " + touchY);
 
 //original height and width of the bitmap
-        float intrinsicHeight = drawable.getIntrinsicHeight();
-        float intrinsicWidth = drawable.getIntrinsicWidth();
+        final float intrinsicHeight = drawable.getIntrinsicHeight();
+        final float intrinsicWidth = drawable.getIntrinsicWidth();
         Log.i("fixXY : intrinsic", "Height  =  " + intrinsicHeight + "   ,  Width  =  " + intrinsicWidth);
 //height and width of the visible (scaled) image
-        float scaledHeight = this.getHeight();
-        float scaledWidth = this.getWidth();
+        final float scaledHeight = this.getHeight();
+        final float scaledWidth = this.getWidth();
         Log.i("fixXY : Scaled ", "Height  =  " + scaledHeight + "   ,  Width  =  " + scaledWidth);
 //Find the ratio of the original image to the scaled image
 //Should normally be equal unless a disproportionate scaling
 //(e.g. fitXY) is used.
-        float heightRatio = intrinsicHeight / scaledHeight;
-        float widthRatio = intrinsicWidth / scaledWidth;
+        final float heightRatio = intrinsicHeight / scaledHeight;
+        final float widthRatio = intrinsicWidth / scaledWidth;
         Log.i("fixXY : Ratio ", "Height  =  " + heightRatio + "   ,  Width  =  " + widthRatio);
 //do whatever magic to get your touch point
 //MotionEvent event;
 
-        float heightMinus = (this.getWidth() - photo.getWidth()) / 1.5F;
-        float widthMinus = (this.getHeight() - photo.getHeight()) / 1.5F;
+        final float heightMinus = touchY - getSignBitmap().getHeight() / 2;
+        final float widthMinus = touchX - getSignBitmap().getWidth() / 2;
 
 
 //get the distance from the left and top of the image bounds
         float scaledImageOffsetX = touchX - imageBounds.left;
         float scaledImageOffsetY = touchY - imageBounds.top;
-        if (heightMinus > 1 && widthMinus > 1 && scaledImageOffsetX - widthMinus > 1 && scaledImageOffsetY - heightMinus > 1) {
-            scaledImageOffsetX -= widthMinus;
-            scaledImageOffsetY -= heightMinus;
+        if (heightMinus > 1 && widthMinus > 1) {
+            scaledImageOffsetX += widthMinus;
+            scaledImageOffsetY += heightMinus;
         }
         Log.i("fixXY : scaled Image Off set X ", "X  =  " + scaledImageOffsetX + "   ,  Y  =  " + scaledImageOffsetY);
 //scale these distances according to the ratio of your scaling

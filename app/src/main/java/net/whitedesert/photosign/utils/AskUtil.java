@@ -17,11 +17,13 @@ import java.util.ArrayList;
 
 /**
  * Created by yazeed44 on 8/24/14.
+ * Class for asking user, example : give the user choices and make user choose one of them
  */
 public final class AskUtil {
     private AskUtil() {
         throw new AssertionError();
     }
+
 
     public static AlertDialog.Builder getWannaSignDialog(final Activity activity) {
         final Resources r = activity.getResources();
@@ -69,7 +71,7 @@ public final class AskUtil {
                     Intent i = new Intent(activity, DrawSignActivity.class);
                     activity.startActivity(i);
                 } else if (method.equals(text)) {
-                    ToastUtil.toastUnsupported(activity);
+                    ToastUtil.toastUnsupported();
                     //TODO
                 } else if (method.equals(external)) {
                     Intent i = new Intent(activity, GalleryActivity.class);

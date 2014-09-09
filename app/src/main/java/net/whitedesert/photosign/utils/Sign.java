@@ -10,6 +10,15 @@ public final class Sign {
     private String path;
     private String name;
 
+    public Sign(String path, String name) {
+        this.path = path;
+        this.name = name;
+    }
+
+    public Sign() {
+
+    }
+
     public String getPath() {
         return this.path;
     }

@@ -7,10 +7,13 @@ import android.view.MenuItem;
 import android.view.View;
 
 import net.whitedesert.photosign.R;
+import net.whitedesert.photosign.database.MyDBHelper;
+import net.whitedesert.photosign.database.SignsDB;
 import net.whitedesert.photosign.utils.AskUtil;
 import net.whitedesert.photosign.utils.Sign;
 import net.whitedesert.photosign.utils.SignUtil;
 import net.whitedesert.photosign.utils.SigningUtil;
+import net.whitedesert.photosign.utils.ToastUtil;
 
 
 public class MainActivity extends AdActivity {
@@ -20,6 +23,8 @@ public class MainActivity extends AdActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        SignsDB.initializeInstance(new MyDBHelper(getApplicationContext()));
+        ToastUtil.initializeInstance(this);
 
     }
 
@@ -51,7 +56,7 @@ public class MainActivity extends AdActivity {
 
         SigningUtil.openGalleryToSignSingle(this);
 
-            for(Sign sign : SignUtil.getSigns(this)){
+        for (Sign sign : SignUtil.getSigns()) {
                 Log.i("Main Activity : ", sign.getName());
             }
 

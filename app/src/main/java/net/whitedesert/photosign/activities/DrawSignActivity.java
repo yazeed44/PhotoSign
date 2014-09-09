@@ -29,7 +29,7 @@ public class DrawSignActivity extends AdActivity {
 
 
     public void onClickTextCustomize(View view) {
-        ToastUtil.toastUnsupported(this);
+        ToastUtil.toastUnsupported();
         //TODO
     }
 

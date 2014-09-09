@@ -11,6 +11,7 @@ import net.whitedesert.photosign.activities.Types;
 
 /**
  * Created by yazeed44 on 8/6/14.
+ * Class for signing on photos
  */
 public final class SigningUtil {
 
@@ -39,7 +40,7 @@ public final class SigningUtil {
 
     public static void openGalleryToSignSingle(final Activity activity) {
         if (CheckUtil.noSigns(activity)) {
-            ToastUtil.toastShort(R.string.oops_no_sign, activity);
+            ToastUtil.toastShort(R.string.oops_no_sign);
             AskUtil.selectMethodSign(activity);
             return;
         }

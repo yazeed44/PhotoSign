@@ -13,6 +13,7 @@ import net.whitedesert.photosign.views.SigningView;
 
 /**
  * Created by yazeed44 on 8/16/14.
+ * Class for save and add
  */
 public final class SaveUtil {
 
@@ -26,6 +27,7 @@ public final class SaveUtil {
         DialogInterface.OnClickListener posListener = SetListenUtil.getPosListenerForName(bitmap, null, nameInput, activity);
         AlertDialog.Builder dialog = DialogUtil.getInputDialog(R.string.save_title, R.string.save_message, posListener, nameInput, activity);
         dialog.show();
+
 
     }
 

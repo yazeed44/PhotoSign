@@ -7,6 +7,7 @@ import android.graphics.Typeface;
 
 /**
  * Created by yazeed44 on 8/8/14.
+ * Class will be used when working on adding signature from typing in keyboard
  */
 public final class SignRaw {
 

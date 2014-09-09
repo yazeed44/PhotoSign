@@ -1,20 +1,17 @@
 package net.whitedesert.photosign.utils;
 
-import android.app.Activity;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.util.Log;
 
-import net.whitedesert.photosign.database.MyDBHelper;
-import net.whitedesert.photosign.database.SignsDB;
+import net.whitedesert.photosign.threads.DBThread;
 
 import java.util.ArrayList;
 
 /**
  * Created by yazeed44 on 8/8/14.
+ * Class for dealing with signs
  */
 public final class SignUtil {
 
@@ -25,46 +22,47 @@ public final class SignUtil {
         throw new AssertionError();
     }
 
-    public static long addSign(Sign sign, Activity activity) {
-        SignsDB db = new SignsDB(activity);
-        db.open();
+    public static long addSign(final Sign sign) {
 
-        long id = db.insertSign(sign);
-        if (id != -1) {
-            Log.i("SignUtil : addSign : ", "Added Sign successfully  : " + sign.getName());
-            ToastUtil.toastSavedSignSuccess(activity);
-        } else {
-            Log.e("SignUtil : addSign : ", "failed to add sign !!");
-        }
-        db.close();
+        DBThread.AddSignThread thread = new DBThread.AddSignThread(sign);
+        ThreadUtil.startAndJoin(thread);
+        long id = thread.getId();
+        CheckUtil.checkSign(id);
+
         return id;
     }
 
 
-    public static Sign getSign(String name, Context context) {
-        SignsDB db = new SignsDB(context);
-        db.open();
-        Sign sign = db.getSign(name);
-        db.close();
-        return sign;
+    public static Sign getSign(String name) {
+        DBThread.GetSignThread thread = new DBThread.GetSignThread(name);
+        ThreadUtil.startAndJoin(thread);
+        return thread.getSign();
     }
 
-    public static ArrayList<Sign> getSigns(Context context) {
+    public static ArrayList<Sign> getSigns() {
 
-        SignsDB db = new SignsDB(context);
-        db.open();
-        ArrayList<Sign> signsList = db.getSigns();
-        db.close();
-        return signsList;
+        DBThread.GetSignThread thread = new DBThread.GetSignThread(null);
+        ThreadUtil.startAndJoin(thread);
+
+        return thread.getSigns();
     }
 
-    public static void dropEverything(Context context) {
-        SignsDB db = new SignsDB(context);
-        db.open();
-        db.dropAll();
-        db.close();
+    public static boolean isDuplicatedSign(String name) {
+        DBThread.IsDuplicatedSignThread thread = new DBThread.IsDuplicatedSignThread(name);
+        ThreadUtil.startAndJoin(thread);
+
+        return thread.getIsDuplicated();
     }
 
+    public static Sign getLatestSign() {
+        DBThread.GetSignThread thread = new DBThread.GetSignThread(DBThread.GetSignThread.GET_LATEST_SIGN);
+        ThreadUtil.startAndJoin(thread);
+        return thread.getSign();
+    }
+
+    /**
+     * @return the default paint for drawing a signature
+     */
     public static Paint getDefaultPaintForDraw() {
         Paint paint = new Paint();
         paint.setColor(Color.BLACK);
@@ -78,21 +76,6 @@ public final class SignUtil {
         return paint;
     }
 
-    public static boolean isDuplicatedSign(String name, Context context) {
-        SignsDB db = new SignsDB(context);
-        db.open();
-        boolean duplicated = db.isDuplicatedSign(name, MyDBHelper.TABLE_SIGNS);
-        db.close();
-        return duplicated;
-    }
-
-    public static Sign getLatestSign(Activity activity) {
-        SignsDB db = new SignsDB(activity);
-        db.open();
-        Sign sign = db.getLatestSign();
-        db.close();
-        return sign;
-    }
 
     public static Bitmap createBitmap(SignRaw signRaw, int width, int height) {
         Paint paint = signRaw.getPaint();

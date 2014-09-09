@@ -8,23 +8,23 @@ import net.whitedesert.photosign.threads.BitmapThread;
 
 /**
  * Created by yazeed44 on 9/3/14.
+ * Class for dealing with bitmap
  */
 public final class BitmapUtil {
     private BitmapUtil() {
         throw new AssertionError();
     }
 
+
     public static Bitmap decodeFile(String path) {
-        BitmapThread thread = new BitmapThread(path, -1, -1);
-        thread.start();
-        ThreadUtil.join(thread);
+        BitmapThread.DecodeFileThread thread = new BitmapThread.DecodeFileThread(path, -1, -1);
+        ThreadUtil.startAndJoin(thread);
         return thread.getBitmap();
     }
 
     public static Bitmap decodeFile(String path, int width, int height) {
-        BitmapThread thread = new BitmapThread(path, width, height);
-        thread.start();
-        ThreadUtil.join(thread);
+        BitmapThread.DecodeFileThread thread = new BitmapThread.DecodeFileThread(path, width, height);
+        ThreadUtil.startAndJoin(thread);
         return thread.getBitmap();
     }
 
@@ -34,7 +34,7 @@ public final class BitmapUtil {
         return paint;
     }
 
-    public static Bitmap updateOpacity(final Bitmap bitmap, final int opacity) {
+    public static Bitmap getUpdatedOpacity(final Bitmap bitmap, final int opacity) {
         int width = bitmap.getWidth(), height = bitmap.getHeight();
         Bitmap transBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(transBitmap);

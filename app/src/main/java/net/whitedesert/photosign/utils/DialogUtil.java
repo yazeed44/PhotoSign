@@ -22,6 +22,7 @@ import java.util.ArrayList;
 
 /**
  * Created by yazeed44 on 8/16/14.
+ * Class for making simple dialogs
  */
 public final class DialogUtil {
 

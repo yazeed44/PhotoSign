@@ -6,6 +6,7 @@ import android.util.Log;
 
 /**
  * Created by yazeed44 on 8/31/14.
+ * Class for dealing with threads
  */
 public final class ThreadUtil {
 
@@ -29,5 +30,10 @@ public final class ThreadUtil {
                 dialog.show();
             }
         });
+    }
+
+    public static void startAndJoin(Thread t) {
+        t.start();
+        join(t);
     }
 }

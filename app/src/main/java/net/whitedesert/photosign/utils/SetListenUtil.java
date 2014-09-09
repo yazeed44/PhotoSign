@@ -14,6 +14,7 @@ import net.whitedesert.photosign.views.SigningView;
 
 /**
  * Created by yazeed44 on 8/31/14.
+ * Class for setting listeners
  */
 public final class SetListenUtil {
     private SetListenUtil() {
@@ -21,7 +22,7 @@ public final class SetListenUtil {
     }
 
     /**
-     * @param opacitySeek , the seek bar that used in opacity
+     * @param opacitySeek , the seek bar that used in opacity seek bar
      * @param sign        the signature
      * @param opacityText the text view that will get updated too
      */
@@ -29,7 +30,7 @@ public final class SetListenUtil {
         opacitySeek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                Bitmap updatedSign = BitmapUtil.updateOpacity(sign.getBitmap(), progress);
+                Bitmap updatedSign = BitmapUtil.getUpdatedOpacity(sign.getBitmap(), progress);
                 opacityText.setText(opacityText.getResources().getString(R.string.opacity_text) + " : " + progress);
                 signView.setSign(updatedSign);
                 signView.invalidate();
@@ -64,14 +65,15 @@ public final class SetListenUtil {
                     useView = true;
                 }
                 String name = nameInput.getText().toString();
+                boolean checkName;
                 if (useView) {
-                    if (!CheckUtil.checkSign(name, drawView, activity)) {
-                        return;
-                    }
+                    checkName = CheckUtil.checkSign(name, drawView, activity);
                 } else {
-                    if (!CheckUtil.checkSign(name, bitmap, activity)) {
-                        return;
-                    }
+                    checkName = CheckUtil.checkSign(name, bitmap, activity);
+                }
+
+                if (checkName) {
+                    return;
                 }
                 Sign sign = new Sign();
                 sign.setName(name);
@@ -89,7 +91,7 @@ public final class SetListenUtil {
 
                 sign.setPath(path);
                 Log.i("DrawSignActivity : onClickSave", "sign name : " + sign.getName() + " , sign Path : " + sign.getPath());
-                SignUtil.addSign(sign, activity);
+                SignUtil.addSign(sign);
                 AskUtil.getWannaSignDialog(activity).show();
 
             }

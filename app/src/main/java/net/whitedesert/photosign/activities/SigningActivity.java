@@ -40,7 +40,7 @@ public class SigningActivity extends AdActivity {
         final Bitmap photo = BitmapUtil.decodeFile(path);
 
 
-        final Sign sign = SignUtil.getLatestSign(this);
+        final Sign sign = SignUtil.getLatestSign();
 
 
         signingView.setSign(sign);
