@@ -3,6 +3,7 @@ package net.whitedesert.photosign.utils;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
@@ -45,6 +46,11 @@ public final class DialogUtil {
             dialog.setNegativeButton(R.string.cancel, DISMISS_LISTENER);
     }
 
+    public static void initDialog(final AlertDialog dialog, String title, String message) {
+        dialog.setTitle(title);
+        dialog.setMessage(message);
+    }
+
 
     public static Dialog createErrorDialog(String message, Context context) {
 
@@ -66,7 +72,7 @@ public final class DialogUtil {
     public static AlertDialog.Builder getListDialog(ArrayList<String> texts, String title, String message, AdapterView.OnItemClickListener listener, Activity activity) {
         final AlertDialog.Builder dialog = new AlertDialog.Builder(activity);
         initDialog(dialog, title, message, android.R.drawable.ic_dialog_info, true);
-        View listDialog = activity.getLayoutInflater().inflate(R.layout.dialog_list, null);
+        View listDialog = activity.getLayoutInflater().inflate(R.layout.list_view_dialog, null);
         ListView listView = (ListView) listDialog.findViewById(R.id.dialogList);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(listDialog.getContext(), android.R.layout.simple_list_item_1, texts); // i doubt this one
         listView.setAdapter(adapter);
@@ -81,14 +87,6 @@ public final class DialogUtil {
         String message = res.getString(messageId);
         return getListDialog(texts, title, message, listener, activity);
     }
-
-    public static AlertDialog.Builder getListDialog(ArrayList<String> texts, AdapterView.OnItemClickListener listener, Activity activity) {
-        Resources res = activity.getResources();
-        String title = res.getString(R.string.list_view_default_title);
-        String message = res.getString(R.string.list_view_default_message);
-        return getListDialog(texts, title, message, listener, activity);
-    }
-
 
     /**
      * @param title    title of dialog
@@ -153,16 +151,27 @@ public final class DialogUtil {
         return getCustomViewDialog(title, message, customView, activity);
     }
 
-    public static AlertDialog.Builder getImageViewDialog(String title, String message, Bitmap image, final Activity activity) {
+    public static AlertDialog.Builder getImageViewDialog(final String title, final String message, final Bitmap image, final Activity activity) {
         ImageView imageView = new ImageView(activity);
         imageView.setImageBitmap(image);
         return getCustomViewDialog(title, message, imageView, activity);
     }
 
-    public static AlertDialog.Builder getImageViewDialog(int titleId, int messageId, Bitmap bitmap, final Activity activity) {
+    public static AlertDialog.Builder getImageViewDialog(final int titleId, final int messageId, final Bitmap bitmap, final Activity activity) {
         Resources r = activity.getResources();
         String title = r.getString(titleId), message = r.getString(messageId);
         return getImageViewDialog(title, message, bitmap, activity);
+    }
+
+    public static ProgressDialog getProgressDialog(final String title, final String message, final Activity activity) {
+        final ProgressDialog dialog = new ProgressDialog(activity);
+        initDialog(dialog, title, message);
+        return dialog;
+    }
+
+    public static ProgressDialog getProgressDialog(int titleId, int msgId, final Activity activity) {
+        final Resources r = activity.getResources();
+        return getProgressDialog(r.getString(titleId), r.getString(msgId), activity);
     }
 
 }

@@ -8,7 +8,7 @@
     <string name="sign_text_view">Your name :</string>
     <string name="sign_name_hint">Enter the signature name</string>
     <string name="file_saved">File saved to : </string>
-    <string name="sign_draw_titlebar_text">Sign using your finger</string>
+    <string name="sign_draw_titlebar_text">Draw your signature</string>
     <string name="reset_desc">Reset the sign</string>
     <string name="text_customize_desc">Customize the text</string>
     <string name="sign_draw_reminder">When you are done signing click the save button</string>
@@ -21,9 +21,6 @@
     <string name="error_name_repeated">This name is used , please type another name</string>
     <string name="sign_method_title">Creating a signature</string>
     <string name="sign_method_message">Choose your method to create a signature</string>
-    <string name="draw_sign">Draw a signature using your finger</string>
-    <string name="ext_sign">Import a picture</string>
-    <string name="text_sign">Sign using customized text</string>
     <string name="list_view_default_title">Choose</string>
     <string name="list_view_default_message">Choose an item</string>
     <string name="unsupported">This feature is not available right now</string>
@@ -33,10 +30,18 @@
     <string name="oops_no_sign">Oops !! you don\'t have signatures</string>
     <string name="opacity_text">Opacity</string>
     <string name="done_signing_text">Done</string>
+    <string name="wait_please_title">Wait please</string>
+    <string name="wait_signing_msg">The photo is being signed on</string>
+
 
     <string-array name="wanna_sign_choices">
-        <item>Make another sign</item>
-        <item>Sign one of your photos</item>
+        <item>Make another signature</item>
+        <item>Sign a photo</item>
+    </string-array>
+    <string-array name="select_method_signature_choices">
+        <item>Draw a signature</item>
+        <item>Import a picture using it as signature</item>
+        <item>Sign using customized text</item>
     </string-array>
 
 

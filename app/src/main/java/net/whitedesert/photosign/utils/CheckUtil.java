@@ -11,7 +11,7 @@ import net.whitedesert.photosign.R;
 
 /**
  * Created by yazeed44 on 8/16/14.
- * Class for checking objects , if they have something wrong it will return false (Method)
+ * Class for checking objects , if they have something wrong it will return false (Method) also it will shows Error dialog
  */
 public final class CheckUtil {
 
@@ -32,7 +32,7 @@ public final class CheckUtil {
         errorDialog.setOnDismissListener(askAgain);
 
 
-        if (name.length() == 0) {
+        if (!checkString(name)) {
             errorDialog.setTitle(R.string.error_name_empty);
 
             errorDialog.show();
@@ -56,8 +56,9 @@ public final class CheckUtil {
     public static boolean checkSign(final String path, Activity activity) {
         final Dialog errorDialog = DialogUtil.createErrorDialog(R.string.error_save_sign, activity);
 
-        if (checkString(path)) {
+        if (!checkString(path)) {
             errorDialog.show();
+            ToastUtil.toastLong(R.string.error_save_sign);
             return false;
         }
 

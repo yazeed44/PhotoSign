@@ -1,6 +1,5 @@
 package net.whitedesert.photosign.threads;
 
-import net.whitedesert.photosign.database.MyDBHelper;
 import net.whitedesert.photosign.database.SignsDB;
 import net.whitedesert.photosign.utils.Sign;
 
@@ -9,12 +8,13 @@ import java.util.ArrayList;
 /**
  * Created by yazeed44 on 9/8/14.
  */
-public class DBThread {
+public final class DBThread {
 
 
     public static class GetSignThread extends Thread {
 
-        public final static String GET_LATEST_SIGN = "get_latest_sign";
+        public final static String GET_LATEST_SIGN = "get_latest_sign_44";
+        public final static String GET_ALL_SIGNS = "get_all_signs_44";
         private final String name;
         private Sign sign;
         private ArrayList<Sign> signs;
@@ -28,12 +28,15 @@ public class DBThread {
         public void run() {
             SignsDB db = SignsDB.getInstance();
             db.openDatabase();
-            if (name != null && !name.equals(GET_LATEST_SIGN)) {
-                sign = db.getSign(name);
-            } else if (name != null && name.equals(GET_LATEST_SIGN)) {
-                sign = db.getLatestSign();
-            } else if (sign == null) {
-                signs = db.getSigns();
+            if (name != null) {
+
+                if (name.equals(GET_LATEST_SIGN)) {
+                    sign = db.getLatestSign();
+                } else if (name.equals(GET_ALL_SIGNS)) {
+                    signs = db.getSigns();
+                } else {
+                    sign = db.getSign(name);
+                }
             }
             db.closeDatabase();
         }
@@ -63,6 +66,7 @@ public class DBThread {
             SignsDB db = SignsDB.getInstance();
             db.openDatabase();
             id = db.insertSign(sign);
+
             db.closeDatabase();
         }
 
@@ -85,7 +89,7 @@ public class DBThread {
         public void run() {
             SignsDB db = SignsDB.getInstance();
             db.openDatabase();
-            duplicated = db.isDuplicatedSign(name, MyDBHelper.TABLE_SIGNS);
+            duplicated = db.isDuplicatedSign(name);
             db.closeDatabase();
         }
 

@@ -41,6 +41,15 @@ public final class XY {
 
         private float x, y;
 
+        public Float() {
+
+        }
+
+        public Float(final float x, final float y) {
+            this.x = x;
+            this.y = y;
+        }
+
         public float getX() {
             return x;
         }

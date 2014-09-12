@@ -37,7 +37,7 @@ public class DrawSignActivity extends AdActivity {
         draw.reset();
     }
 
-    public void onClickSave(View view) {
+    public void onClickDone(View view) {
         SaveUtil.askNameAndAddSign(draw, this);
 
     }

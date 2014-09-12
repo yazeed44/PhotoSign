@@ -32,8 +32,37 @@ public final class ThreadUtil {
         });
     }
 
+    public static void showDialog(final AlertDialog dialog, final Activity activity) {
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                dialog.show();
+            }
+        });
+    }
+
+    public static void dismissDialog(final AlertDialog dialog, final Activity activity) {
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                dialog.dismiss();
+            }
+        });
+    }
+
+    public static void cancelDialog(final AlertDialog dialog, final Activity activity) {
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                dialog.cancel();
+            }
+        });
+    }
+
     public static void startAndJoin(Thread t) {
         t.start();
         join(t);
     }
+
+
 }

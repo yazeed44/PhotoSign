@@ -12,6 +12,7 @@
     <include
         layout="@layout/sign_draw_titlebar"
         android:layout_width="match_parent"
+
         android:layout_height="wrap_content" />
 
     <TextView
@@ -21,7 +22,7 @@
         android:layout_height="wrap_content"
 
         android:gravity="center"
-        android:text="@string/sign_draw_reminder"
+        android:text="@string/sign_draw_titlebar_text"
 
         />
 

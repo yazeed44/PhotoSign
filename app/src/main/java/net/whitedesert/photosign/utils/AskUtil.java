@@ -5,15 +5,11 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.view.View;
-import android.widget.AdapterView;
 
 import net.whitedesert.photosign.R;
 import net.whitedesert.photosign.activities.DrawSignActivity;
 import net.whitedesert.photosign.activities.GalleryActivity;
 import net.whitedesert.photosign.activities.Types;
-
-import java.util.ArrayList;
 
 /**
  * Created by yazeed44 on 8/24/14.
@@ -25,6 +21,7 @@ public final class AskUtil {
     }
 
 
+    //the user to make another signature or sign a photo
     public static AlertDialog.Builder getWannaSignDialog(final Activity activity) {
         final Resources r = activity.getResources();
         final String[] choices = r.getStringArray(R.array.wanna_sign_choices);
@@ -43,30 +40,26 @@ public final class AskUtil {
             }
         };
 
-        AlertDialog.Builder dialog = DialogUtil.getSingleChooseDialog(R.string.wanna_sign_title, R.array.wanna_sign_choices, listener, activity);
 
-
-        return dialog;
+        return DialogUtil.getSingleChooseDialog(R.string.wanna_sign_title, R.array.wanna_sign_choices, listener, activity);
     }
 
     //the user choose how to sign
     public static void selectMethodSign(final Activity activity) {
         final Resources res = activity.getResources();
-        final ArrayList<String> methods = new ArrayList<String>();
-        final String text = res.getString(R.string.text_sign);
-        methods.add(text);
+        final String[] choices = res.getStringArray(R.array.select_method_signature_choices);
 
-        final String draw = res.getString(R.string.draw_sign);
-        methods.add(draw);
+        final String draw = choices[0];
+        final String external = choices[1];
+        final String text = choices[2];
 
-        final String external = res.getString(R.string.ext_sign);
-        methods.add(external);
 
-        final AdapterView.OnItemClickListener listener = new AdapterView.OnItemClickListener() {
+        final DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
+
 
             @Override
-            public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
-                String method = methods.get(position);
+            public void onClick(DialogInterface dialogInterface, int which) {
+                String method = choices[which];
                 if (method.equals(draw)) {
                     Intent i = new Intent(activity, DrawSignActivity.class);
                     activity.startActivity(i);
@@ -81,9 +74,10 @@ public final class AskUtil {
             }
         };
 
-        final AlertDialog.Builder dialog = DialogUtil.getListDialog(methods, R.string.sign_method_title, R.string.sign_method_message, listener, activity);
 
-        dialog.show();
+        DialogUtil.getSingleChooseDialog(R.string.sign_method_message, R.array.select_method_signature_choices, listener, activity).show();
+
+
     }
 
 

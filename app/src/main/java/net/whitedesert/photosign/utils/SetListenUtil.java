@@ -23,14 +23,14 @@ public final class SetListenUtil {
 
     /**
      * @param opacitySeek , the seek bar that used in opacity seek bar
-     * @param sign        the signature
+     * @param signView , the signing view (where the user choose the place of signature)
      * @param opacityText the text view that will get updated too
      */
-    public static void setUpOpacitySeek(final SeekBar opacitySeek, final TextView opacityText, final SigningView signView, final Sign sign) {
+    public static void setUpOpacitySeek(final SeekBar opacitySeek, final TextView opacityText, final SigningView signView) {
         opacitySeek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                Bitmap updatedSign = BitmapUtil.getUpdatedOpacity(sign.getBitmap(), progress);
+                final Bitmap updatedSign = BitmapUtil.getUpdatedOpacity(signView.getSignBitmap(), progress);
                 opacityText.setText(opacityText.getResources().getString(R.string.opacity_text) + " : " + progress);
                 signView.setSign(updatedSign);
                 signView.invalidate();
@@ -57,7 +57,8 @@ public final class SetListenUtil {
      */
     public static DialogInterface.OnClickListener getPosListenerForName(final Bitmap bitmap, final View drawView, final EditText nameInput, final Activity activity) {
 
-        DialogInterface.OnClickListener posListener = new DialogInterface.OnClickListener() {
+
+        return new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 boolean useView = false;
@@ -72,7 +73,7 @@ public final class SetListenUtil {
                     checkName = CheckUtil.checkSign(name, bitmap, activity);
                 }
 
-                if (checkName) {
+                if (!checkName) {
                     return;
                 }
                 Sign sign = new Sign();
@@ -96,8 +97,6 @@ public final class SetListenUtil {
 
             }
         };
-
-        return posListener;
     }
 
 

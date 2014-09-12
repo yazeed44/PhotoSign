@@ -1,7 +1,6 @@
 package net.whitedesert.photosign.activities;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -10,8 +9,6 @@ import net.whitedesert.photosign.R;
 import net.whitedesert.photosign.database.MyDBHelper;
 import net.whitedesert.photosign.database.SignsDB;
 import net.whitedesert.photosign.utils.AskUtil;
-import net.whitedesert.photosign.utils.Sign;
-import net.whitedesert.photosign.utils.SignUtil;
 import net.whitedesert.photosign.utils.SigningUtil;
 import net.whitedesert.photosign.utils.ToastUtil;
 
@@ -27,7 +24,6 @@ public class MainActivity extends AdActivity {
         ToastUtil.initializeInstance(this);
 
     }
-
 
 
     @Override
@@ -50,15 +46,10 @@ public class MainActivity extends AdActivity {
     }
 
 
-
-    public void onClickChoose(View view){
+    public void onClickChoose(View view) {
 
 
         SigningUtil.openGalleryToSignSingle(this);
-
-        for (Sign sign : SignUtil.getSigns()) {
-                Log.i("Main Activity : ", sign.getName());
-            }
 
 
     }

@@ -48,13 +48,8 @@ public final class SaveUtil {
         final Sign sign = signingView.getSign();
         final Bitmap photo = signingView.getPhoto(), signBitmap = signingView.getSignBitmap();
         final XY.Float xy = signingView.getXY();
-        SigningThread signThread = new SigningThread(photo, signBitmap, sign.getName(), activity, xy);
+        final SigningThread signThread = new SigningThread(photo, signBitmap, sign.getName(), activity, xy);
         signThread.start();
-        ThreadUtil.join(signThread);
-        final String path = signThread.getPath();
-        if (!CheckUtil.checkSign(path, activity)) {
-            //TODO
-        }
 
     }
 

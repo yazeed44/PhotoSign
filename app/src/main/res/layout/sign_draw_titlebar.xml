@@ -3,50 +3,38 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000"
+    android:background="#222326"
     android:orientation="horizontal"
     android:weightSum="100">
 
 
-    <TextView
-        style="@style/sign_draw_title_bar_text"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_marginEnd="20dp"
-
-        android:layout_marginRight="20dp"
-        android:layout_weight="40"
-
-
-        android:text="@string/sign_draw_titlebar_text"
-
-
-        />
-
     <ImageView
+        style="@style/button"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="20"
+        android:layout_weight="25"
         android:contentDescription="@string/reset_desc"
         android:onClick="onClickReset"
 
         android:src="@drawable/reset_icon" />
 
     <ImageView
+        style="@style/button"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_marginStart="40dp"
-        android:layout_weight="20"
+        android:layout_weight="25"
         android:contentDescription="@string/text_customize_desc"
         android:onClick="onClickTextCustomize"
         android:src="@drawable/text_customize_icon" />
 
-    <ImageView
+    <include
+        layout="@layout/btn_done"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="20"
-        android:onClick="onClickSave"
-        android:src="@android:drawable/ic_menu_save"
+        android:layout_marginLeft="40dp"
+        android:layout_marginStart="40dp"
+        android:layout_weight="50"
 
         />
 

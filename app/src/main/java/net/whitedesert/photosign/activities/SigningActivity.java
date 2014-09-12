@@ -34,7 +34,7 @@ public class SigningActivity extends AdActivity {
         opacityText.setText(this.getString(R.string.opacity_text) + " : " + opacitySeek.getMax());
         final Intent i = this.getIntent();
 
-        final String path = i.getStringExtra("path");
+        final String path = i.getStringExtra(Types.PATH_TYPE);
 
 
         final Bitmap photo = BitmapUtil.decodeFile(path);
@@ -46,11 +46,12 @@ public class SigningActivity extends AdActivity {
         signingView.setSign(sign);
         signingView.setPhoto(photo);
 
-        SetListenUtil.setUpOpacitySeek(opacitySeek, opacityText, signingView, sign);
+        SetListenUtil.setUpOpacitySeek(opacitySeek, opacityText, signingView);
+
 
     }
 
-    public void onClickDoneSigning(View view) {
+    public void onClickDone(View view) {
         SaveUtil.saveSignedPhoto(signingView, this);
     }
 }

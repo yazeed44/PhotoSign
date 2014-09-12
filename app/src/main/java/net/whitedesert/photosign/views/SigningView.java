@@ -3,6 +3,7 @@ package net.whitedesert.photosign.views;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
@@ -12,6 +13,7 @@ import android.widget.ImageView;
 
 import net.whitedesert.photosign.utils.PhotoUtil;
 import net.whitedesert.photosign.utils.Sign;
+import net.whitedesert.photosign.utils.ViewUtil;
 import net.whitedesert.photosign.utils.XY;
 
 /**
@@ -95,8 +97,8 @@ public class SigningView extends ImageView {
     }
 
     public void setSign(Sign sign) {
-        setSign(sign.getBitmap());
         this.sign = sign;
+        setSign(sign.getBitmap());
     }
 
     public Sign getSign() {
@@ -104,7 +106,6 @@ public class SigningView extends ImageView {
     }
 
     public void setSign(Bitmap bitmap) {
-
         this.signBitmap = bitmap;
     }
 
@@ -127,28 +128,28 @@ public class SigningView extends ImageView {
     }
 
     private void fixXY() {
-        final XY.Float touches = new XY.Float();
-        touches.setX(touchX);
-        touches.setY(touchY);
-        fixXY(touches);
+        final XY.Float touches = new XY.Float(touchX, touchY);
+        // fixXY(touches);
     }
 
     private void setupXY() {
-        fixXY();
+        // fixXY();
+        this.x = touchX;
+        this.y = touchY;
         invalidate();
 
     }
 
-    private void fixXY(XY.Float touches) {
+    /*private void fixXY(XY.Float touches) {
 
         final int signW = signBitmap.getWidth(), signH = signBitmap.getHeight();
         touches.setX(touches.getX() - signW / 2);
         touches.setY(touches.getY() - signH / 2);
         setXY(touches);
-    }
+    }*/
 
     public XY.Float getXY() {
-        XY.Float xy = fixXY(touchX, touchY, true);
+        XY.Float xy = fixXY(touchX, touchY);
         Log.i("getXY : Fixed coordiantes to save a signed photo", xy.toString());
         return xy;
     }
@@ -158,12 +159,13 @@ public class SigningView extends ImageView {
         this.y = xy.getY();
     }
 
-    private XY.Float fixXY(float touchX, float touchY, boolean random) {
-        //TODO
-        //This method needs a serious fix , the x and y isn't accurate at all !!
+    private XY.Float fixXY(float touchX, float touchY) {
+        //Yeeeeeeeeeeeeeeeees finally solved the problem
+        //the probelm was because of fixXY(XY.Float touches) method which i just commented out
 
         final Drawable drawable = this.getDrawable();
         final Rect imageBounds = drawable.getBounds();
+        final Point display = ViewUtil.getDisplay(getContext());
         Log.i("fixXy : Orignial values ", "Touch X  = " + touchX + "   , Touch Y  =  " + touchY);
 
 //original height and width of the bitmap
@@ -183,17 +185,11 @@ public class SigningView extends ImageView {
 //do whatever magic to get your touch point
 //MotionEvent event;
 
-        final float heightMinus = touchY - getSignBitmap().getHeight() / 2;
-        final float widthMinus = touchX - getSignBitmap().getWidth() / 2;
-
 
 //get the distance from the left and top of the image bounds
-        float scaledImageOffsetX = touchX - imageBounds.left;
-        float scaledImageOffsetY = touchY - imageBounds.top;
-        if (heightMinus > 1 && widthMinus > 1) {
-            scaledImageOffsetX += widthMinus;
-            scaledImageOffsetY += heightMinus;
-        }
+        final float scaledImageOffsetX = touchX - imageBounds.left;
+        final float scaledImageOffsetY = touchY - imageBounds.top;
+
         Log.i("fixXY : scaled Image Off set X ", "X  =  " + scaledImageOffsetX + "   ,  Y  =  " + scaledImageOffsetY);
 //scale these distances according to the ratio of your scaling
 //For example, if the original image is 1.5x the size of the scaled

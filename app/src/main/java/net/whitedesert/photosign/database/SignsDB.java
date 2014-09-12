@@ -77,7 +77,7 @@ public final class SignsDB {
     }
 
 
-    public Sign getSign(int id) throws SQLiteException {
+    public Sign getSign(int id) {
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_SIGNS + " WHERE " + COLUMN_ID + " = " + id, null);
         cursor.moveToFirst();
         Sign sign = initSign(cursor);
@@ -85,7 +85,7 @@ public final class SignsDB {
         return sign;
     }
 
-    public Sign getSign(String name) throws SQLiteException {
+    public Sign getSign(String name) {
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_SIGNS + " WHERE " + COLUMN_NAME + " = " + "'" + name + "'" + ";", null);
         cursor.moveToFirst();
         Sign sign = initSign(cursor);
@@ -127,8 +127,8 @@ public final class SignsDB {
     }
 
 
-    public boolean isDuplicatedSign(String name, String table) {
-        Cursor cursor = db.rawQuery("SELECT " + COLUMN_NAME + " FROM " + table + " WHERE " + COLUMN_NAME + " = '" + name + "'" + ";", null);
+    public boolean isDuplicatedSign(String name) {
+        Cursor cursor = db.rawQuery("SELECT " + COLUMN_NAME + " FROM " + TABLE_SIGNS + " WHERE " + COLUMN_NAME + " = '" + name + "'" + ";", null);
         cursor.moveToFirst();
         boolean isDuplicated;
         try {
@@ -136,6 +136,9 @@ public final class SignsDB {
         } catch (CursorIndexOutOfBoundsException ex) {
             isDuplicated = false;
         }
+
+        Log.i("SignsDB : is DuplicatedSign", "name  =  " + name + "   ,  is Duplicated ?  = " + isDuplicated);
+
         return isDuplicated;
 
 
