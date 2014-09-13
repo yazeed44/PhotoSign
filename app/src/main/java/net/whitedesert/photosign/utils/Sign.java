@@ -4,11 +4,15 @@ import android.graphics.Bitmap;
 
 /**
  * Created by yazeed44 on 8/9/14.
+ * Signature class
  */
 public final class Sign {
 
     private String path;
     private String name;
+
+    private Bitmap bitmap;
+    private int counter = 0;
 
     public Sign(String path, String name) {
         this.path = path;
@@ -35,10 +39,6 @@ public final class Sign {
         this.name = name;
     }
 
-    public Bitmap getBitmap() {
-        return BitmapUtil.decodeFile(getPath(), SignUtil.DEFAULT_SIGN_WIDTH, SignUtil.DEFAULT_SIGN_HEIGHT);
-
-    }
 
     public Bitmap getBitmap(boolean originalSize) {
         if (originalSize) {
@@ -48,7 +48,27 @@ public final class Sign {
         }
     }
 
+    public Bitmap getBitmap() {
+        return getBitmap(SignUtil.DEFAULT_SIGN_WIDTH, SignUtil.DEFAULT_SIGN_HEIGHT);
+    }
+
     public Bitmap getBitmap(int width, int height) {
-        return BitmapUtil.decodeFile(getPath(), width, height);
+
+        if (counter == 0) {
+            bitmap = BitmapUtil.decodeFile(getPath(), width, height);
+
+            counter++;
+            return bitmap;
+        } else if (width == bitmap.getWidth() && height == bitmap.getHeight()) {
+            return bitmap;
+        } else {
+            bitmap = BitmapUtil.decodeFile(getPath(), width, height);
+            return bitmap;
+        }
+
+    }
+
+    public Bitmap getBitmap(XY xy) {
+        return getBitmap(xy.getX(), xy.getY());
     }
 }

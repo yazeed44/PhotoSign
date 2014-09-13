@@ -23,14 +23,15 @@ public final class SetListenUtil {
 
     /**
      * @param opacitySeek , the seek bar that used in opacity seek bar
-     * @param signView , the signing view (where the user choose the place of signature)
+     * @param sign        the signature
+     * @param signView    , the signing view (where the user choose the place of signature)
      * @param opacityText the text view that will get updated too
      */
-    public static void setUpOpacitySeek(final SeekBar opacitySeek, final TextView opacityText, final SigningView signView) {
+    public static void setUpOpacitySeek(final SeekBar opacitySeek, final TextView opacityText, final SigningView signView, final Sign sign) {
         opacitySeek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                final Bitmap updatedSign = BitmapUtil.getUpdatedOpacity(signView.getSignBitmap(), progress);
+                final Bitmap updatedSign = BitmapUtil.getUpdatedOpacity(sign.getBitmap(signView.getSignWidthHeight()), progress);
                 opacityText.setText(opacityText.getResources().getString(R.string.opacity_text) + " : " + progress);
                 signView.setSign(updatedSign);
                 signView.invalidate();
@@ -76,6 +77,9 @@ public final class SetListenUtil {
                 if (!checkName) {
                     return;
                 }
+                //Show a toast telling user to wait
+                ToastUtil.toastWaitPlease();
+
                 Sign sign = new Sign();
                 sign.setName(name);
 
@@ -93,6 +97,7 @@ public final class SetListenUtil {
                 sign.setPath(path);
                 Log.i("DrawSignActivity : onClickSave", "sign name : " + sign.getName() + " , sign Path : " + sign.getPath());
                 SignUtil.addSign(sign);
+
                 AskUtil.getWannaSignDialog(activity).show();
 
             }

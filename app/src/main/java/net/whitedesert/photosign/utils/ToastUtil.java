@@ -58,4 +58,8 @@ public final class ToastUtil {
         toastShort(R.string.saved_sign_success);
     }
 
+    public static void toastWaitPlease() {
+        toastShort(R.string.wait_please_title);
+    }
+
 }

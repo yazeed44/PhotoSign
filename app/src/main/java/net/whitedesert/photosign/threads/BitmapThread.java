@@ -3,6 +3,8 @@ package net.whitedesert.photosign.threads;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.media.MediaScannerConnection;
 import android.os.Environment;
 import android.util.Log;
@@ -92,6 +94,40 @@ public final class BitmapThread {
 
         public String getPath() {
             return path;
+        }
+    }
+
+    public static class UpdateOpacity extends Thread {
+
+        private final Bitmap bitmap;
+        private final int opacity;
+        private Bitmap updatedBitmap;
+
+        public UpdateOpacity(final Bitmap bitmap, final int opacity) {
+            this.bitmap = bitmap;
+            this.opacity = opacity;
+        }
+
+        @Override
+        public void run() {
+
+            int width = bitmap.getWidth(), height = bitmap.getHeight();
+            updatedBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+            Canvas canvas = new Canvas(updatedBitmap);
+            canvas.drawARGB(0, 0, 0, 0);
+            // config paint
+            final Paint paint = getPaint();
+            canvas.drawBitmap(bitmap, 0, 0, paint);
+        }
+
+        private Paint getPaint() {
+            Paint paint = new Paint();
+            paint.setAlpha(opacity);
+            return paint;
+        }
+
+        public Bitmap getUpdatedBitmap() {
+            return updatedBitmap;
         }
     }
 }

@@ -24,14 +24,14 @@
     <string name="list_view_default_title">Choose</string>
     <string name="list_view_default_message">Choose an item</string>
     <string name="unsupported">This feature is not available right now</string>
-    <string name="error_save_sign">Error while saving the signature</string>
+    <string name="error_save_sign">Error while saving the signature , please try again</string>
     <string name="saved_sign_success">Saved signature successfully</string>
     <string name="wanna_sign_title">You can make another signature , or sign a photo</string>
     <string name="oops_no_sign">Oops !! you don\'t have signatures</string>
     <string name="opacity_text">Opacity</string>
     <string name="done_signing_text">Done</string>
     <string name="wait_please_title">Wait please</string>
-    <string name="wait_signing_msg">The photo is being signed on</string>
+    <string name="saving_sign">Adding signature to database so you can use it later</string>
 
 
     <string-array name="wanna_sign_choices">

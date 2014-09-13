@@ -40,11 +40,13 @@ public class SigningView extends ImageView {
         super.onSizeChanged(w, h, oldw, oldh);
 
         Log.i("Signing View : onSizeChanged", "Width  :  " + w + "    , height :  " + h);
-
+        final int widthFactor = 8;
+        final int heightFactor = 8;
 
         if (photo != null) {
 
             if (signBitmap != null) {
+                signBitmap = Bitmap.createScaledBitmap(signBitmap, photo.getWidth() / widthFactor, photo.getHeight() / heightFactor, true);
                 setXY(PhotoUtil.getCenter(photo));
                 invalidate();
             }
@@ -140,6 +142,10 @@ public class SigningView extends ImageView {
 
     }
 
+    public XY getSignWidthHeight() {
+        return new XY(getSignBitmap().getWidth(), getSignBitmap().getHeight());
+    }
+
     /*private void fixXY(XY.Float touches) {
 
         final int signW = signBitmap.getWidth(), signH = signBitmap.getHeight();
@@ -160,13 +166,14 @@ public class SigningView extends ImageView {
     }
 
     private XY.Float fixXY(float touchX, float touchY) {
-        //Yeeeeeeeeeeeeeeeees finally solved the problem
-        //the probelm was because of fixXY(XY.Float touches) method which i just commented out
+        //lol i thought i got rid of the problem completely but i was wrong again
+        //at least it's usable right now
+        //TODO
 
         final Drawable drawable = this.getDrawable();
         final Rect imageBounds = drawable.getBounds();
         final Point display = ViewUtil.getDisplay(getContext());
-        Log.i("fixXy : Orignial values ", "Touch X  = " + touchX + "   , Touch Y  =  " + touchY);
+        Log.i("fixXY : Orignial values ", "Touch X  = " + touchX + "   , Touch Y  =  " + touchY);
 
 //original height and width of the bitmap
         final float intrinsicHeight = drawable.getIntrinsicHeight();
@@ -190,18 +197,15 @@ public class SigningView extends ImageView {
         final float scaledImageOffsetX = touchX - imageBounds.left;
         final float scaledImageOffsetY = touchY - imageBounds.top;
 
-        Log.i("fixXY : scaled Image Off set X ", "X  =  " + scaledImageOffsetX + "   ,  Y  =  " + scaledImageOffsetY);
+        Log.i("fixXY : scaled Image Off set ", "X  =  " + scaledImageOffsetX + "   ,  Y  =  " + scaledImageOffsetY);
 //scale these distances according to the ratio of your scaling
 //For example, if the original image is 1.5x the size of the scaled
 //image, and your offset is (10, 20), your original image offset
 //values should be (15, 30).
-        float originalImageOffsetX = scaledImageOffsetX * widthRatio;
-        float originalImageOffsetY = scaledImageOffsetY * heightRatio;
+        final float originalImageOffsetX = scaledImageOffsetX * widthRatio;
+        final float originalImageOffsetY = scaledImageOffsetY * heightRatio;
 
-        XY.Float xy = new XY.Float();
-        xy.setX(originalImageOffsetX);
-        xy.setY(originalImageOffsetY);
+        return new XY.Float(originalImageOffsetX, originalImageOffsetY);
 
-        return xy;
     }
 }

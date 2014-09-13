@@ -1,8 +1,6 @@
 package net.whitedesert.photosign.utils;
 
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Paint;
 
 import net.whitedesert.photosign.threads.BitmapThread;
 
@@ -28,21 +26,9 @@ public final class BitmapUtil {
         return thread.getBitmap();
     }
 
-    public static Paint getPaint(int opacity) {
-        Paint paint = new Paint();
-        paint.setAlpha(opacity);
-        return paint;
-    }
-
     public static Bitmap getUpdatedOpacity(final Bitmap bitmap, final int opacity) {
-        int width = bitmap.getWidth(), height = bitmap.getHeight();
-        Bitmap transBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(transBitmap);
-        canvas.drawARGB(0, 0, 0, 0);
-        // config paint
-        final Paint paint = getPaint(opacity);
-        canvas.drawBitmap(bitmap, 0, 0, paint);
-        return transBitmap;
-
+        BitmapThread.UpdateOpacity thread = new BitmapThread.UpdateOpacity(bitmap, opacity);
+        ThreadUtil.startAndJoin(thread);
+        return thread.getUpdatedBitmap();
     }
 }

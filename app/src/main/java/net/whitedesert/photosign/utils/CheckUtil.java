@@ -66,9 +66,6 @@ public final class CheckUtil {
 
     }
 
-    public static boolean noSigns() {
-        return SignUtil.getSigns().isEmpty();
-    }
 
     public static boolean checkSign(final long id) {
         if (id != -1) {

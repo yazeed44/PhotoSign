@@ -144,4 +144,8 @@ public final class SignUtil {
         return paint;
     }
 
+    public static boolean noSigns() {
+        return SignUtil.getSigns().isEmpty();
+    }
+
 }

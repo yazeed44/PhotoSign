@@ -31,7 +31,7 @@ public class SigningActivity extends AdActivity {
         final TextView opacityText = (TextView) this.findViewById(R.id.opacity_text);
         opacitySeek.setMax(255);
         opacitySeek.setProgress(opacitySeek.getMax());
-        opacityText.setText(this.getString(R.string.opacity_text) + " : " + opacitySeek.getMax());
+        opacityText.setText(this.getString(R.string.opacity_text) + " : " + opacitySeek.getProgress());
         final Intent i = this.getIntent();
 
         final String path = i.getStringExtra(Types.PATH_TYPE);
@@ -46,7 +46,7 @@ public class SigningActivity extends AdActivity {
         signingView.setSign(sign);
         signingView.setPhoto(photo);
 
-        SetListenUtil.setUpOpacitySeek(opacitySeek, opacityText, signingView);
+        SetListenUtil.setUpOpacitySeek(opacitySeek, opacityText, signingView, sign);
 
 
     }
