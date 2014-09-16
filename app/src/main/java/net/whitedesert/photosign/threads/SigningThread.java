@@ -9,7 +9,7 @@ import android.os.Looper;
 import net.whitedesert.photosign.R;
 import net.whitedesert.photosign.utils.CheckUtil;
 import net.whitedesert.photosign.utils.DialogUtil;
-import net.whitedesert.photosign.utils.PhotoUtil;
+import net.whitedesert.photosign.utils.SaveUtil;
 import net.whitedesert.photosign.utils.SigningUtil;
 import net.whitedesert.photosign.utils.ThreadUtil;
 import net.whitedesert.photosign.utils.ToastUtil;
@@ -51,7 +51,7 @@ public final class SigningThread extends Thread {
         ThreadUtil.showDialog(progressDialog, activity);
 
         final Bitmap signed = SigningUtil.signOnPhoto(photo, signBitmap, x, y);
-        pathSigned = PhotoUtil.savePicFromBitmap(signed, activity, PhotoUtil.SIGNED_PHOTO_DIR, "Signed Photo - " + signName + new Random().nextInt((int) Math.abs(x + 1)), true);
+        pathSigned = SaveUtil.savePicFromBitmap(signed, activity, SaveUtil.SIGNED_PHOTO_DIR, "Signed Photo - " + signName + new Random().nextInt((int) Math.abs(x + 1)), true);
 
         if (!CheckUtil.checkSign(pathSigned, activity)) {
             //TODO

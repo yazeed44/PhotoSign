@@ -31,6 +31,7 @@
     <string name="opacity_text">Opacity</string>
     <string name="done_signing_text">Done</string>
     <string name="wait_please_title">Wait please</string>
+    <string name="wait_signing_msg">The photo is being signed on</string>
     <string name="saving_sign">Adding signature to database so you can use it later</string>
 
 

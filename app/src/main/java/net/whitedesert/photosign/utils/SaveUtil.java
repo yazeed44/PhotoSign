@@ -7,8 +7,11 @@ import android.view.View;
 import android.widget.EditText;
 
 import net.whitedesert.photosign.R;
+import net.whitedesert.photosign.threads.BitmapThread;
 import net.whitedesert.photosign.threads.SigningThread;
 import net.whitedesert.photosign.views.SigningView;
+
+import java.io.File;
 
 /**
  * Created by yazeed44 on 8/16/14.
@@ -16,21 +19,33 @@ import net.whitedesert.photosign.views.SigningView;
  */
 public final class SaveUtil {
 
+    public static final String SIGNS_DIR = "/signs";
+    public static final String SIGNED_PHOTO_DIR = "/signed_photos";
+
     private SaveUtil() {
         throw new AssertionError();
     }
 
-
-    public static void askNameAndAddSign(final Bitmap bitmap, final Activity activity) {
+    public static void askNameAndAddSign(final String picPath, final Activity activity) {
         final EditText nameInput = new EditText(activity);
-        DialogInterface.OnClickListener posListener = SetListenUtil.getPosListenerForName(bitmap, null, nameInput, activity);
+        File pic = new File(picPath);
+        nameInput.setText(pic.getName());
+        final DialogInterface.OnClickListener posListener = SetListenUtil.getPosListenerForName(BitmapUtil.decodeFile(picPath), null, nameInput, activity);
         DialogUtil.getInputDialog(R.string.save_title, R.string.save_message, posListener, nameInput, activity).show();
 
     }
 
+    public static void askNameAndAddSign(final Bitmap sign, final Activity activity) {
+        final EditText nameInput = new EditText(activity);
+        nameInput.setText(RandomUtil.getRandomInt(SIGNED_PHOTO_DIR.length() + SIGNS_DIR.length())); // Don't waste your time on this
+
+        final DialogInterface.OnClickListener posListener = SetListenUtil.getPosListenerForName(sign, null, nameInput, activity);
+        DialogUtil.getInputDialog(R.string.save_title, R.string.save_message, posListener, nameInput, activity).show();
+    }
+
     public static void askNameAndAddSign(final View drawView, final Activity activity) {
         final EditText nameInput = new EditText(activity);
-
+        nameInput.setText(RandomUtil.getRandomInt(drawView.getWidth()));
         final DialogInterface.OnClickListener posListener = SetListenUtil.getPosListenerForName(null, drawView, nameInput, activity);
 
         DialogUtil.getInputDialog(R.string.save_title, R.string.save_message, posListener, nameInput, activity).show();
@@ -44,6 +59,20 @@ public final class SaveUtil {
         final SigningThread signThread = new SigningThread(photo, signBitmap, sign.getName(), activity, xy);
         signThread.start();
 
+    }
+
+    public static String savePicFromBitmap(Bitmap finalBitmap, Activity activity, String dir, String name, boolean toast) {
+        final BitmapThread.SaveBitmapThread thread = new BitmapThread.SaveBitmapThread(finalBitmap, activity, dir, name, toast);
+        ThreadUtil.startAndJoin(thread);
+        return thread.getPath();
+    }
+
+    public static String savePicFromView(View drawView, Activity activity, String dir, String name, boolean toast) {
+
+        drawView.setDrawingCacheEnabled(true);
+        final String path = savePicFromBitmap(drawView.getDrawingCache(true), activity, dir, name, toast);
+        drawView.setDrawingCacheEnabled(false);
+        return path;
     }
 
 

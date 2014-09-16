@@ -62,6 +62,8 @@ public final class SetListenUtil {
         return new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+                //Show a toast telling user to wait
+                ToastUtil.toastWaitPlease();
                 boolean useView = false;
                 if (drawView != null) {
                     useView = true;
@@ -77,8 +79,7 @@ public final class SetListenUtil {
                 if (!checkName) {
                     return;
                 }
-                //Show a toast telling user to wait
-                ToastUtil.toastWaitPlease();
+
 
                 Sign sign = new Sign();
                 sign.setName(name);
@@ -86,9 +87,9 @@ public final class SetListenUtil {
                 String path;
 
                 if (useView) {
-                    path = PhotoUtil.savePicFromView(drawView, activity, PhotoUtil.SIGNS_DIR, sign.getName(), false);
+                    path = SaveUtil.savePicFromView(drawView, activity, SaveUtil.SIGNS_DIR, sign.getName(), false);
                 } else {
-                    path = PhotoUtil.savePicFromBitmap(bitmap, activity, PhotoUtil.SIGNS_DIR, sign.getName(), false);
+                    path = SaveUtil.savePicFromBitmap(bitmap, activity, SaveUtil.SIGNS_DIR, sign.getName(), false);
                 }
                 if (!CheckUtil.checkSign(path, activity)) {
                     return;

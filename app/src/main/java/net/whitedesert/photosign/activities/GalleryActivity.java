@@ -8,7 +8,6 @@ import android.util.Log;
 import com.luminous.pick.Action;
 import com.luminous.pick.CustomGallery;
 
-import net.whitedesert.photosign.utils.BitmapUtil;
 import net.whitedesert.photosign.utils.SaveUtil;
 
 import java.util.ArrayList;
@@ -43,9 +42,9 @@ public class GalleryActivity extends com.luminous.pick.MainActivity {
             imageLoader.displayImage("file://" + single_path, imgSinglePick);
             this.path = single_path;
             if (type.equals(Types.OPEN_GALLERY_SINGLE_SIGNING_TYPE)) {
-                openBlendSingle();
+                openSignSingle();
             } else if (type.equals(Types.OPEN_GALLERY_SINGLE_CHOOSE_TYPE)) {
-                SaveUtil.askNameAndAddSign(BitmapUtil.decodeFile(path), this);
+                SaveUtil.askNameAndAddSign(path, this);
             }
             Log.i("Gallery Activity : ", "Got picture  " + path);
 
@@ -87,7 +86,7 @@ public class GalleryActivity extends com.luminous.pick.MainActivity {
     }
 
 
-    private void openBlendSingle() {
+    private void openSignSingle() {
         Intent i = new Intent(this, SigningActivity.class);
         i.putExtra(Types.PATH_TYPE, this.path);
         startActivity(i);

@@ -47,7 +47,7 @@ public class SigningView extends ImageView {
 
             if (signBitmap != null) {
                 signBitmap = Bitmap.createScaledBitmap(signBitmap, photo.getWidth() / widthFactor, photo.getHeight() / heightFactor, true);
-                setXY(PhotoUtil.getCenter(photo));
+                setXY(fixXY(PhotoUtil.getCenter(photo)));
                 invalidate();
             }
         }
@@ -136,9 +136,15 @@ public class SigningView extends ImageView {
 
     private void setupXY() {
         // fixXY();
-        this.x = touchX;
-        this.y = touchY;
-        invalidate();
+        final int factor = 25;
+
+        if (touchX > 0 && touchY > 0 && touchX < this.getWidth() - factor && touchY < this.getHeight() - factor) {
+            this.x = touchX;
+            this.y = touchY;
+            invalidate();
+        } else {
+            Log.e(this.getClass().getSimpleName() + " : setupXY", "it's out of photo range !! ,  touchX = " + touchX + "    ,  touchY  =  " + touchY);
+        }
 
     }
 
@@ -165,7 +171,7 @@ public class SigningView extends ImageView {
         this.y = xy.getY();
     }
 
-    private XY.Float fixXY(float touchX, float touchY) {
+    private XY.Float fixXY(float pX, float pY) {
         //lol i thought i got rid of the problem completely but i was wrong again
         //at least it's usable right now
         //TODO
@@ -194,8 +200,8 @@ public class SigningView extends ImageView {
 
 
 //get the distance from the left and top of the image bounds
-        final float scaledImageOffsetX = touchX - imageBounds.left;
-        final float scaledImageOffsetY = touchY - imageBounds.top;
+        final float scaledImageOffsetX = pX - imageBounds.left;
+        final float scaledImageOffsetY = pY - imageBounds.top;
 
         Log.i("fixXY : scaled Image Off set ", "X  =  " + scaledImageOffsetX + "   ,  Y  =  " + scaledImageOffsetY);
 //scale these distances according to the ratio of your scaling
@@ -207,5 +213,9 @@ public class SigningView extends ImageView {
 
         return new XY.Float(originalImageOffsetX, originalImageOffsetY);
 
+    }
+
+    private XY.Float fixXY(XY xy) {
+        return fixXY(xy.getX(), xy.getY());
     }
 }

@@ -1,10 +1,6 @@
 package net.whitedesert.photosign.utils;
 
-import android.app.Activity;
 import android.graphics.Bitmap;
-import android.view.View;
-
-import net.whitedesert.photosign.threads.BitmapThread;
 
 /**
  * Created by yazeed44 on 02/07/14.
@@ -12,25 +8,6 @@ import net.whitedesert.photosign.threads.BitmapThread;
  */
 public final class PhotoUtil {
 
-
-    public static final String SIGNS_DIR = "/signs";
-
-    public static final String SIGNED_PHOTO_DIR = "/signed_photos";
-
-
-    public static String savePicFromBitmap(Bitmap finalBitmap, Activity activity, String dir, String name, boolean toast) {
-        BitmapThread.SaveBitmapThread thread = new BitmapThread.SaveBitmapThread(finalBitmap, activity, dir, name, toast);
-        ThreadUtil.startAndJoin(thread);
-        return thread.getPath();
-    }
-
-    public static String savePicFromView(View drawView, Activity activity, String dir, String name, boolean toast) {
-
-        drawView.setDrawingCacheEnabled(true);
-        String path = savePicFromBitmap(drawView.getDrawingCache(true), activity, dir, name, toast);
-        drawView.setDrawingCacheEnabled(false);
-        return path;
-    }
 
     public static XY getWidthHeight(Bitmap first, Bitmap second) {
         XY xy = new XY();

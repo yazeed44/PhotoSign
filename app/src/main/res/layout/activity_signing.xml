@@ -36,6 +36,7 @@
         android:layout_marginBottom="1dp"
         android:layout_marginTop="1dp"
         android:layout_weight="0.15"
+        android:adjustViewBounds="true"
         android:background="#ffffff" />
 
 
