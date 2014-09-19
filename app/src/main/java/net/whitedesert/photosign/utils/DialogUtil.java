@@ -40,7 +40,7 @@ public final class DialogUtil {
 
     public static AlertDialog.Builder initDialog(String title, String message, int iconId, boolean cancelBtn, final Activity activity) {
         final AlertDialog.Builder dialog = new AlertDialog.Builder(new ContextThemeWrapper(activity, R.style.dialog));
-        dialog.setCustomTitle(ViewUtil.getBlackTitle(title, activity));
+        dialog.setTitle(title);
         dialog.setMessage(message);
         dialog.setIcon(iconId);
 
@@ -50,11 +50,16 @@ public final class DialogUtil {
         return dialog;
     }
 
-    public static AlertDialog initDialog(String title, String message, final Activity activity) {
-        final AlertDialog.Builder dialog = new AlertDialog.Builder(new ContextThemeWrapper(activity, R.style.dialog));
-        dialog.setCustomTitle(ViewUtil.getBlackTitle(title, activity));
-        dialog.setMessage(message);
-        return dialog.create();
+    public static AlertDialog.Builder initDialog(String title, int iconId, boolean cancelBtn, final Activity activity) {
+        return initDialog(title, null, iconId, cancelBtn, activity);
+    }
+
+
+    public static ProgressDialog initDialog(String title, String msg, final Activity activity) {
+        final ProgressDialog progressDialog = new ProgressDialog(new ContextThemeWrapper(activity, R.style.dialog));
+        progressDialog.setTitle(title);
+        progressDialog.setMessage(msg);
+        return progressDialog;
     }
 
 
@@ -122,11 +127,9 @@ public final class DialogUtil {
 
 
     public static AlertDialog.Builder getSingleChooseDialog(String title, String[] choices, OnClickListener choiceListener, final Activity activity) {
-        AlertDialog.Builder dialog = new AlertDialog.Builder(activity);
+        AlertDialog.Builder dialog = initDialog(title, android.R.drawable.ic_dialog_info, true, activity);
         //the choices won't appear if you set a message !!
-        dialog.setTitle(title);
-        dialog.setIcon(android.R.drawable.ic_dialog_info);
-        dialog.setNegativeButton(R.string.cancel, DISMISS_LISTENER);
+
         dialog.setSingleChoiceItems(choices, -1, choiceListener);
 
         Log.i("DialogUtil : getSingleChooseDialog : ", "We got " + choices.length + " choices !");
@@ -168,7 +171,8 @@ public final class DialogUtil {
     }
 
     public static ProgressDialog getProgressDialog(final String title, final String message, final Activity activity) {
-        return (ProgressDialog) initDialog(title, message, activity);
+        return initDialog(title, message, activity);
+
     }
 
     public static ProgressDialog getProgressDialog(int titleId, int msgId, final Activity activity) {

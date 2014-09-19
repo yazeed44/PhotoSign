@@ -108,8 +108,8 @@ public final class AskUtil {
 
         sizeText.setText(sizeText.getResources().getText(R.string.draw_size_text) + "" + sizeSeek.getProgress() + "dp");
 
-        final AlertDialog.Builder dialog = new AlertDialog.Builder(activity);
-        dialog.setCustomTitle(ViewUtil.getBlackTitle(R.string.draw_sign_customize_title, activity));
+        final String title = activity.getResources().getString(R.string.draw_sign_customize_title);
+        final AlertDialog.Builder dialog = DialogUtil.initDialog(title, android.R.drawable.ic_dialog_info, true, activity);
         dialog.setView(drawSignCustomize);
 
         return dialog;

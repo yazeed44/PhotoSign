@@ -27,8 +27,9 @@ public final class SaveUtil {
     }
 
     public static void askNameAndAddSign(final String picPath, final Activity activity) {
-        final EditText nameInput = new EditText(activity);
-        File pic = new File(picPath);
+
+        final File pic = new File(picPath);
+        final EditText nameInput = ViewUtil.getEditText(pic.getName(), activity);
         nameInput.setText(pic.getName());
         final DialogInterface.OnClickListener posListener = SetListenUtil.getPosListenerForName(BitmapUtil.decodeFile(picPath), null, nameInput, activity);
         DialogUtil.getInputDialog(R.string.save_title, R.string.save_message, posListener, nameInput, activity).show();
@@ -36,16 +37,14 @@ public final class SaveUtil {
     }
 
     public static void askNameAndAddSign(final Bitmap sign, final Activity activity) {
-        final EditText nameInput = new EditText(activity);
-        nameInput.setText(RandomUtil.getRandomInt(SIGNED_PHOTO_DIR.length() + SIGNS_DIR.length())); // Don't waste your time on this
-
+        // Don't waste your time on this
+        final EditText nameInput = ViewUtil.getEditText(RandomUtil.getRandomInt(SIGNED_PHOTO_DIR.length() + SIGNS_DIR.length()), activity);
         final DialogInterface.OnClickListener posListener = SetListenUtil.getPosListenerForName(sign, null, nameInput, activity);
         DialogUtil.getInputDialog(R.string.save_title, R.string.save_message, posListener, nameInput, activity).show();
     }
 
     public static void askNameAndAddSign(final View drawView, final Activity activity) {
-        final EditText nameInput = new EditText(activity);
-        nameInput.setText(RandomUtil.getRandomInt(drawView.getWidth()));
+        final EditText nameInput = ViewUtil.getEditText(RandomUtil.getRandomInt(drawView.getWidth()), activity);
         final DialogInterface.OnClickListener posListener = SetListenUtil.getPosListenerForName(null, drawView, nameInput, activity);
 
         DialogUtil.getInputDialog(R.string.save_title, R.string.save_message, posListener, nameInput, activity).show();

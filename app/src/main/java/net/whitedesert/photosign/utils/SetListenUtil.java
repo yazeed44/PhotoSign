@@ -57,9 +57,8 @@ public final class SetListenUtil {
     }
 
     /**
-     *
-     * @param opacitySeek , the seek bar that used in opacity seek bar in draw customize dialog
-     * @param opacityText the text view that will get updated too
+     * @param opacitySeek  , the seek bar that used in opacity seek bar in draw customize dialog
+     * @param opacityText  the text view that will get updated too
      * @param drawSignView , The view that contains paint
      */
     public static void setUpOpacitySeek(final SeekBar opacitySeek, final TextView opacityText, final DrawSignView drawSignView) {
@@ -120,8 +119,6 @@ public final class SetListenUtil {
         return new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                //Show a toast telling user to wait
-                ToastUtil.toastWaitPlease();
                 boolean useView = false;
                 if (drawView != null) {
                     useView = true;

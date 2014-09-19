@@ -5,10 +5,10 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Point;
 import android.util.DisplayMetrics;
+import android.view.ContextThemeWrapper;
 import android.view.Display;
-import android.view.View;
 import android.view.WindowManager;
-import android.widget.TextView;
+import android.widget.EditText;
 
 import net.whitedesert.photosign.R;
 
@@ -54,15 +54,10 @@ public final class ViewUtil {
         return px;
     }
 
-    public static View getBlackTitle(final String title, final Activity activity) {
-        final View viewTitle = activity.getLayoutInflater().inflate(R.layout.view_title, null);
-        final TextView titleText = (TextView) viewTitle.findViewById(R.id.title_view);
-        titleText.setText(title);
-        return viewTitle;
-    }
-
-    public static View getBlackTitle(final int titleId, final Activity activity) {
-        final String title = activity.getResources().getString(titleId);
-        return getBlackTitle(title, activity);
+    public static EditText getEditText(final String text, final Activity activity) {
+        final EditText editText = new EditText(new ContextThemeWrapper(activity, R.style.text_edit));
+        editText.setText(text);
+        editText.setTextAppearance(activity, R.style.text_edit);
+        return editText;
     }
 }
