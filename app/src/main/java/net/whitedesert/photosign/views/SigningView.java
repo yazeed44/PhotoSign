@@ -25,7 +25,7 @@ public class SigningView extends ImageView {
     private Bitmap photo;
     private Bitmap signBitmap;
     private Sign sign;
-
+    private XY orgPhotoDimen = new XY();//Originial photo size
     private float x = -1, y = -1;
     private float touchX, touchY;
 
@@ -44,10 +44,13 @@ public class SigningView extends ImageView {
         final int heightFactor = 8;
 
         if (photo != null) {
-
+            orgPhotoDimen.setX(photo.getWidth());
+            orgPhotoDimen.setY(photo.getHeight());
+            photo = Bitmap.createScaledBitmap(photo, w, h, true);
+            setImageBitmap(photo);
             if (signBitmap != null) {
                 signBitmap = Bitmap.createScaledBitmap(signBitmap, photo.getWidth() / widthFactor, photo.getHeight() / heightFactor, true);
-                setXY(fixXY(PhotoUtil.getCenter(photo)));
+                setXY(PhotoUtil.getCenter(photo));
                 invalidate();
             }
         }
@@ -136,11 +139,11 @@ public class SigningView extends ImageView {
 
     private void setupXY() {
         // fixXY();
-        final int factor = 25;
 
-        if (touchX > 0 && touchY > 0 && touchX < this.getWidth() - factor && touchY < this.getHeight() - factor) {
-            this.x = touchX;
-            this.y = touchY;
+
+        if (touchX > 0 && touchY > 0) {
+            final XY.Float touches = new XY.Float(touchX, touchY);
+            fixXY(touches);
             invalidate();
         } else {
             Log.e(this.getClass().getSimpleName() + " : setupXY", "it's out of photo range !! ,  touchX = " + touchX + "    ,  touchY  =  " + touchY);
@@ -152,13 +155,13 @@ public class SigningView extends ImageView {
         return new XY(getSignBitmap().getWidth(), getSignBitmap().getHeight());
     }
 
-    /*private void fixXY(XY.Float touches) {
+    private void fixXY(XY.Float touches) {
 
         final int signW = signBitmap.getWidth(), signH = signBitmap.getHeight();
         touches.setX(touches.getX() - signW / 2);
         touches.setY(touches.getY() - signH / 2);
         setXY(touches);
-    }*/
+    }
 
     public XY.Float getXY() {
         XY.Float xy = fixXY(touchX, touchY);
@@ -171,10 +174,16 @@ public class SigningView extends ImageView {
         this.y = xy.getY();
     }
 
+    public XY getOrgPhotoDimen() {
+        return orgPhotoDimen;
+    }
+
     private XY.Float fixXY(float pX, float pY) {
-        //lol i thought i got rid of the problem completely but i was wrong again
-        //at least it's usable right now
-        //TODO
+        //Finally i fixed it XY problem compleatly
+        //the alogrithm : make the photo expand till it fills the View , then sign on it , then return it to it's originial size
+        //that's way there won't be any problem
+
+        final int signW = signBitmap.getWidth(), signH = signBitmap.getHeight();
 
         final Drawable drawable = this.getDrawable();
         final Rect imageBounds = drawable.getBounds();
@@ -200,8 +209,8 @@ public class SigningView extends ImageView {
 
 
 //get the distance from the left and top of the image bounds
-        final float scaledImageOffsetX = pX - imageBounds.left;
-        final float scaledImageOffsetY = pY - imageBounds.top;
+        final float scaledImageOffsetX = pX - imageBounds.left - signW / 2;
+        final float scaledImageOffsetY = pY - imageBounds.top - signH / 2;
 
         Log.i("fixXY : scaled Image Off set ", "X  =  " + scaledImageOffsetX + "   ,  Y  =  " + scaledImageOffsetY);
 //scale these distances according to the ratio of your scaling

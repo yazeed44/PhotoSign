@@ -84,28 +84,7 @@ public final class SetListenUtil {
         });
     }
 
-    public static void setUpSizeSeek(final SeekBar sizeSeek, final TextView sizeText, final DrawSignView drawSignView) {
-        sizeSeek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
-                final float px = ViewUtil.convertDpToPixel(progress, drawSignView.getContext());
-                final Paint paint = drawSignView.getDrawPaint();
-                paint.setStrokeWidth(px);
-                drawSignView.setDrawPaint(paint);
-                sizeText.setText(sizeText.getResources().getText(R.string.draw_size_text) + "" + progress + "dp");
-            }
 
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
-    }
 
     /**
      * @param bitmap    , make it null if you have view only
@@ -142,7 +121,9 @@ public final class SetListenUtil {
                 String path;
 
                 if (useView) {
+                    drawView.setBackgroundColor(Color.TRANSPARENT);
                     path = SaveUtil.savePicFromView(drawView, activity, SaveUtil.SIGNS_DIR, sign.getName(), false);
+                    drawView.setBackgroundColor(Color.WHITE);
                 } else {
                     path = SaveUtil.savePicFromBitmap(bitmap, activity, SaveUtil.SIGNS_DIR, sign.getName(), false);
                 }
@@ -181,6 +162,29 @@ public final class SetListenUtil {
                 });
 
                 chooseColorDialog.show();
+            }
+        });
+    }
+
+    public static void setUpSizeSeek(final SeekBar sizeSeek, final TextView sizeText, final DrawSignView drawSignView) {
+        sizeSeek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
+                final float px = ViewUtil.convertDpToPixel(progress, drawSignView.getContext());
+                final Paint paint = drawSignView.getDrawPaint();
+                paint.setStrokeWidth(px);
+                drawSignView.setDrawPaint(paint);
+                sizeText.setText(sizeText.getResources().getText(R.string.draw_size_text) + "" + progress);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
             }
         });
     }

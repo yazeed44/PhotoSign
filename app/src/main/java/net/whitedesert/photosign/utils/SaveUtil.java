@@ -45,6 +45,7 @@ public final class SaveUtil {
 
     public static void askNameAndAddSign(final View drawView, final Activity activity) {
         final EditText nameInput = ViewUtil.getEditText(RandomUtil.getRandomInt(drawView.getWidth()), activity);
+
         final DialogInterface.OnClickListener posListener = SetListenUtil.getPosListenerForName(null, drawView, nameInput, activity);
 
         DialogUtil.getInputDialog(R.string.save_title, R.string.save_message, posListener, nameInput, activity).show();
@@ -55,7 +56,7 @@ public final class SaveUtil {
         final Sign sign = signingView.getSign();
         final Bitmap photo = signingView.getPhoto(), signBitmap = signingView.getSignBitmap();
         final XY.Float xy = signingView.getXY();
-        final SigningThread signThread = new SigningThread(photo, signBitmap, sign.getName(), activity, xy);
+        final SigningThread signThread = new SigningThread(photo, signBitmap, sign.getName(), activity, xy, signingView.getOrgPhotoDimen());
         signThread.start();
 
     }
