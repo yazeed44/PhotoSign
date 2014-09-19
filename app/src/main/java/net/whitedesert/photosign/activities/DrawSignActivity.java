@@ -5,8 +5,8 @@ import android.view.View;
 import android.view.Window;
 
 import net.whitedesert.photosign.R;
+import net.whitedesert.photosign.utils.AskUtil;
 import net.whitedesert.photosign.utils.SaveUtil;
-import net.whitedesert.photosign.utils.ToastUtil;
 import net.whitedesert.photosign.views.DrawSignView;
 
 /**
@@ -29,8 +29,7 @@ public class DrawSignActivity extends AdActivity {
 
 
     public void onClickTextCustomize(View view) {
-        ToastUtil.toastUnsupported();
-        //TODO
+        AskUtil.getDrawSignCustomizeDialog(draw, this).show();
     }
 
     public void onClickReset(View view) {

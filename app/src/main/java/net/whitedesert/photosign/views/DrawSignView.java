@@ -88,4 +88,12 @@ public class DrawSignView extends View {
         invalidate();
     }
 
+    public Paint getDrawPaint() {
+        return drawPaint;
+    }
+
+    public void setDrawPaint(final Paint paint) {
+        this.drawPaint = paint;
+    }
+
 }

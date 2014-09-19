@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/dialog"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <SeekBar
+
+
+        android:id="@+id/baseSizeSeek"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:max="@integer/size_max"
+        android:progress="20"
+
+        />
+
+    <Button
+        android:id="@+id/chooseColorBtn"
+        style="@style/button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:drawableLeft="@drawable/choose_color"
+        android:drawableStart="@drawable/choose_color"
+        android:text="@string/choose_color_btn" />
+
+
+</LinearLayout>

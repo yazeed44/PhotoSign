@@ -4,12 +4,12 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -38,50 +38,55 @@ public final class DialogUtil {
         throw new AssertionError();
     }
 
-    public static void initDialog(final AlertDialog.Builder dialog, String title, String message, int iconId, boolean cancelBtn) {
-        dialog.setTitle(title);
+    public static AlertDialog.Builder initDialog(String title, String message, int iconId, boolean cancelBtn, final Activity activity) {
+        final AlertDialog.Builder dialog = new AlertDialog.Builder(new ContextThemeWrapper(activity, R.style.dialog));
+        dialog.setCustomTitle(ViewUtil.getBlackTitle(title, activity));
         dialog.setMessage(message);
         dialog.setIcon(iconId);
+
         if (cancelBtn)
             dialog.setNegativeButton(R.string.cancel, DISMISS_LISTENER);
+
+        return dialog;
     }
 
-    public static void initDialog(final AlertDialog dialog, String title, String message) {
-        dialog.setTitle(title);
+    public static AlertDialog initDialog(String title, String message, final Activity activity) {
+        final AlertDialog.Builder dialog = new AlertDialog.Builder(new ContextThemeWrapper(activity, R.style.dialog));
+        dialog.setCustomTitle(ViewUtil.getBlackTitle(title, activity));
         dialog.setMessage(message);
+        return dialog.create();
     }
 
 
-    public static Dialog createErrorDialog(String message, Context context) {
+    public static Dialog createErrorDialog(String message, Activity activity) {
 
-        AlertDialog.Builder dialog = new AlertDialog.Builder(context);
-        String title = context.getResources().getString(R.string.error_title);
-        initDialog(dialog, title, message, android.R.drawable.ic_dialog_alert, false);
+        String title = activity.getResources().getString(R.string.error_title);
+        AlertDialog.Builder dialog = initDialog(title, message, android.R.drawable.ic_dialog_alert, false, activity);
         dialog.setPositiveButton(R.string.ok, DISMISS_LISTENER);
         return dialog.create();
 
     }
 
 
-    public static Dialog createErrorDialog(int msgId, Context context) {
-        return createErrorDialog(context.getResources().getString(msgId), context);
+    public static Dialog createErrorDialog(int msgId, Activity activity) {
+        return createErrorDialog(activity.getResources().getString(msgId), activity);
 
     }
 
 
-    public static AlertDialog.Builder getListDialog(ArrayList<String> texts, String title, String message, AdapterView.OnItemClickListener listener, Activity activity) {
-        final AlertDialog.Builder dialog = new AlertDialog.Builder(activity);
-        initDialog(dialog, title, message, android.R.drawable.ic_dialog_info, true);
+    public static AlertDialog.Builder getListDialog(ArrayList<String> texts, String title, String message, AdapterView.OnItemClickListener listener, final Activity activity) {
+
+        final AlertDialog.Builder dialog = initDialog(title, message, android.R.drawable.ic_dialog_info, true, activity);
         View listDialog = activity.getLayoutInflater().inflate(R.layout.list_view_dialog, null);
         ListView listView = (ListView) listDialog.findViewById(R.id.dialogList);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(listDialog.getContext(), android.R.layout.simple_list_item_1, texts); // i doubt this one
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(listDialog.getContext(), android.R.layout.simple_list_item_1, texts);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(listener);
         dialog.setView(listDialog);
         return dialog;
     }
 
-    public static AlertDialog.Builder getListDialog(ArrayList<String> texts, int titleId, int messageId, AdapterView.OnItemClickListener listener, Activity activity) {
+    public static AlertDialog.Builder getListDialog(ArrayList<String> texts, int titleId, int messageId, AdapterView.OnItemClickListener listener, final Activity activity) {
         Resources res = activity.getResources();
         String title = res.getString(titleId);
         String message = res.getString(messageId);
@@ -95,8 +100,7 @@ public final class DialogUtil {
      * @return A dialog with one input
      */
     public static AlertDialog.Builder getInputDialog(String title, String message, String inputHint, OnClickListener posListener, EditText userInput, final Activity activity) {
-        AlertDialog.Builder dialog = new AlertDialog.Builder(activity);
-        initDialog(dialog, title, message, android.R.drawable.ic_input_add, true);
+        AlertDialog.Builder dialog = initDialog(title, message, android.R.drawable.ic_input_add, true, activity);
         userInput.setHint(inputHint);
         dialog.setView(userInput);
         dialog.setPositiveButton(R.string.ok, posListener);
@@ -139,8 +143,8 @@ public final class DialogUtil {
     }
 
     public static AlertDialog.Builder getCustomViewDialog(String title, String message, View customView, final Activity activity) {
-        AlertDialog.Builder dialog = new AlertDialog.Builder(activity);
-        initDialog(dialog, title, message, android.R.drawable.ic_dialog_info, true);
+
+        final AlertDialog.Builder dialog = initDialog(title, message, android.R.drawable.ic_dialog_info, true, activity);
         dialog.setView(customView);
         return dialog;
     }
@@ -164,9 +168,7 @@ public final class DialogUtil {
     }
 
     public static ProgressDialog getProgressDialog(final String title, final String message, final Activity activity) {
-        final ProgressDialog dialog = new ProgressDialog(activity);
-        initDialog(dialog, title, message);
-        return dialog;
+        return (ProgressDialog) initDialog(title, message, activity);
     }
 
     public static ProgressDialog getProgressDialog(int titleId, int msgId, final Activity activity) {

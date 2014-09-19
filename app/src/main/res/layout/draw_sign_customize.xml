@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/dialog"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/drawSizeText"
+        style="@style/text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/draw_size_text" />
+
+    <include
+        layout="@layout/base_sign_customize"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/drawOpacityText"
+        style="@style/text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:text="@string/draw_opacity_text" />
+
+    <SeekBar
+        android:id="@+id/drawOpacitySeek"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:max="@integer/opacity_max"
+        android:progress="@integer/opacity_max"
+
+
+        />
+
+</LinearLayout>

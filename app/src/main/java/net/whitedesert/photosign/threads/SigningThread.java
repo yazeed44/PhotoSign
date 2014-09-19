@@ -53,10 +53,9 @@ public final class SigningThread extends Thread {
         final Bitmap signed = SigningUtil.signOnPhoto(photo, signBitmap, x, y);
         pathSigned = SaveUtil.savePicFromBitmap(signed, activity, SaveUtil.SIGNED_PHOTO_DIR, "Signed Photo - " + signName + new Random().nextInt((int) Math.abs(x + 1)), true);
 
-        if (!CheckUtil.checkSign(pathSigned, activity)) {
-            //TODO
+        if (!CheckUtil.checkSign(pathSigned, activity))
             ToastUtil.toastLong(R.string.error_save_sign);
-        }
+
 
         ThreadUtil.dismissDialog(progressDialog, activity);
         final AlertDialog.Builder previewDialog = DialogUtil.getImageViewDialog("Test", "Test", signed, activity);

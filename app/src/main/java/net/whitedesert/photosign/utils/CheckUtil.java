@@ -54,9 +54,10 @@ public final class CheckUtil {
     }
 
     public static boolean checkSign(final String path, Activity activity) {
-        final Dialog errorDialog = DialogUtil.createErrorDialog(R.string.error_save_sign, activity);
+
 
         if (!checkString(path)) {
+            final Dialog errorDialog = DialogUtil.createErrorDialog(R.string.error_save_sign, activity);
             errorDialog.show();
             ToastUtil.toastLong(R.string.error_save_sign);
             return false;
