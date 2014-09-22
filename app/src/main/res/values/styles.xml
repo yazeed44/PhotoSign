@@ -2,9 +2,11 @@
 
     <!-- Application theme. -->
     <style name="AppTheme" parent="android:Theme.Holo.NoActionBar">
-    <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
 
         <!-- <item name="android:background">#000000</item> -->
+
+
     </style>
 
 

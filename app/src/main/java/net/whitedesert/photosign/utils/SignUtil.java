@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.view.View;
 
 import net.whitedesert.photosign.threads.DBThread;
 
@@ -17,6 +18,7 @@ public final class SignUtil {
 
     public static final int DEFAULT_SIGN_HEIGHT = 200;
     public static final int DEFAULT_SIGN_WIDTH = 200;
+
 
     private SignUtil() {
         throw new AssertionError();
@@ -87,8 +89,19 @@ public final class SignUtil {
         return image;
     }
 
-    public static Bitmap createBitmap(SignRaw signRaw) {
-        return createBitmap(signRaw, signRaw.getMeasuredWidth(), signRaw.getMeasuredHeight());
+    public static Bitmap getTestSign(final View view) {
+
+        final SignRaw raw = new SignRaw();
+        return createBitmap(raw, view.getWidth(), view.getHeight());
+    }
+
+    public static Bitmap createBitmap(SignRaw signRaw, boolean measured) {
+
+        if (measured)
+            return createBitmap(signRaw, signRaw.getMeasuredWidth(), (int) signRaw.getMeasuredHeight());
+        else {
+            return createBitmap(signRaw, signRaw.getWidth(), signRaw.getHeight());
+        }
     }
 
     public static Corners getCorners(int width, int height) {

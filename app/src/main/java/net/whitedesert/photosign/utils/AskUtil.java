@@ -13,6 +13,7 @@ import android.widget.TextView;
 import net.whitedesert.photosign.R;
 import net.whitedesert.photosign.activities.DrawSignActivity;
 import net.whitedesert.photosign.activities.GalleryActivity;
+import net.whitedesert.photosign.activities.TextSignActivity;
 import net.whitedesert.photosign.activities.Types;
 import net.whitedesert.photosign.views.DrawSignView;
 
@@ -54,6 +55,7 @@ public final class AskUtil {
         final Resources res = activity.getResources();
         final String[] choices = res.getStringArray(R.array.select_method_signature_choices);
 
+        //Methods to insert a signature
         final String draw = choices[0];
         final String external = choices[1];
         final String text = choices[2];
@@ -69,8 +71,8 @@ public final class AskUtil {
                     Intent i = new Intent(activity, DrawSignActivity.class);
                     activity.startActivity(i);
                 } else if (method.equals(text)) {
-                    ToastUtil.toastUnsupported();
-                    //TODO
+                    Intent i = new Intent(activity, TextSignActivity.class);
+                    activity.startActivity(i);
                 } else if (method.equals(external)) {
                     Intent i = new Intent(activity, GalleryActivity.class);
                     i.putExtra(Types.TYPE, Types.OPEN_GALLERY_SINGLE_CHOOSE_TYPE);
@@ -89,8 +91,8 @@ public final class AskUtil {
 
         final View drawSignCustomize = activity.getLayoutInflater().inflate(R.layout.draw_sign_customize, null);
 
-        final Button chooseColorBtn = (Button) drawSignCustomize.findViewById(R.id.chooseColorBtn);
-        SetListenUtil.setUpChooseColorBtn(chooseColorBtn, drawSignView, activity);
+        final Button chooseColorBtn = (Button) drawSignCustomize.findViewById(R.id.baseChooseColorBtn);
+        SetListenUtil.setUpChooseColorBtn(chooseColorBtn, drawSignView, null, null, activity);
 
         final TextView opacityText = (TextView) drawSignCustomize.findViewById(R.id.drawOpacityText);
 
@@ -104,9 +106,9 @@ public final class AskUtil {
 
         final SeekBar sizeSeek = (SeekBar) drawSignCustomize.findViewById(R.id.baseSizeSeek);
         sizeSeek.setProgress((int) ViewUtil.convertPixelsToDp(drawSignView.getDrawPaint().getStrokeWidth(), activity));
-        SetListenUtil.setUpSizeSeek(sizeSeek, sizeText, drawSignView);
+        SetListenUtil.setUpSizeSeek(sizeSeek, sizeText, drawSignView, null, null);
 
-        sizeText.setText(sizeText.getResources().getText(R.string.draw_size_text) + "" + sizeSeek.getProgress() + "dp");
+        sizeText.setText(sizeText.getResources().getText(R.string.draw_size_text) + "" + sizeSeek.getProgress());
 
         final String title = activity.getResources().getString(R.string.draw_sign_customize_title);
         final AlertDialog.Builder dialog = DialogUtil.initDialog(title, android.R.drawable.ic_dialog_info, true, activity);

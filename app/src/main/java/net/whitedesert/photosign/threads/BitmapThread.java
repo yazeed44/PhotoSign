@@ -76,7 +76,7 @@ public final class BitmapThread {
             if (file.exists()) file.delete();
             try {
                 FileOutputStream out = new FileOutputStream(file);
-                bitmap.compress(Bitmap.CompressFormat.PNG, 90, out); // ERROR 341 LINE
+                bitmap.compress(Bitmap.CompressFormat.PNG, 90, out);
                 out.flush();
                 out.close();
                 Log.i("Photo Util : ", "saved the photo successfully to  " + myDir + "/" + fname);

@@ -6,7 +6,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="gallery_name">Gallery</string>
     <string name="sign_text_view">Your name :</string>
-    <string name="sign_name_hint">Enter the signature name</string>
+    <string name="sign_name_hint">Enter text here</string>
     <string name="file_saved">File saved to : </string>
     <string name="sign_draw_titlebar_text">Draw your signature</string>
     <string name="reset_desc">Reset the sign</string>
@@ -39,6 +39,8 @@
     <string name="draw_opacity_text">Opacity of pen : </string>
     <string name="empty"></string>
     <string name="draw_sign_customize_title">Customize your pen</string>
+    <string name="sign_text_preview">Preview the signature</string>
+    <string name="check_mark_bold">Bold</string>
 
 
     <string-array name="wanna_sign_choices">

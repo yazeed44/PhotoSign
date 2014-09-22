@@ -12,12 +12,12 @@ import android.graphics.Typeface;
 public final class SignRaw {
 
 
-    private final Paint paint = new Paint();
+    private Paint paint = new Paint();
     private String text = "Test";
-    private int color = Color.BLACK;
-    private int textSize = 20;
+    private int color = Color.WHITE;
+    private float textSize = 20f;
     private int opacity = 255;
-    private int style = Typeface.NORMAL;
+    private boolean bold = false;
     private int width = SignUtil.DEFAULT_SIGN_WIDTH, height = SignUtil.DEFAULT_SIGN_HEIGHT;
 
     private String font = "";
@@ -27,11 +27,23 @@ public final class SignRaw {
 
         paint.setColor(getColor());
         paint.setTextSize(getTextSize());
-        paint.setTypeface(Typeface.create(getFont(), getStyle()));
+
+        int style;
+        if (isBold()) {
+            style = Typeface.BOLD;
+        } else {
+            style = Typeface.NORMAL;
+        }
+
+        paint.setTypeface(Typeface.create(getFont(), style));
         paint.setAlpha(getOpacity());
 
 
         return paint;
+    }
+
+    public void setPaint(final Paint paint) {
+        this.paint = paint;
     }
 
     public String getText() {
@@ -67,20 +79,20 @@ public final class SignRaw {
         this.font = font;
     }
 
-    public int getTextSize() {
+    public float getTextSize() {
         return this.textSize;
     }
 
-    public void setTextSize(int textSize) {
+    public void setTextSize(float textSize) {
         this.textSize = textSize;
     }
 
-    public int getStyle() {
-        return this.style;
+    public boolean isBold() {
+        return this.bold;
     }
 
-    public void setStyle(int style) {
-        this.style = style;
+    public void setBold(boolean bold) {
+        this.bold = bold;
     }
 
     public String getName() {
@@ -99,11 +111,11 @@ public final class SignRaw {
 
     public int getMeasuredWidth() {
 
-        return getRect().width() + 15;
+        return getRect().width() + 30;
     }
 
     public int getMeasuredHeight() {
-        return getRect().height() + 15;
+        return getRect().height() + 30;
     }
 
     public int getWidth() {

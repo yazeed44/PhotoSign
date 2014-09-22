@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -141,17 +142,29 @@ public final class SetListenUtil {
         };
     }
 
-    public static void setUpChooseColorBtn(final Button chooseColorBtn, final DrawSignView drawSignView, final Activity activity) {
+    public static void setUpChooseColorBtn(final Button chooseColorBtn, final DrawSignView drawSignView, final SignRaw raw, final ImageView preview, final Activity activity) {
         chooseColorBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AmbilWarnaDialog chooseColorDialog = new AmbilWarnaDialog(activity, Color.BLACK, new AmbilWarnaDialog.OnAmbilWarnaListener() {
+                final boolean usePreview;
+                if (preview != null)
+                    usePreview = true;
+                else {
+                    usePreview = false;
+                }
+                AmbilWarnaDialog.OnAmbilWarnaListener listener = new AmbilWarnaDialog.OnAmbilWarnaListener() {
                     @Override
                     public void onOk(AmbilWarnaDialog dialog, int color) {
-                        // color is the color selected by the user.
-                        final Paint paint = drawSignView.getDrawPaint();
-                        paint.setColor(color);
-                        drawSignView.setDrawPaint(paint); // update the paint with new color
+
+
+                        if (!usePreview) {
+                            final Paint paint = drawSignView.getDrawPaint();
+                            paint.setColor(color);
+                            drawSignView.setDrawPaint(paint); // update the paint with new color
+                        } else {
+                            raw.setColor(color);
+                            preview.setImageBitmap(SignUtil.createBitmap(raw, true));
+                        }
                     }
 
                     @Override
@@ -159,22 +172,52 @@ public final class SetListenUtil {
                         // cancel was selected by the user
 
                     }
-                });
+                };
+
+                final int initalColor;
+                if (!usePreview) {
+                    initalColor = drawSignView.getDrawPaint().getColor();
+                } else {
+                    initalColor = raw.getColor();
+                }
+
+                final AmbilWarnaDialog chooseColorDialog = new AmbilWarnaDialog(activity, initalColor, listener);
 
                 chooseColorDialog.show();
             }
         });
     }
 
-    public static void setUpSizeSeek(final SeekBar sizeSeek, final TextView sizeText, final DrawSignView drawSignView) {
+    /**
+     * @param sizeSeek     the seek bar
+     * @param sizeText     the text that will get updated
+     * @param drawSignView make it null if you have preview only
+     * @param preview      make it null if you have drawSignView only
+     * @param raw          make it null if you have drawSignView only
+     */
+    public static void setUpSizeSeek(final SeekBar sizeSeek, final TextView sizeText, final DrawSignView drawSignView, final ImageView preview, final SignRaw raw) {
         sizeSeek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
-                final float px = ViewUtil.convertDpToPixel(progress, drawSignView.getContext());
-                final Paint paint = drawSignView.getDrawPaint();
-                paint.setStrokeWidth(px);
-                drawSignView.setDrawPaint(paint);
-                sizeText.setText(sizeText.getResources().getText(R.string.draw_size_text) + "" + progress);
+                boolean usePreview = false;
+                if (preview != null)
+                    usePreview = true;
+
+
+                if (!usePreview) {
+                    final float px = ViewUtil.convertDpToPixel(progress, drawSignView.getContext());
+                    final Paint paint = drawSignView.getDrawPaint();
+                    paint.setStrokeWidth(px);
+                    drawSignView.setDrawPaint(paint);
+                    sizeText.setText(sizeText.getResources().getText(R.string.draw_size_text) + "" + progress);
+                } else {
+                    final float px = ViewUtil.convertDpToPixel(progress, preview.getContext());
+                    Log.i("SetListenUtil : setUpSizeSeek : preview", "PX When changing size value =  " + px);
+                    raw.setTextSize(px);
+                    sizeText.setText(sizeText.getResources().getString(R.string.text_size_view) + "" + progress);
+                    preview.setImageBitmap(SignUtil.createBitmap(raw, true));
+
+                }
             }
 
             @Override

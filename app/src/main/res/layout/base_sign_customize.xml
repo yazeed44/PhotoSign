@@ -18,7 +18,7 @@
         />
 
     <Button
-        android:id="@+id/chooseColorBtn"
+        android:id="@+id/baseChooseColorBtn"
         style="@style/button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
