@@ -86,7 +86,6 @@ public final class SetListenUtil {
     }
 
 
-
     /**
      * @param bitmap    , make it null if you have view only
      * @param drawView  make it null if you have bitmap only
@@ -181,9 +180,9 @@ public final class SetListenUtil {
                     initalColor = raw.getColor();
                 }
 
-                final AmbilWarnaDialog chooseColorDialog = new AmbilWarnaDialog(activity, initalColor, listener);
+                new AmbilWarnaDialog(activity, initalColor, listener).show();
 
-                chooseColorDialog.show();
+
             }
         });
     }

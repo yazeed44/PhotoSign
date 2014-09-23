@@ -98,7 +98,7 @@ public final class SignUtil {
     public static Bitmap createBitmap(SignRaw signRaw, boolean measured) {
 
         if (measured)
-            return createBitmap(signRaw, signRaw.getMeasuredWidth(), (int) signRaw.getMeasuredHeight());
+            return createBitmap(signRaw, signRaw.getMeasuredWidth(), signRaw.getMeasuredHeight());
         else {
             return createBitmap(signRaw, signRaw.getWidth(), signRaw.getHeight());
         }

@@ -15,13 +15,15 @@ public final class SignRaw {
     private Paint paint = new Paint();
     private String text = "Test";
     private int color = Color.WHITE;
-    private float textSize = 20f;
+    private float textSize = 50f;
     private int opacity = 255;
     private boolean bold = false;
     private int width = SignUtil.DEFAULT_SIGN_WIDTH, height = SignUtil.DEFAULT_SIGN_HEIGHT;
 
     private String font = "";
     private String name = "Test-name";
+
+    private Typeface tf;
 
     public Paint getPaint() {
 
@@ -34,8 +36,14 @@ public final class SignRaw {
         } else {
             style = Typeface.NORMAL;
         }
+        final Typeface typeface;
+        if (tf == null) {
+            typeface = Typeface.create(getFont(), style);
+        } else {
+            typeface = tf;
+        }
 
-        paint.setTypeface(Typeface.create(getFont(), style));
+        paint.setTypeface(typeface);
         paint.setAlpha(getOpacity());
 
 
@@ -61,6 +69,10 @@ public final class SignRaw {
 
     public void setOpacity(int opacity) {
         this.opacity = opacity;
+    }
+
+    public void setTypeface(final Typeface tf) {
+        this.tf = tf;
     }
 
     public int getColor() {

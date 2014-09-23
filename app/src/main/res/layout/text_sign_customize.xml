@@ -54,13 +54,6 @@
             android:text="@string/check_mark_bold" />
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/signTextSizeTV"
-        style="@style/text_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="@string/text_size_view" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -68,7 +61,7 @@
         android:baselineAligned="false">
 
         <include
-            layout="@layout/base_sign_customize"
+            layout="@layout/base_choose_color"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </LinearLayout>

@@ -6,16 +6,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <SeekBar
-
-
-        android:id="@+id/baseSizeSeek"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:max="@integer/size_max"
-        android:progress="20"
-
-        />
 
     <Button
         android:id="@+id/baseChooseColorBtn"

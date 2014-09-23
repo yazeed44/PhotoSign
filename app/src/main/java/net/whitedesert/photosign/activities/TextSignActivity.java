@@ -9,10 +9,9 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.SeekBar;
-import android.widget.TextView;
 
 import net.whitedesert.photosign.R;
+import net.whitedesert.photosign.utils.SaveUtil;
 import net.whitedesert.photosign.utils.SetListenUtil;
 import net.whitedesert.photosign.utils.SignRaw;
 import net.whitedesert.photosign.utils.SignUtil;
@@ -25,8 +24,6 @@ public class TextSignActivity extends AdActivity {
     private final SignRaw raw = new SignRaw();
     private ImageView preview;
     private EditText text;
-    private TextView textSizeView;
-    private SeekBar sizeSeek;
     private Button chooseColorBtn;
 
     @Override
@@ -35,13 +32,9 @@ public class TextSignActivity extends AdActivity {
         setContentView(R.layout.text_sign_customize);
         preview = (ImageView) this.findViewById(R.id.signTextPreview);
 
+
         text = (EditText) this.findViewById(R.id.signTextEdit);
         setUpText();
-        textSizeView = (TextView) this.findViewById(R.id.signTextSizeTV);
-
-        sizeSeek = (SeekBar) this.findViewById(R.id.baseSizeSeek);
-        textSizeView.append(sizeSeek.getProgress() + "");
-        SetListenUtil.setUpSizeSeek(sizeSeek, textSizeView, null, preview, raw);
 
         chooseColorBtn = (Button) this.findViewById(R.id.baseChooseColorBtn);
         SetListenUtil.setUpChooseColorBtn(chooseColorBtn, null, raw, preview, this);
@@ -50,8 +43,7 @@ public class TextSignActivity extends AdActivity {
     }
 
     public void onClickDone(View view) {
-
-        //TODO
+        SaveUtil.askNameAndAddSign(SignUtil.createBitmap(raw, true), this);
     }
 
     @Override

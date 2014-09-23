@@ -60,4 +60,6 @@ public final class ViewUtil {
         editText.setTextAppearance(activity, R.style.text_edit);
         return editText;
     }
+
+
 }

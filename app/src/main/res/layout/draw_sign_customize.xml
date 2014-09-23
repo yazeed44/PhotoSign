@@ -15,7 +15,12 @@
         android:text="@string/draw_size_text" />
 
     <include
-        layout="@layout/base_sign_customize"
+        layout="@layout/base_sign_size"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <include
+        layout="@layout/base_choose_color"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
