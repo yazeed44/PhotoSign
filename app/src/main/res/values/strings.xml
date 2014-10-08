@@ -10,7 +10,7 @@
     <string name="file_saved">File saved to : </string>
     <string name="sign_draw_titlebar_text">Draw your signature</string>
     <string name="reset_desc">Reset the sign</string>
-    <string name="text_customize_desc">Customize the text</string>
+    <string name="text_customize_desc">Customize the pen</string>
     <string name="sign_draw_reminder">When you are done signing click the save button</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
@@ -41,6 +41,11 @@
     <string name="draw_sign_customize_title">Customize your pen</string>
     <string name="sign_text_preview">Preview the signature</string>
     <string name="check_mark_bold">Bold</string>
+    <string name="main_activity_btn_sign_pic">Sign on a photo</string>
+    <string name="main_activity_btn_create_sign">Create signature</string>
+    <string name="settings">Settings</string>
+    <string name="unavailable">Unavailable</string>
+    <string name="last_image_view_desc">Last image</string>
 
 
     <string-array name="wanna_sign_choices">

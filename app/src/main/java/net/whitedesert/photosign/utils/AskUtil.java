@@ -5,17 +5,12 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.view.View;
-import android.widget.Button;
-import android.widget.SeekBar;
-import android.widget.TextView;
 
 import net.whitedesert.photosign.R;
 import net.whitedesert.photosign.activities.DrawSignActivity;
 import net.whitedesert.photosign.activities.GalleryActivity;
 import net.whitedesert.photosign.activities.TextSignActivity;
 import net.whitedesert.photosign.activities.Types;
-import net.whitedesert.photosign.views.DrawSignView;
 
 /**
  * Created by yazeed44 on 8/24/14.
@@ -87,34 +82,5 @@ public final class AskUtil {
 
     }
 
-    public static AlertDialog.Builder getDrawSignCustomizeDialog(final DrawSignView drawSignView, final Activity activity) {
-
-        final View drawSignCustomize = activity.getLayoutInflater().inflate(R.layout.draw_sign_customize, null);
-
-        final Button chooseColorBtn = (Button) drawSignCustomize.findViewById(R.id.baseChooseColorBtn);
-        SetListenUtil.setUpChooseColorBtn(chooseColorBtn, drawSignView, null, null, activity);
-
-        final TextView opacityText = (TextView) drawSignCustomize.findViewById(R.id.drawOpacityText);
-
-        final SeekBar opacitySeek = (SeekBar) drawSignCustomize.findViewById(R.id.drawOpacitySeek);
-        opacitySeek.setProgress(drawSignView.getDrawPaint().getAlpha());
-        SetListenUtil.setUpOpacitySeek(opacitySeek, opacityText, drawSignView);
-
-        opacityText.setText(opacityText.getContext().getResources().getText(R.string.draw_opacity_text) + "" + opacitySeek.getProgress());
-
-        final TextView sizeText = (TextView) drawSignCustomize.findViewById(R.id.drawSizeText);
-
-        final SeekBar sizeSeek = (SeekBar) drawSignCustomize.findViewById(R.id.baseSizeSeek);
-        sizeSeek.setProgress((int) ViewUtil.convertPixelsToDp(drawSignView.getDrawPaint().getStrokeWidth(), activity));
-        SetListenUtil.setUpSizeSeek(sizeSeek, sizeText, drawSignView, null, null);
-
-        sizeText.setText(sizeText.getResources().getText(R.string.draw_size_text) + "" + sizeSeek.getProgress());
-
-        final String title = activity.getResources().getString(R.string.draw_sign_customize_title);
-        final AlertDialog.Builder dialog = DialogUtil.initDialog(title, android.R.drawable.ic_dialog_info, true, activity);
-        dialog.setView(drawSignCustomize);
-
-        return dialog;
-    }
 
 }

@@ -9,43 +9,89 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:weightSum="1"
-
     tools:context=".MainActivity">
 
-    <Button
-
-        android:id="@+id/chooseImgBtn"
-        style="@style/button"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.33"
-        android:background="#787bae"
-        android:onClick="onClickChoose"
-        android:text="اختيار صورة للتوقيع عليها" />
+        android:layout_weight="0.50">
 
-    <Button
-        android:id="@+id/button"
-        style="@style/button"
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/unavailable"
+            android:src="@drawable/button_pressed_background" />
+    </LinearLayout>
+
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/main_activity_btns_margin_top"
-        android:layout_weight="0.33"
-        android:background="#3d4370"
-        android:onClick="onClickCreateSign"
-        android:text="اصنع توقيع" />
+        android:layout_weight="0.25"
+        android:orientation="horizontal"
+        android:weightSum="1">
 
+        <Button
+            style="@style/button"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.70"
+            android:background="@drawable/main_btn_sign_selector"
+            android:onClick="onClickChoose"
+            android:text="@string/main_activity_btn_sign_pic"
+            android:textSize="@dimen/main_activity_btn_text_size"
 
-    <Button
-        style="@style/button"
+            />
+
+        <ImageButton
+            android:id="@+id/lastImage"
+            style="@style/button"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.30"
+            android:background="@drawable/main_btn_last_selector"
+            android:contentDescription="@string/last_image_view_desc"
+            android:onClick="onClickLastImage"
+            android:text="@string/unavailable"
+            android:textSize="@dimen/main_activity_btn_text_size"
+
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/main_activity_btns_margin_top"
+        android:layout_weight="0.25"
+        android:orientation="horizontal"
+        android:weightSum="1">
 
-        android:layout_weight="0.33"
-        android:background="#161a38"
-        android:text="الضبط"
+        <Button
+            style="@style/button"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.30"
+            android:background="@drawable/main_btn_settings_selector"
+            android:drawableBottom="@drawable/settings_icon"
+            android:paddingBottom="20dp"
+            android:text="@string/settings"
 
-        />
+
+            android:textSize="@dimen/main_activity_btn_text_size" />
+
+        <Button
+            style="@style/button"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.70"
+            android:background="@drawable/main_btn_create_selector"
+            android:drawableBottom="@drawable/create_sign_icon"
+            android:onClick="onClickCreateSign"
+            android:paddingBottom="20dp"
+            android:text="@string/main_activity_btn_create_sign"
+            android:textSize="@dimen/main_activity_btn_text_size" />
+
+    </LinearLayout>
 
 
 </LinearLayout>

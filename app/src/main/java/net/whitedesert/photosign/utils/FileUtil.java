@@ -1,7 +1,9 @@
 package net.whitedesert.photosign.utils;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.graphics.Typeface;
+import android.provider.MediaStore;
 import android.util.Log;
 
 import java.io.File;
@@ -46,5 +48,34 @@ public final class FileUtil {
         }
 
         return tfArray;
+    }
+
+    public static String getLatestPhoto(final Context context) {
+        // Find the last picture
+        String[] projection = new String[]{
+                MediaStore.Images.ImageColumns._ID,
+                MediaStore.Images.ImageColumns.DATA,
+                MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME,
+                MediaStore.Images.ImageColumns.DATE_TAKEN,
+                MediaStore.Images.ImageColumns.MIME_TYPE
+        };
+        final Cursor cursor = context.getContentResolver()
+                .query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection, null,
+                        null, MediaStore.Images.ImageColumns.DATE_TAKEN + " DESC");
+
+// Put it in the image view
+        String imageLocation = "";
+        if (cursor.moveToFirst()) {
+
+            imageLocation = cursor.getString(1);
+
+        }
+        File imageFile = new File(imageLocation);
+        if (imageFile.exists()) {
+            return imageLocation;
+
+        } else {
+            throw new NullPointerException("The latest image returns null ? !");
+        }
     }
 }

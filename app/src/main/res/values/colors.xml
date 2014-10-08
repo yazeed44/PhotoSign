@@ -3,4 +3,10 @@
 
     <drawable name="button_background">#222326</drawable>
     <drawable name="button_pressed_background">#ff57585b</drawable>
+    <drawable name="main_btn_pressed_background">#ffd0c9d2</drawable>
+    <drawable name="main_btn_sign_background">#e23200</drawable>
+    <drawable name="main_btn_last_background">#64aa0b</drawable>
+    <drawable name="main_btn_settings_background">#00a4bf</drawable>
+    <drawable name="main_btn_create_background">#dea716</drawable>
+
 </resources>

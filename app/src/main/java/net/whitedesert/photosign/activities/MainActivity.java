@@ -1,48 +1,54 @@
 package net.whitedesert.photosign.activities;
 
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 
 import net.whitedesert.photosign.R;
 import net.whitedesert.photosign.database.MyDBHelper;
 import net.whitedesert.photosign.database.SignsDB;
 import net.whitedesert.photosign.utils.AskUtil;
+import net.whitedesert.photosign.utils.BitmapUtil;
+import net.whitedesert.photosign.utils.FileUtil;
 import net.whitedesert.photosign.utils.SigningUtil;
+import net.whitedesert.photosign.utils.ThreadUtil;
 import net.whitedesert.photosign.utils.ToastUtil;
 
 
 public class MainActivity extends AdActivity {
+
+    private ImageView lastPhotoView;
+
+    private String lastImagePath;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        initUtils();
+        lastPhotoView = (ImageView) this.findViewById(R.id.lastImage);
+
+    }
+
+    private void initUtils() {
         SignsDB.initializeInstance(new MyDBHelper(getApplicationContext()));
         ToastUtil.initializeInstance(this);
-
-    }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
+        ThreadUtil.initalizeInstance(this);
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+    protected void onResume() {
+        final Runnable setLastPhoto = new Runnable() {
+            @Override
+            public void run() {
+                lastImagePath = FileUtil.getLatestPhoto(MainActivity.this);
+                lastPhotoView.setImageBitmap(BitmapUtil.decodeFile(lastImagePath, lastPhotoView.getWidth() / 2, lastPhotoView.getHeight() / 2));
+            }
+        };
+
+        super.onResume();
+        lastPhotoView.post(setLastPhoto);
     }
 
 
@@ -56,6 +62,10 @@ public class MainActivity extends AdActivity {
 
     public void onClickCreateSign(View view) {
         AskUtil.selectMethodSign(this);
+    }
+
+    public void onClickLastImage(View view) {
+        SigningUtil.signSingle(lastImagePath, this);
     }
 
 }

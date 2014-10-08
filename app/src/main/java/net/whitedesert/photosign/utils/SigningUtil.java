@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 
 import net.whitedesert.photosign.R;
 import net.whitedesert.photosign.activities.GalleryActivity;
+import net.whitedesert.photosign.activities.SigningActivity;
 import net.whitedesert.photosign.activities.Types;
 
 /**
@@ -46,6 +47,18 @@ public final class SigningUtil {
         }
         Intent i = new Intent(activity, GalleryActivity.class);
         i.putExtra(Types.TYPE, Types.OPEN_GALLERY_SINGLE_SIGNING_TYPE);
+        activity.startActivity(i);
+    }
+
+    public static void signSingle(final String path, final Activity activity) {
+        if (SignUtil.noSigns()) {
+            ToastUtil.toastShort(R.string.oops_no_sign);
+            AskUtil.selectMethodSign(activity);
+            return;
+        }
+
+        Intent i = new Intent(activity, SigningActivity.class);
+        i.putExtra(Types.PATH_TYPE, path);
         activity.startActivity(i);
     }
 

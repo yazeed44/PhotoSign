@@ -42,7 +42,7 @@ public final class DialogUtil {
         final AlertDialog.Builder dialog = new AlertDialog.Builder(new ContextThemeWrapper(activity, R.style.dialog));
         dialog.setTitle(title);
         dialog.setMessage(message);
-        dialog.setIcon(iconId);
+        //  dialog.setIcon(iconId);
 
         if (cancelBtn)
             dialog.setNegativeButton(R.string.cancel, DISMISS_LISTENER);

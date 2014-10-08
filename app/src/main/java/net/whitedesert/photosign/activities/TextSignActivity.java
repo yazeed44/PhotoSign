@@ -3,18 +3,17 @@ package net.whitedesert.photosign.activities;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 
 import net.whitedesert.photosign.R;
 import net.whitedesert.photosign.utils.SaveUtil;
-import net.whitedesert.photosign.utils.SetListenUtil;
 import net.whitedesert.photosign.utils.SignRaw;
 import net.whitedesert.photosign.utils.SignUtil;
+
+import yuku.ambilwarna.AmbilWarnaDialog;
 
 /**
  * Created by yazeed44 on 9/20/14.
@@ -24,7 +23,6 @@ public class TextSignActivity extends AdActivity {
     private final SignRaw raw = new SignRaw();
     private ImageView preview;
     private EditText text;
-    private Button chooseColorBtn;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -35,9 +33,6 @@ public class TextSignActivity extends AdActivity {
 
         text = (EditText) this.findViewById(R.id.signTextEdit);
         setUpText();
-
-        chooseColorBtn = (Button) this.findViewById(R.id.baseChooseColorBtn);
-        SetListenUtil.setUpChooseColorBtn(chooseColorBtn, null, raw, preview, this);
 
 
     }
@@ -52,7 +47,6 @@ public class TextSignActivity extends AdActivity {
         super.onWindowFocusChanged(hasFocus);
         //Here you can get the size!
 
-        Log.i("TextSignActivity : onCreate", "preview : , width = " + preview.getMeasuredWidth() + "   ,  height =  " + preview.getMeasuredHeight());
 
         preview.setImageBitmap(SignUtil.createBitmap(raw, true));
 
@@ -70,7 +64,29 @@ public class TextSignActivity extends AdActivity {
         preview.setImageBitmap(SignUtil.createBitmap(raw, true));
     }
 
+    //When user click on choose color btn
+    public void onClickChooseColor(View view) {
+
+        AmbilWarnaDialog.OnAmbilWarnaListener listener = new AmbilWarnaDialog.OnAmbilWarnaListener() {
+            @Override
+            public void onOk(AmbilWarnaDialog dialog, int color) {
+                raw.setColor(color);
+                preview.setImageBitmap(SignUtil.createBitmap(raw, true));
+            }
+
+            @Override
+            public void onCancel(AmbilWarnaDialog dialog) {
+
+            }
+        };
+
+        final int initalColor = raw.getColor();
+        new AmbilWarnaDialog(this, initalColor, listener).show();
+    }
+
+
     private void setUpText() {
+
         text.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {

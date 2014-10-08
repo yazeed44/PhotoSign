@@ -17,6 +17,10 @@ import net.whitedesert.photosign.R;
  */
 public final class ViewUtil {
 
+    private ViewUtil() {
+        throw new AssertionError();
+    }
+
     public static Point getDisplay(Context context) {
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         Display display = wm.getDefaultDisplay();

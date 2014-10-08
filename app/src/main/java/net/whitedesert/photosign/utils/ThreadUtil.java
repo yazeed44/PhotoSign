@@ -10,8 +10,14 @@ import android.util.Log;
  */
 public final class ThreadUtil {
 
+    private static Activity mActivity;
+
     private ThreadUtil() {
         throw new AssertionError();
+    }
+
+    public static void initalizeInstance(final Activity activity) {
+        mActivity = activity;
     }
 
     public static void join(Thread t) {
@@ -23,8 +29,8 @@ public final class ThreadUtil {
         }
     }
 
-    public static void showDialog(final AlertDialog.Builder dialog, final Activity activity) {
-        activity.runOnUiThread(new Runnable() {
+    public static void showDialog(final AlertDialog.Builder dialog) {
+        mActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 dialog.show();
@@ -32,8 +38,8 @@ public final class ThreadUtil {
         });
     }
 
-    public static void showDialog(final AlertDialog dialog, final Activity activity) {
-        activity.runOnUiThread(new Runnable() {
+    public static void showDialog(final AlertDialog dialog) {
+        mActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 dialog.show();
@@ -41,8 +47,8 @@ public final class ThreadUtil {
         });
     }
 
-    public static void dismissDialog(final AlertDialog dialog, final Activity activity) {
-        activity.runOnUiThread(new Runnable() {
+    public static void dismissDialog(final AlertDialog dialog) {
+        mActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 dialog.dismiss();
@@ -50,14 +56,6 @@ public final class ThreadUtil {
         });
     }
 
-    public static void cancelDialog(final AlertDialog dialog, final Activity activity) {
-        activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                dialog.cancel();
-            }
-        });
-    }
 
     public static void startAndJoin(Thread t) {
         t.start();

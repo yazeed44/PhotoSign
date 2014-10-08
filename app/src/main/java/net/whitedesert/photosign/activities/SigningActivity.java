@@ -10,7 +10,6 @@ import android.widget.TextView;
 import net.whitedesert.photosign.R;
 import net.whitedesert.photosign.utils.BitmapUtil;
 import net.whitedesert.photosign.utils.SaveUtil;
-import net.whitedesert.photosign.utils.SetListenUtil;
 import net.whitedesert.photosign.utils.Sign;
 import net.whitedesert.photosign.utils.SignUtil;
 import net.whitedesert.photosign.views.SigningView;
@@ -20,34 +19,63 @@ import net.whitedesert.photosign.views.SigningView;
  */
 public class SigningActivity extends AdActivity {
 
-    SigningView signingView;
+    private SigningView signingView;
+    private SeekBar opacitySeek;
+    private TextView opacityText;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_signing);
         signingView = (SigningView) this.findViewById(R.id.signingView);
-        final SeekBar opacitySeek = (SeekBar) this.findViewById(R.id.opacity_seek);
-        final TextView opacityText = (TextView) this.findViewById(R.id.opacity_text);
-        opacitySeek.setMax(255);
-        opacitySeek.setProgress(opacitySeek.getMax());
-        opacityText.setText(this.getString(R.string.opacity_text) + " : " + opacitySeek.getProgress());
+        opacitySeek = (SeekBar) this.findViewById(R.id.opacity_seek);
+        opacityText = (TextView) this.findViewById(R.id.opacity_text);
+
         final Intent i = this.getIntent();
 
-        final String path = i.getStringExtra(Types.PATH_TYPE);
+        final String photoPath = i.getStringExtra(Types.PATH_TYPE);
 
 
-        final Bitmap photo = BitmapUtil.decodeFile(path);
+        final Bitmap photo = BitmapUtil.decodeFile(photoPath);
 
 
-        final Sign sign = SignUtil.getLatestSign();
+        final Sign lastSign = SignUtil.getLatestSign();
 
 
-        signingView.setSign(sign);
+        signingView.setSign(lastSign);
         signingView.setPhoto(photo);
 
-        SetListenUtil.setUpOpacitySeek(opacitySeek, opacityText, signingView, sign);
+        setUpOpacity(lastSign);
 
+
+    }
+
+    private void setUpOpacity(final Sign sign) {
+        opacitySeek.setMax(getResources().getInteger(R.integer.opacity_max));
+        opacitySeek.setProgress(opacitySeek.getMax());
+        final String opacityString = this.getString(R.string.opacity_text) + " : ";
+
+        opacityText.setText(opacityString + opacitySeek.getProgress());
+
+        opacitySeek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
+                final Bitmap updatedSign = BitmapUtil.getUpdatedOpacity(sign.getBitmap(signingView.getSignWidthHeight()), progress);
+                opacityText.setText(opacityString + progress);
+                signingView.setSign(updatedSign);
+                signingView.invalidate();
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
 
     }
 

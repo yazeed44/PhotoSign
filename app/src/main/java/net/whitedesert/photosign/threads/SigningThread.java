@@ -25,16 +25,16 @@ public final class SigningThread extends Thread {
     private final String signName;
 
     private final Bitmap photo, signBitmap;
-    private final XY.Float xy;
+    private final XY.Float signingXY;
     private final XY orgPhotoDimen;
     private String pathSigned;
 
-    public SigningThread(Bitmap photo, Bitmap signBitmap, String signName, Activity activity, XY.Float xy, final XY orgPhotoDimen) {
+    public SigningThread(Bitmap photo, Bitmap signBitmap, String signName, Activity activity, XY.Float signingXY, final XY orgPhotoDimen) {
         this.signName = signName;
         this.signBitmap = signBitmap;
         this.photo = photo;
         this.activity = activity;
-        this.xy = xy;
+        this.signingXY = signingXY;
         this.orgPhotoDimen = orgPhotoDimen;
         this.setName("Signing Thread - " + signName);
     }
@@ -42,7 +42,7 @@ public final class SigningThread extends Thread {
     @Override
     public void run() {
 
-        final float x = xy.getX(), y = xy.getY();
+        final float x = signingXY.getX(), y = signingXY.getY();
 
         Looper.prepare();
 
@@ -58,7 +58,7 @@ public final class SigningThread extends Thread {
 
 //        ThreadUtil.dismissDialog(progressDialog, activity);
         final AlertDialog.Builder previewDialog = DialogUtil.getImageViewDialog("Test", "Test", signed, activity);
-        ThreadUtil.showDialog(previewDialog, activity);
+        ThreadUtil.showDialog(previewDialog);
 
     }
 
