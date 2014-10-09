@@ -1,17 +1,17 @@
 package net.whitedesert.photosign.activities;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ImageView;
 
 import net.whitedesert.photosign.R;
 import net.whitedesert.photosign.utils.SaveUtil;
-import net.whitedesert.photosign.utils.SignRaw;
 import net.whitedesert.photosign.utils.SignUtil;
+import net.whitedesert.photosign.views.TypeSignPreviewView;
 
 import yuku.ambilwarna.AmbilWarnaDialog;
 
@@ -20,25 +20,26 @@ import yuku.ambilwarna.AmbilWarnaDialog;
  */
 public class TextSignActivity extends AdActivity {
 
-    private final SignRaw raw = new SignRaw();
-    private ImageView preview;
+    //  private final SignRaw raw = new SignRaw();
+    private TypeSignPreviewView preview;
     private EditText text;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.text_sign_customize);
-        preview = (ImageView) this.findViewById(R.id.signTextPreview);
+        setContentView(R.layout.activity_text_sign_customize);
+        preview = (TypeSignPreviewView) this.findViewById(R.id.signTextPreview);
 
 
         text = (EditText) this.findViewById(R.id.signTextEdit);
+        setPreviewText("Preview");
         setUpText();
 
 
     }
 
     public void onClickDone(View view) {
-        SaveUtil.askNameAndAddSign(SignUtil.createBitmap(raw, true), this);
+        SaveUtil.askNameAndAddSign(SignUtil.createBitmap(preview.getSignRaw(), true), this);
     }
 
     @Override
@@ -48,20 +49,21 @@ public class TextSignActivity extends AdActivity {
         //Here you can get the size!
 
 
-        preview.setImageBitmap(SignUtil.createBitmap(raw, true));
-
     }
 
     public void onClickBoldCheck(View view) {
         final CheckBox box = (CheckBox) view;
 
         if (box.isChecked()) {
-            raw.setBold(true);
+            //TODO
+            //it will be a bug when we add fonts
+
+            preview.setTypeface(null, Typeface.BOLD);
         } else {
-            raw.setBold(false);
+            preview.setTypeface(null, Typeface.NORMAL);
         }
 
-        preview.setImageBitmap(SignUtil.createBitmap(raw, true));
+
     }
 
     //When user click on choose color btn
@@ -70,8 +72,9 @@ public class TextSignActivity extends AdActivity {
         AmbilWarnaDialog.OnAmbilWarnaListener listener = new AmbilWarnaDialog.OnAmbilWarnaListener() {
             @Override
             public void onOk(AmbilWarnaDialog dialog, int color) {
-                raw.setColor(color);
-                preview.setImageBitmap(SignUtil.createBitmap(raw, true));
+
+                preview.setTextColor(color);
+
             }
 
             @Override
@@ -80,7 +83,7 @@ public class TextSignActivity extends AdActivity {
             }
         };
 
-        final int initalColor = raw.getColor();
+        final int initalColor = preview.getCurrentTextColor();
         new AmbilWarnaDialog(this, initalColor, listener).show();
     }
 
@@ -95,8 +98,8 @@ public class TextSignActivity extends AdActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-                raw.setText(charSequence.toString());
-                preview.setImageBitmap(SignUtil.createBitmap(raw, true));
+
+                setPreviewText(charSequence.toString());
             }
 
             @Override
@@ -104,5 +107,16 @@ public class TextSignActivity extends AdActivity {
 
             }
         });
+    }
+
+    private void setPreviewText(final String text) {
+        final String DOUBLE_BYTE_SPACE = "\u3000";
+
+        String fixString = "";
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB_MR1
+                && android.os.Build.VERSION.SDK_INT <= android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
+            fixString = DOUBLE_BYTE_SPACE;
+        }
+        preview.setText(fixString + text + fixString);
     }
 }

@@ -13,15 +13,10 @@ public final class SignRaw {
 
 
     private Paint paint = new Paint();
-    private String text = "Test";
+    private String text = "Preview";
     private int color = Color.WHITE;
     private float textSize = 50f;
-    private int opacity = 255;
-    private boolean bold = false;
     private int width = SignUtil.DEFAULT_SIGN_WIDTH, height = SignUtil.DEFAULT_SIGN_HEIGHT;
-
-    private String font = "";
-    private String name = "Test-name";
 
     private Typeface tf;
 
@@ -29,24 +24,7 @@ public final class SignRaw {
 
         paint.setColor(getColor());
         paint.setTextSize(getTextSize());
-
-        int style;
-        if (isBold()) {
-            style = Typeface.BOLD;
-        } else {
-            style = Typeface.NORMAL;
-        }
-        final Typeface typeface;
-        if (tf == null) {
-            typeface = Typeface.create(getFont(), style);
-        } else {
-            typeface = tf;
-        }
-
-        paint.setTypeface(typeface);
-        paint.setAlpha(getOpacity());
-
-
+        paint.setTypeface(tf);
         return paint;
     }
 
@@ -62,14 +40,6 @@ public final class SignRaw {
         this.text = text;
     }
 
-    public int getOpacity() {
-
-        return this.opacity;
-    }
-
-    public void setOpacity(int opacity) {
-        this.opacity = opacity;
-    }
 
     public void setTypeface(final Typeface tf) {
         this.tf = tf;
@@ -83,13 +53,6 @@ public final class SignRaw {
         this.color = color;
     }
 
-    public String getFont() {
-        return this.font;
-    }
-
-    public void setFont(String font) {
-        this.font = font;
-    }
 
     public float getTextSize() {
         return this.textSize;
@@ -97,22 +60,6 @@ public final class SignRaw {
 
     public void setTextSize(float textSize) {
         this.textSize = textSize;
-    }
-
-    public boolean isBold() {
-        return this.bold;
-    }
-
-    public void setBold(boolean bold) {
-        this.bold = bold;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     private Rect getRect() {

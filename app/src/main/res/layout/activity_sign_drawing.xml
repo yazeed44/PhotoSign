@@ -10,7 +10,7 @@
     tools:context=".activities.DrawSignActivity">
 
     <include
-        layout="@layout/sign_draw_titlebar"
+        layout="@layout/title_bar_sign_draw"
         android:layout_width="match_parent"
 
         android:layout_height="wrap_content" />

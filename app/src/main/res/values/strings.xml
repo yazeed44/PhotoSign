@@ -6,7 +6,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="gallery_name">Gallery</string>
     <string name="sign_text_view">Your name :</string>
-    <string name="sign_name_hint">Enter text here</string>
+    <string name="sign_name_hint">Type text here</string>
     <string name="file_saved">File saved to : </string>
     <string name="sign_draw_titlebar_text">Draw your signature</string>
     <string name="reset_desc">Reset the sign</string>
@@ -15,7 +15,7 @@
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="save_title">Save the signature</string>
-    <string name="save_message">Enter the signature name , it must be unique</string>
+    <string name="save_message">Type the signature name , it must be unique</string>
     <string name="error_title">Error</string>
     <string name="error_name_empty">The name is empty , you have to type a name</string>
     <string name="error_name_repeated">This name is used , please type another name</string>

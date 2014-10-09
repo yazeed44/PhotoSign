@@ -4,7 +4,6 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.view.View;
 
 import net.whitedesert.photosign.threads.DBThread;
 
@@ -12,7 +11,7 @@ import java.util.ArrayList;
 
 /**
  * Created by yazeed44 on 8/8/14.
- * Class for dealing with signs
+ * Class for dealing with signatures
  */
 public final class SignUtil {
 
@@ -89,11 +88,6 @@ public final class SignUtil {
         return image;
     }
 
-    public static Bitmap getTestSign(final View view) {
-
-        final SignRaw raw = new SignRaw();
-        return createBitmap(raw, view.getWidth(), view.getHeight());
-    }
 
     public static Bitmap createBitmap(SignRaw signRaw, boolean measured) {
 

@@ -7,7 +7,7 @@
     android:orientation="vertical">
 
     <include
-        layout="@layout/titlebar"
+        layout="@layout/title_bar_gallery"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
 

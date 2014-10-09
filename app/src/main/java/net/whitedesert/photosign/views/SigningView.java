@@ -25,7 +25,7 @@ public class SigningView extends ImageView {
     private Bitmap photo;
     private Bitmap signBitmap;
     private Sign sign;
-    private XY orgPhotoDimen = new XY();//Orignial photo size
+    private XY orgPhotoDimen = new XY();//Original photo size
     private float x = -1, y = -1;
     private float touchX, touchY;
 
@@ -49,7 +49,10 @@ public class SigningView extends ImageView {
             photo = Bitmap.createScaledBitmap(photo, w, h, true);
             setImageBitmap(photo);
             if (signBitmap != null) {
-                signBitmap = Bitmap.createScaledBitmap(signBitmap, photo.getWidth() / widthFactor, photo.getHeight() / heightFactor, true);
+                //TEMP
+                //TODO
+
+                signBitmap = Bitmap.createScaledBitmap(signBitmap, w / widthFactor, h / heightFactor, true);
                 XY photoCenter = PhotoUtil.getCenter(photo);
                 setXY(photoCenter);
                 touchX = photoCenter.getX();
@@ -223,9 +226,5 @@ public class SigningView extends ImageView {
 
         return new XY.Float(originalImageOffsetX, originalImageOffsetY);
 
-    }
-
-    private XY.Float fixXY(XY xy) {
-        return fixXY(xy.getX(), xy.getY());
     }
 }

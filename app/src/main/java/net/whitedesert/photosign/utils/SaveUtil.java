@@ -3,6 +3,7 @@ package net.whitedesert.photosign.utils;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -91,7 +92,9 @@ public final class SaveUtil {
 
                 sign.setName(signName);
 
+                drawView.setBackgroundColor(Color.TRANSPARENT);
                 final String savedPath = saveDrawSign(drawView, signName, activity);
+                drawView.setBackgroundColor(Color.WHITE);
 
                 if (!CheckUtil.checkSign(savedPath, activity)) {
                     return;

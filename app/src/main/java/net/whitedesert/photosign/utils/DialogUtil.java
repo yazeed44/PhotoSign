@@ -82,7 +82,7 @@ public final class DialogUtil {
     public static AlertDialog.Builder getListDialog(ArrayList<String> texts, String title, String message, AdapterView.OnItemClickListener listener, final Activity activity) {
 
         final AlertDialog.Builder dialog = initDialog(title, message, android.R.drawable.ic_dialog_info, true, activity);
-        View listDialog = activity.getLayoutInflater().inflate(R.layout.list_view_dialog, null);
+        View listDialog = activity.getLayoutInflater().inflate(R.layout.dialg_list_view, null);
         ListView listView = (ListView) listDialog.findViewById(R.id.dialogList);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(listDialog.getContext(), android.R.layout.simple_list_item_1, texts);
         listView.setAdapter(adapter);

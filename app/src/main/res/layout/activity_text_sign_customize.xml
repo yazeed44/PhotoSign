@@ -22,14 +22,18 @@
             android:layout_weight="0.5" />
     </LinearLayout>
 
-    <ImageView
+    <net.whitedesert.photosign.views.TypeSignPreviewView
         android:id="@+id/signTextPreview"
+        style="@style/text_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="10dp"
         android:layout_weight="0.2"
-        android:background="@drawable/button_background"
-        android:contentDescription="@string/sign_text_preview" />
+        android:contentDescription="@string/sign_text_preview"
+        android:textSize="40sp"
+
+
+        />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -50,6 +54,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.2"
+            android:checked="true"
             android:onClick="onClickBoldCheck"
             android:text="@string/check_mark_bold" />
     </LinearLayout>
@@ -61,7 +66,7 @@
         android:baselineAligned="false">
 
         <include
-            layout="@layout/base_choose_color"
+            layout="@layout/btn_choose_color"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </LinearLayout>

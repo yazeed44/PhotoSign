@@ -31,9 +31,9 @@ public class MyDBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
 
 
-        String createSigns = "CREATE TABLE " + TABLE_SIGNS + "(" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_NAME + " TEXT NOT NULL UNIQUE," + COLUMN_PATH + " TEXT NOT NULL  " + ");";
+        String createSignsTable = "CREATE TABLE " + TABLE_SIGNS + "(" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_NAME + " TEXT NOT NULL UNIQUE," + COLUMN_PATH + " TEXT NOT NULL  " + ");";
 
-        sqLiteDatabase.execSQL(createSigns);
+        sqLiteDatabase.execSQL(createSignsTable);
     }
 
     @Override

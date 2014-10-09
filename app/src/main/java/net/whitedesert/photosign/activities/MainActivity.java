@@ -43,7 +43,7 @@ public class MainActivity extends AdActivity {
             @Override
             public void run() {
                 lastImagePath = FileUtil.getLatestPhoto(MainActivity.this);
-                lastPhotoView.setImageBitmap(BitmapUtil.decodeFile(lastImagePath, lastPhotoView.getWidth() / 2, lastPhotoView.getHeight() / 2));
+                lastPhotoView.setImageBitmap(BitmapUtil.decodeFile(lastImagePath, (int) (lastPhotoView.getWidth() / 1.5), (int) (lastPhotoView.getHeight() / 1.5)));
             }
         };
 
