@@ -9,7 +9,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
-import net.whitedesert.photosign.utils.SignUtil;
+import net.whitedesert.photosign.utils.SignatureUtil;
 
 /**
  * Created by yazeed44 on 8/14/14.
@@ -35,7 +35,7 @@ public class DrawSignView extends View {
 
     private void setupDrawing() {
         drawPath = new Path();
-        drawPaint = SignUtil.getDefaultPaintForDraw();
+        drawPaint = SignatureUtil.getDefaultPaintForDraw();
         canvasPaint = new Paint(Paint.DITHER_FLAG);
 
     }

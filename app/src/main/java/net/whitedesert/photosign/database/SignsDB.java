@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import net.whitedesert.photosign.utils.Sign;
+import net.whitedesert.photosign.utils.Signature;
 
 import java.util.ArrayList;
 
@@ -68,62 +68,62 @@ public final class SignsDB {
     }
 
 
-    public long insertSign(Sign sign) throws SQLiteConstraintException {
+    public long insertSign(Signature signature) throws SQLiteConstraintException {
         ContentValues values = new ContentValues();
-        values.put(COLUMN_PATH, sign.getPath());
-        values.put(COLUMN_NAME, sign.getName());
+        values.put(COLUMN_PATH, signature.getPath());
+        values.put(COLUMN_NAME, signature.getName());
         return db.insert(TABLE_SIGNS, null, values);
 
     }
 
 
-    public Sign getSign(int id) {
+    public Signature getSign(int id) {
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_SIGNS + " WHERE " + COLUMN_ID + " = " + id, null);
         cursor.moveToFirst();
-        Sign sign = initSign(cursor);
+        Signature signature = initSign(cursor);
         cursor.close();
-        return sign;
+        return signature;
     }
 
-    public Sign getSign(String name) {
+    public Signature getSign(String name) {
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_SIGNS + " WHERE " + COLUMN_NAME + " = " + "'" + name + "'" + ";", null);
         cursor.moveToFirst();
-        Sign sign = initSign(cursor);
+        Signature signature = initSign(cursor);
         cursor.close();
-        return sign;
+        return signature;
     }
 
-    public Sign getLatestSign() {
+    public Signature getLatestSign() {
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_SIGNS + " WHERE " + COLUMN_ID + " = (SELECT MAX(" + COLUMN_ID + ") FROM " + TABLE_SIGNS + ");", null);
         cursor.moveToFirst();
-        Sign sign = initSign(cursor);
+        Signature signature = initSign(cursor);
         cursor.close();
-        return sign;
+        return signature;
     }
 
-    public ArrayList<Sign> getSigns() throws SQLiteException {
-        ArrayList<Sign> signs = new ArrayList<Sign>();
+    public ArrayList<Signature> getSigns() throws SQLiteException {
+        ArrayList<Signature> signatures = new ArrayList<Signature>();
 
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_SIGNS, null);
 
         cursor.moveToFirst();
 
         while (!cursor.isAfterLast()) {
-            Sign sign = initSign(cursor);
-            signs.add(sign);
+            Signature signature = initSign(cursor);
+            signatures.add(signature);
             cursor.moveToNext();
         }
         cursor.close();
 
-        return signs;
+        return signatures;
     }
 
 
-    public Sign initSign(Cursor cursor) {
-        Sign sign = new Sign();
-        sign.setPath(cursor.getString(cursor.getColumnIndex(COLUMN_PATH)));
-        sign.setName(cursor.getString(cursor.getColumnIndex(COLUMN_NAME)));
-        return sign;
+    public Signature initSign(Cursor cursor) {
+        Signature signature = new Signature();
+        signature.setPath(cursor.getString(cursor.getColumnIndex(COLUMN_PATH)));
+        signature.setName(cursor.getString(cursor.getColumnIndex(COLUMN_NAME)));
+        return signature;
     }
 
 

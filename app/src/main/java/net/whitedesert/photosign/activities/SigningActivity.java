@@ -10,8 +10,8 @@ import android.widget.TextView;
 import net.whitedesert.photosign.R;
 import net.whitedesert.photosign.utils.BitmapUtil;
 import net.whitedesert.photosign.utils.SaveUtil;
-import net.whitedesert.photosign.utils.Sign;
-import net.whitedesert.photosign.utils.SignUtil;
+import net.whitedesert.photosign.utils.Signature;
+import net.whitedesert.photosign.utils.SignatureUtil;
 import net.whitedesert.photosign.views.SigningView;
 
 /**
@@ -39,18 +39,18 @@ public class SigningActivity extends AdActivity {
         final Bitmap photo = BitmapUtil.decodeFile(photoPath);
 
 
-        final Sign lastSign = SignUtil.getLatestSign();
+        final Signature lastSignature = SignatureUtil.getLatestSign();
 
 
-        signingView.setSign(lastSign);
+        signingView.setSignature(lastSignature);
         signingView.setPhoto(photo);
 
-        setUpOpacity(lastSign);
+        setUpOpacity(lastSignature);
 
 
     }
 
-    private void setUpOpacity(final Sign sign) {
+    private void setUpOpacity(final Signature signature) {
         opacitySeek.setMax(getResources().getInteger(R.integer.opacity_max));
         opacitySeek.setProgress(opacitySeek.getMax());
         final String opacityString = this.getString(R.string.opacity_text) + " : ";
@@ -60,7 +60,7 @@ public class SigningActivity extends AdActivity {
         opacitySeek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
-                final Bitmap updatedSign = BitmapUtil.getUpdatedOpacity(sign.getBitmap(signingView.getSignWidthHeight()), progress);
+                final Bitmap updatedSign = BitmapUtil.getUpdatedOpacity(signature.getBitmap(signingView.getSignWidthHeight()), progress);
                 opacityText.setText(opacityString + progress);
                 signingView.setSign(updatedSign);
                 signingView.invalidate();
@@ -80,6 +80,6 @@ public class SigningActivity extends AdActivity {
     }
 
     public void onClickDone(View view) {
-        SaveUtil.saveSignedPhoto(signingView, this);
+        SaveUtil.doneSigningPhoto(signingView, this);
     }
 }

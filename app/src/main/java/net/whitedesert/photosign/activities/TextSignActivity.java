@@ -10,7 +10,7 @@ import android.widget.EditText;
 
 import net.whitedesert.photosign.R;
 import net.whitedesert.photosign.utils.SaveUtil;
-import net.whitedesert.photosign.utils.SignUtil;
+import net.whitedesert.photosign.utils.SignatureUtil;
 import net.whitedesert.photosign.views.TypeSignPreviewView;
 
 import yuku.ambilwarna.AmbilWarnaDialog;
@@ -39,7 +39,7 @@ public class TextSignActivity extends AdActivity {
     }
 
     public void onClickDone(View view) {
-        SaveUtil.askNameAndAddSign(SignUtil.createBitmap(preview.getSignRaw(), true), this);
+        SaveUtil.askNameAndAddSign(SignatureUtil.createBitmap(preview.getSignRaw(), true), this);
     }
 
     @Override

@@ -31,16 +31,29 @@
     </LinearLayout>
 
 
-    <net.whitedesert.photosign.views.SigningView
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="0.15">
+
+        <net.whitedesert.photosign.views.SigningView
         android:id="@+id/signingView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="1dp"
         android:layout_marginTop="1dp"
-        android:layout_weight="0.15"
-        android:adjustViewBounds="true"
+
+            android:adjustViewBounds="true"
         android:background="#ffffff" />
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="wtf" />
+
+    </FrameLayout>
 
     <LinearLayout
 

@@ -7,12 +7,12 @@ import android.os.Looper;
 
 import net.whitedesert.photosign.utils.CheckUtil;
 import net.whitedesert.photosign.utils.DialogUtil;
+import net.whitedesert.photosign.utils.RandomUtil;
 import net.whitedesert.photosign.utils.SaveUtil;
+import net.whitedesert.photosign.utils.SigningOptions;
 import net.whitedesert.photosign.utils.SigningUtil;
 import net.whitedesert.photosign.utils.ThreadUtil;
 import net.whitedesert.photosign.utils.XY;
-
-import java.util.Random;
 
 /**
  * Created by yazeed44 on 8/7/14.
@@ -29,13 +29,13 @@ public final class SigningThread extends Thread {
     private final XY orgPhotoDimen;
     private String pathSigned;
 
-    public SigningThread(Bitmap photo, Bitmap signBitmap, String signName, Activity activity, XY.Float signingXY, final XY orgPhotoDimen) {
-        this.signName = signName;
-        this.signBitmap = signBitmap;
-        this.photo = photo;
+    public SigningThread(SigningOptions options, Activity activity) {
+        this.signName = options.getSignature().getName();
+        this.signBitmap = options.getSignature().getBitmap(options.getSignDimension());
+        this.photo = options.getPhoto();
         this.activity = activity;
-        this.signingXY = signingXY;
-        this.orgPhotoDimen = orgPhotoDimen;
+        this.signingXY = options.getSigningXY();
+        this.orgPhotoDimen = options.getOriginalPhotoDimen();
         this.setName("Signing Thread - " + signName);
     }
 
@@ -51,7 +51,9 @@ public final class SigningThread extends Thread {
 
         final Bitmap signed = Bitmap.createScaledBitmap(SigningUtil.signOnPhoto(photo, signBitmap, x, y), orgPhotoDimen.getX(), orgPhotoDimen.getY(), true);//sign on photo then return it to it's originial size
 
-        pathSigned = SaveUtil.savePicFromBitmap(signed, activity, SaveUtil.SIGNED_PHOTO_DIR, "Signed Photo - " + signName + new Random().nextInt((int) Math.abs(x + 1)), true);
+        final String signedPhotoFileName = "Signed Photo - " + signName + RandomUtil.getRandomInt((int) Math.abs(x + 1));
+
+        pathSigned = SaveUtil.saveSignedPhoto(signed, activity, signedPhotoFileName);
 
         CheckUtil.checkSign(pathSigned, activity);
 

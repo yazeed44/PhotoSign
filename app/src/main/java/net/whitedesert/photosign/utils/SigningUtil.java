@@ -40,7 +40,7 @@ public final class SigningUtil {
 
 
     public static void openGalleryToSignSingle(final Activity activity) {
-        if (SignUtil.noSigns()) {
+        if (SignatureUtil.noSigns()) {
             ToastUtil.toastShort(R.string.oops_no_sign);
             AskUtil.selectMethodSign(activity);
             return;
@@ -51,7 +51,7 @@ public final class SigningUtil {
     }
 
     public static void signSingle(final String path, final Activity activity) {
-        if (SignUtil.noSigns()) {
+        if (SignatureUtil.noSigns()) {
             ToastUtil.toastShort(R.string.oops_no_sign);
             AskUtil.selectMethodSign(activity);
             return;

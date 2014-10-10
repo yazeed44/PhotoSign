@@ -8,7 +8,7 @@ import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.widget.TextView;
 
-import net.whitedesert.photosign.utils.SignRaw;
+import net.whitedesert.photosign.utils.SignatureRaw;
 
 /**
  * Created by yazeed44 on 10/9/14.
@@ -18,7 +18,7 @@ public class TypeSignPreviewView extends TextView {
 
 
     // Minimum text size for this text view
-    public static final float MIN_TEXT_SIZE = 40;
+    public static final float MIN_TEXT_SIZE = 30;
     // Lower bounds for text size
     private float mMinTextSize = MIN_TEXT_SIZE;
     // Our ellipse string
@@ -296,8 +296,8 @@ public class TypeSignPreviewView extends TextView {
         return layout.getHeight();
     }
 
-    public SignRaw getSignRaw() {
-        final SignRaw raw = new SignRaw();
+    public SignatureRaw getSignRaw() {
+        final SignatureRaw raw = new SignatureRaw();
         raw.setColor(getCurrentTextColor());
         raw.setText(getText().toString());
         raw.setTypeface(getTypeface());

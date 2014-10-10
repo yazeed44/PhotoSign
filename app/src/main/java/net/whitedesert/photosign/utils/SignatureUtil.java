@@ -13,19 +13,19 @@ import java.util.ArrayList;
  * Created by yazeed44 on 8/8/14.
  * Class for dealing with signatures
  */
-public final class SignUtil {
+public final class SignatureUtil {
 
     public static final int DEFAULT_SIGN_HEIGHT = 200;
     public static final int DEFAULT_SIGN_WIDTH = 200;
 
 
-    private SignUtil() {
+    private SignatureUtil() {
         throw new AssertionError();
     }
 
-    public static long addSign(final Sign sign) {
+    public static long addSign(final Signature signature) {
 
-        DBThread.AddSignThread thread = new DBThread.AddSignThread(sign);
+        DBThread.AddSignThread thread = new DBThread.AddSignThread(signature);
         ThreadUtil.startAndJoin(thread);
         long id = thread.getId();
         CheckUtil.checkSign(id);
@@ -34,18 +34,18 @@ public final class SignUtil {
     }
 
 
-    public static Sign getSign(String name) {
+    public static Signature getSign(String name) {
         DBThread.GetSignThread thread = new DBThread.GetSignThread(name);
         ThreadUtil.startAndJoin(thread);
-        return thread.getSign();
+        return thread.getSignature();
     }
 
-    public static ArrayList<Sign> getSigns() {
+    public static ArrayList<Signature> getSigns() {
 
         DBThread.GetSignThread thread = new DBThread.GetSignThread(DBThread.GetSignThread.GET_ALL_SIGNS);
         ThreadUtil.startAndJoin(thread);
 
-        return thread.getSigns();
+        return thread.getSignatures();
     }
 
     public static boolean isDuplicatedSign(String name) {
@@ -55,10 +55,10 @@ public final class SignUtil {
         return thread.getIsDuplicated();
     }
 
-    public static Sign getLatestSign() {
+    public static Signature getLatestSign() {
         final DBThread.GetSignThread thread = new DBThread.GetSignThread(DBThread.GetSignThread.GET_LATEST_SIGN);
         ThreadUtil.startAndJoin(thread);
-        return thread.getSign();
+        return thread.getSignature();
     }
 
     /**
@@ -78,23 +78,23 @@ public final class SignUtil {
     }
 
 
-    public static Bitmap createBitmap(SignRaw signRaw, int width, int height) {
-        final Paint paint = signRaw.getPaint();
+    public static Bitmap createBitmap(SignatureRaw signatureRaw, int width, int height) {
+        final Paint paint = signatureRaw.getPaint();
 
         final float baseline = (int) (-paint.ascent() + 0.5f); // ascent() is negative
         final Bitmap image = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         final Canvas canvas = new Canvas(image);
-        canvas.drawText(signRaw.getText(), 0, baseline, paint);
+        canvas.drawText(signatureRaw.getText(), 0, baseline, paint);
         return image;
     }
 
 
-    public static Bitmap createBitmap(SignRaw signRaw, boolean measured) {
+    public static Bitmap createBitmap(SignatureRaw signatureRaw, boolean measured) {
 
         if (measured)
-            return createBitmap(signRaw, signRaw.getMeasuredWidth(), signRaw.getMeasuredHeight());
+            return createBitmap(signatureRaw, signatureRaw.getMeasuredWidth(), signatureRaw.getMeasuredHeight());
         else {
-            return createBitmap(signRaw, signRaw.getWidth(), signRaw.getHeight());
+            return createBitmap(signatureRaw, signatureRaw.getWidth(), signatureRaw.getHeight());
         }
     }
 
@@ -152,7 +152,7 @@ public final class SignUtil {
     }
 
     public static boolean noSigns() {
-        return SignUtil.getSigns().isEmpty();
+        return SignatureUtil.getSigns().isEmpty();
     }
 
 }

@@ -9,14 +9,14 @@ import android.graphics.Typeface;
  * Created by yazeed44 on 8/8/14.
  * Class will be used when working on adding signature from typing in keyboard
  */
-public final class SignRaw {
+public final class SignatureRaw {
 
 
     private Paint paint = new Paint();
     private String text = "Preview";
     private int color = Color.WHITE;
     private float textSize = 50f;
-    private int width = SignUtil.DEFAULT_SIGN_WIDTH, height = SignUtil.DEFAULT_SIGN_HEIGHT;
+    private int width = SignatureUtil.DEFAULT_SIGN_WIDTH, height = SignatureUtil.DEFAULT_SIGN_HEIGHT;
 
     private Typeface tf;
 

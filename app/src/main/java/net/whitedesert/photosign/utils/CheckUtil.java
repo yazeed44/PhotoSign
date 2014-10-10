@@ -38,7 +38,7 @@ public final class CheckUtil {
             errorDialog.show();
             ToastUtil.toastShort(R.string.error_name_empty);
             return false;
-        } else if (SignUtil.isDuplicatedSign(name)) {
+        } else if (SignatureUtil.isDuplicatedSign(name)) {
             errorDialog.setTitle(R.string.error_name_repeated);
             errorDialog.show();
             ToastUtil.toastShort(R.string.error_name_repeated);

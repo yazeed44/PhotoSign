@@ -6,7 +6,7 @@ import android.graphics.Bitmap;
  * Created by yazeed44 on 8/9/14.
  * Signature class
  */
-public final class Sign {
+public final class Signature {
 
     private String path;
     private String name;
@@ -14,12 +14,12 @@ public final class Sign {
     private Bitmap bitmap;
     private int counter = 0;
 
-    public Sign(String path, String name) {
+    public Signature(String path, String name) {
         this.path = path;
         this.name = name;
     }
 
-    public Sign() {
+    public Signature() {
 
     }
 
@@ -49,7 +49,7 @@ public final class Sign {
     }
 
     public Bitmap getBitmap() {
-        return getBitmap(SignUtil.DEFAULT_SIGN_WIDTH, SignUtil.DEFAULT_SIGN_HEIGHT);
+        return getBitmap(SignatureUtil.DEFAULT_SIGN_WIDTH, SignatureUtil.DEFAULT_SIGN_HEIGHT);
     }
 
     public Bitmap getBitmap(int width, int height) {

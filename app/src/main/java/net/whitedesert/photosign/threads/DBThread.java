@@ -1,7 +1,7 @@
 package net.whitedesert.photosign.threads;
 
 import net.whitedesert.photosign.database.SignsDB;
-import net.whitedesert.photosign.utils.Sign;
+import net.whitedesert.photosign.utils.Signature;
 
 import java.util.ArrayList;
 
@@ -16,8 +16,8 @@ public final class DBThread {
         public final static String GET_LATEST_SIGN = "get_latest_sign_44";
         public final static String GET_ALL_SIGNS = "get_all_signs_44";
         private final String name;
-        private Sign sign;
-        private ArrayList<Sign> signs;
+        private Signature signature;
+        private ArrayList<Signature> signatures;
 
         public GetSignThread(final String name) {
             this.name = name;
@@ -31,41 +31,41 @@ public final class DBThread {
             if (name != null) {
 
                 if (name.equals(GET_LATEST_SIGN)) {
-                    sign = db.getLatestSign();
+                    signature = db.getLatestSign();
                 } else if (name.equals(GET_ALL_SIGNS)) {
-                    signs = db.getSigns();
+                    signatures = db.getSigns();
                 } else {
-                    sign = db.getSign(name);
+                    signature = db.getSign(name);
                 }
             }
             db.closeDatabase();
         }
 
-        public Sign getSign() {
-            return this.sign;
+        public Signature getSignature() {
+            return this.signature;
         }
 
-        public ArrayList<Sign> getSigns() {
-            return this.signs;
+        public ArrayList<Signature> getSignatures() {
+            return this.signatures;
         }
     }
 
 
     public static class AddSignThread extends Thread {
 
-        private final Sign sign;
+        private final Signature signature;
         private long id;
 
-        public AddSignThread(final Sign sign) {
-            this.sign = sign;
-            this.setName("Add sign thread - " + sign.getName());
+        public AddSignThread(final Signature signature) {
+            this.signature = signature;
+            this.setName("Add sign thread - " + signature.getName());
         }
 
         @Override
         public void run() {
             SignsDB db = SignsDB.getInstance();
             db.openDatabase();
-            id = db.insertSign(sign);
+            id = db.insertSign(signature);
 
             db.closeDatabase();
         }

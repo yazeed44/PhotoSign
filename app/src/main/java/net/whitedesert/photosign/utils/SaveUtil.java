@@ -48,8 +48,8 @@ public final class SaveUtil {
                     return;
                 }
 
-                final Sign sign = new Sign();
-                sign.setName(signName);
+                final Signature signature = new Signature();
+                signature.setName(signName);
 
                 final String savedPath = SaveUtil.saveSign(signBitmap, signName, activity);
 
@@ -57,8 +57,8 @@ public final class SaveUtil {
                     return;
                 }
 
-                sign.setPath(savedPath);
-                addSignShowDialog(sign, activity);
+                signature.setPath(savedPath);
+                addSignShowDialog(signature, activity);
 
             }
         };
@@ -85,12 +85,12 @@ public final class SaveUtil {
             @Override
             public void onClick(DialogInterface dialogInterface, int which) {
                 final String signName = nameInput.getText().toString();
-                final Sign sign = new Sign();
+                final Signature signature = new Signature();
                 if (!CheckUtil.checkSign(signName, drawView, activity)) {
                     return;
                 }
 
-                sign.setName(signName);
+                signature.setName(signName);
 
                 drawView.setBackgroundColor(Color.TRANSPARENT);
                 final String savedPath = saveDrawSign(drawView, signName, activity);
@@ -100,8 +100,8 @@ public final class SaveUtil {
                     return;
                 }
 
-                sign.setPath(savedPath);
-                addSignShowDialog(sign, activity);
+                signature.setPath(savedPath);
+                addSignShowDialog(signature, activity);
 
             }
         };
@@ -109,11 +109,24 @@ public final class SaveUtil {
     }
 
 
-    public static void saveSignedPhoto(final SigningView signingView, final Activity activity) {
-        final Sign sign = signingView.getSign();
+    /**
+     * When user click on done btn in Signing Activity
+     *
+     * @param signingView
+     * @param activity
+     */
+    public static void doneSigningPhoto(final SigningView signingView, final Activity activity) {
+        final Signature signature = signingView.getSignature();
         final Bitmap photo = signingView.getPhoto(), signBitmap = signingView.getSignBitmap();
-        final XY.Float xy = signingView.getXY();
-        final SigningThread signThread = new SigningThread(photo, signBitmap, sign.getName(), activity, xy, signingView.getOrgPhotoDimen());
+        final XY.Float signingXY = signingView.getXY();
+        final XY originalPhotoDimen = signingView.getOrgPhotoDimen();
+        final XY signDimension = signingView.getSignDimension();
+
+        final SigningOptions options = new SigningOptions().setSignature(signature).setSigningXY(signingXY).setOriginalPhotoDimen(originalPhotoDimen)
+                .setSignDimension(signDimension).setPhoto(photo);
+
+
+        final SigningThread signThread = new SigningThread(options, activity);
         signThread.start();
 
     }
@@ -140,9 +153,15 @@ public final class SaveUtil {
         return savePicFromView(drawView, activity, SIGNS_DIR, name, false);
     }
 
-    public static void addSignShowDialog(final Sign sign, final Activity activity) {
-        Log.i("DrawSignActivity : onClickSave", "sign name : " + sign.getName() + " , sign Path : " + sign.getPath());
-        SignUtil.addSign(sign);
+
+    public static String saveSignedPhoto(final Bitmap signedPhoto, final Activity activity, final String name) {
+        return savePicFromBitmap(signedPhoto, activity, SIGNED_PHOTO_DIR, name, false);
+    }
+
+
+    public static void addSignShowDialog(final Signature signature, final Activity activity) {
+        Log.i("DrawSignActivity : onClickSave", "sign name : " + signature.getName() + " , sign Path : " + signature.getPath());
+        SignatureUtil.addSign(signature);
 
         AskUtil.getWannaSignDialog(activity).show();
 

@@ -12,7 +12,7 @@ import android.view.MotionEvent;
 import android.widget.ImageView;
 
 import net.whitedesert.photosign.utils.PhotoUtil;
-import net.whitedesert.photosign.utils.Sign;
+import net.whitedesert.photosign.utils.Signature;
 import net.whitedesert.photosign.utils.ViewUtil;
 import net.whitedesert.photosign.utils.XY;
 
@@ -24,7 +24,7 @@ public class SigningView extends ImageView {
 
     private Bitmap photo;
     private Bitmap signBitmap;
-    private Sign sign;
+    private Signature signature;
     private XY orgPhotoDimen = new XY();//Original photo size
     private float x = -1, y = -1;
     private float touchX, touchY;
@@ -40,8 +40,8 @@ public class SigningView extends ImageView {
         super.onSizeChanged(w, h, oldw, oldh);
 
         Log.i("Signing View : onSizeChanged", "Width  :  " + w + "    , height :  " + h);
-        final int widthFactor = 8;
-        final int heightFactor = 8;
+        final int widthFactor = 6;
+        final int heightFactor = 6;
 
         if (photo != null) {
             orgPhotoDimen.setX(photo.getWidth());
@@ -109,13 +109,13 @@ public class SigningView extends ImageView {
 
     }
 
-    public void setSign(Sign sign) {
-        this.sign = sign;
-        setSign(sign.getBitmap());
+    public Signature getSignature() {
+        return this.signature;
     }
 
-    public Sign getSign() {
-        return this.sign;
+    public void setSignature(Signature signature) {
+        this.signature = signature;
+        setSign(signature.getBitmap());
     }
 
     public void setSign(Bitmap bitmap) {
@@ -226,5 +226,9 @@ public class SigningView extends ImageView {
 
         return new XY.Float(originalImageOffsetX, originalImageOffsetY);
 
+    }
+
+    public XY getSignDimension() {
+        return new XY(signBitmap.getWidth(), signBitmap.getHeight());
     }
 }
