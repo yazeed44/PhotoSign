@@ -1,43 +1,93 @@
 <resources>
 
     <!-- Application theme. -->
-    <style name="AppTheme" parent="android:Theme.Holo.NoActionBar">
-        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
 
-        <!-- <item name="android:background">#000000</item> -->
+        <item name="actionBarStyle">@style/MyActionBarStyle</item>
+        <item name="android:actionBarStyle">@style/MyActionBarStyle</item>
 
 
     </style>
 
+    <style name="MyActionBarStyle" parent="Widget.AppCompat.Light.ActionBar">
 
-    <style name="text_view">
+        <item name="android:background">@color/app_primary</item>
+        <item name="background">@color/app_primary</item>
+
+        <item name="android:titleTextStyle">@style/TextAppearance.Widget.AppCompat.Toolbar.Title
+        </item>
+        <item name="titleTextStyle">@style/TextAppearance.Widget.AppCompat.Toolbar.Title</item>
+
+        <item name="android:actionButtonStyle">@style/Widget.AppCompat.ActionButton</item>
+        <item name="actionButtonStyle">@style/Widget.AppCompat.ActionButton</item>
+
+
+    </style>
+
+    <style name="text_view" parent="TextAppearance.AppCompat.Medium">
+        <!--
         <item name="android:textColor">#ffff</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textSize">22sp</item>
+        <item name="android:textSize">@dimen/text_medium</item>
         <item name="android:background">#222326</item>
+        -->
+
+
     </style>
 
-    <style name="button">
+    <style name="button" parent="TextAppearance.AppCompat.Button">
+        <!--
         <item name="android:textColor">#ffff</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">30sp</item>
         <item name="android:background">@drawable/button_selector</item>
+        -->
 
 
     </style>
 
-    <style name="text_edit">
+
+    <style name="MainActivityBtn" parent="button">
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:textSize">@dimen/text_medium</item>
+        <item name="android:textStyle">bold</item>
+
+    </style>
+
+
+    <style name="text_edit" parent="Widget.AppCompat.EditText">
+        <!--
+
         <item name="android:textColor">#ffff</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textSize">18sp</item>
         <item name="android:textColorHint">#ffeef2f2</item>
+
+        -->
+
+
     </style>
 
     <style name="list_view">
+        <!--
         <item name="android:textColor">#ffff</item>
         <item name="android:background">#222326</item>
         <item name="android:textSize">18sp</item>
+        -->
+
+        <item name="android:clipToPadding">false</item>
+        <item name="android:scrollbarStyle">outsideOverlay</item>
     </style>
 
-    <style name="dialog" parent="android:Theme.Holo.Dialog"></style>
+
+    <style name="dialog" parent="Theme.AppCompat.Light.Dialog">
+
+    </style>
+
+    <style name="SeekBar">
+
+
+    </style>
+
+
 </resources>

@@ -70,5 +70,5 @@ public final class Signature {
 
     public Bitmap getBitmap(XY xy) {
         return getBitmap(xy.getX(), xy.getY());
-    }
+    } // Width and height
 }

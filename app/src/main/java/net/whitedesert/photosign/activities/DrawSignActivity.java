@@ -3,8 +3,9 @@ package net.whitedesert.photosign.activities;
 import android.app.AlertDialog;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -28,16 +29,18 @@ public class DrawSignActivity extends AdActivity {
     public void onCreate(Bundle savedInstance) {
 
         super.onCreate(savedInstance);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+
         setContentView(R.layout.activity_sign_drawing);
         draw = (DrawSignView) this.findViewById(R.id.drawView);
+
+        getSupportActionBar().setTitle(R.string.sign_draw_titlebar_text);
 
 
     }
 
 
-    //When user clicks on customizing pen
-    public void onClickPenCustomize(View view) {
+    //When user clicks on customizing Brush
+    public void onClickBrushCustomize() {
         final View drawSignCustomize = this.getLayoutInflater().inflate(R.layout.dialog_draw_sign_customize, null);
 
         final Button chooseColorBtn = (Button) drawSignCustomize.findViewById(R.id.baseChooseColorBtn);
@@ -140,13 +143,45 @@ public class DrawSignActivity extends AdActivity {
 
     }
 
-    public void onClickReset(View view) {
+    public void onClickReset() {
         draw.reset();
     }
 
-    public void onClickDone(View view) {
+    public void onClickDone() {
         SaveUtil.askNameAndAddSign(draw, this);
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_draw_sign, menu);
+        getMenuInflater().inflate(R.menu.menu_done, menu);
+
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle presses on the action bar items
+        switch (item.getItemId()) {
+            case R.id.menu_done:
+                onClickDone();
+                return true;
+
+            case R.id.menu_clear_drawing:
+                onClickReset();
+                return true;
+
+            case R.id.menu_pen_customize:
+                onClickBrushCustomize();
+                return true;
+
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
 

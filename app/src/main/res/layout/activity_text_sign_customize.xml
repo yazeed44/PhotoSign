@@ -7,21 +7,6 @@
     android:orientation="vertical"
     android:weightSum="1">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:baselineAligned="false"
-        android:gravity="end"
-        android:weightSum="1">
-
-        <include
-            layout="@layout/btn_done"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-
-            android:layout_weight="0.5" />
-    </LinearLayout>
-
     <net.whitedesert.photosign.views.TypeSignPreviewView
         android:id="@+id/signTextPreview"
         style="@style/text_view"
@@ -58,18 +43,6 @@
             android:checked="true"
             android:onClick="onClickBoldCheck"
             android:text="@string/check_mark_bold" />
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:baselineAligned="false">
-
-        <include
-            layout="@layout/btn_choose_color"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
     </LinearLayout>
 
 

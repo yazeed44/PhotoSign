@@ -4,6 +4,8 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -38,7 +40,7 @@ public class TextSignActivity extends AdActivity {
 
     }
 
-    public void onClickDone(View view) {
+    public void onClickDone() {
         SaveUtil.askNameAndAddSign(SignatureUtil.createBitmap(preview.getSignRaw(), true), this);
     }
 
@@ -67,7 +69,7 @@ public class TextSignActivity extends AdActivity {
     }
 
     //When user click on choose color btn
-    public void onClickChooseColor(View view) {
+    public void onClickChooseColor() {
 
         AmbilWarnaDialog.OnAmbilWarnaListener listener = new AmbilWarnaDialog.OnAmbilWarnaListener() {
             @Override
@@ -118,5 +120,34 @@ public class TextSignActivity extends AdActivity {
             fixString = DOUBLE_BYTE_SPACE;
         }
         preview.setText(fixString + text + fixString);
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_type_sign, menu);
+        getMenuInflater().inflate(R.menu.menu_done, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle presses on the action bar items
+        switch (item.getItemId()) {
+            case R.id.menu_done:
+                onClickDone();
+                return true;
+
+
+            case R.id.menu_type_sign:
+                onClickChooseColor();
+                return true;
+
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

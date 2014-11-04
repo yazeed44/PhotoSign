@@ -8,24 +8,35 @@
 
     <TextView
         android:id="@+id/drawSizeText"
+
         style="@style/text_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="@string/draw_size_text" />
 
-    <include
-        layout="@layout/seek_pen_size"
+    <SeekBar
+
+
+        android:id="@+id/baseSizeSeek"
+        style="@style/SeekBar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:max="@integer/size_max"
+        android:progress="20"
+
+        />
 
     <include
         layout="@layout/btn_choose_color"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+
+        />
 
     <TextView
         android:id="@+id/drawOpacityText"
+
         style="@style/text_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -35,11 +46,11 @@
 
     <SeekBar
         android:id="@+id/drawOpacitySeek"
+        style="@style/SeekBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:max="@integer/opacity_max"
         android:progress="@integer/opacity_max"
-
 
         />
 

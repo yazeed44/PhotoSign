@@ -3,7 +3,8 @@ package net.whitedesert.photosign.activities;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.view.View;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -12,6 +13,7 @@ import net.whitedesert.photosign.utils.BitmapUtil;
 import net.whitedesert.photosign.utils.SaveUtil;
 import net.whitedesert.photosign.utils.Signature;
 import net.whitedesert.photosign.utils.SignatureUtil;
+import net.whitedesert.photosign.views.SignatureView;
 import net.whitedesert.photosign.views.SigningView;
 
 /**
@@ -22,6 +24,7 @@ public class SigningActivity extends AdActivity {
     private SigningView signingView;
     private SeekBar opacitySeek;
     private TextView opacityText;
+    private SignatureView signatureView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -30,7 +33,7 @@ public class SigningActivity extends AdActivity {
         signingView = (SigningView) this.findViewById(R.id.signingView);
         opacitySeek = (SeekBar) this.findViewById(R.id.opacity_seek);
         opacityText = (TextView) this.findViewById(R.id.opacity_text);
-
+        signatureView = (SignatureView) findViewById(R.id.signatureView);
         final Intent i = this.getIntent();
 
         final String photoPath = i.getStringExtra(Types.PATH_TYPE);
@@ -41,9 +44,12 @@ public class SigningActivity extends AdActivity {
 
         final Signature lastSignature = SignatureUtil.getLatestSign();
 
+        signatureView.setSignature(lastSignature);
 
-        signingView.setSignature(lastSignature);
+
+        signingView.setSignatureView(signatureView);
         signingView.setPhoto(photo);
+
 
         setUpOpacity(lastSignature);
 
@@ -53,16 +59,15 @@ public class SigningActivity extends AdActivity {
     private void setUpOpacity(final Signature signature) {
         opacitySeek.setMax(getResources().getInteger(R.integer.opacity_max));
         opacitySeek.setProgress(opacitySeek.getMax());
-        final String opacityString = this.getString(R.string.opacity_text) + " : ";
+        final String opacityString = getString(R.string.opacity_text) + " : ";
 
         opacityText.setText(opacityString + opacitySeek.getProgress());
 
         opacitySeek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
-                final Bitmap updatedSign = BitmapUtil.getUpdatedOpacity(signature.getBitmap(signingView.getSignWidthHeight()), progress);
+                signatureView.setImageAlpha(progress); // Set opacity
                 opacityText.setText(opacityString + progress);
-                signingView.setSign(updatedSign);
                 signingView.invalidate();
             }
 
@@ -79,7 +84,32 @@ public class SigningActivity extends AdActivity {
 
     }
 
-    public void onClickDone(View view) {
+    public void onClickDone() {
         SaveUtil.doneSigningPhoto(signingView, this);
     }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_done, menu);
+
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle presses on the action bar items
+        switch (item.getItemId()) {
+            case R.id.menu_done:
+                onClickDone();
+                return true;
+
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
 }

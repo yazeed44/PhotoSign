@@ -15,8 +15,7 @@
         android:layout_gravity="center"
         android:drawableLeft="@drawable/choose_color"
         android:drawableStart="@drawable/choose_color"
-        android:onClick="onClickChooseColor"
-        android:text="@string/choose_color_btn" />
+        android:text="@string/choose_color" />
 
 
 </LinearLayout>

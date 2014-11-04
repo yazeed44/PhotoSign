@@ -114,7 +114,6 @@ public final class SignsDB {
             cursor.moveToNext();
         }
         cursor.close();
-
         return signatures;
     }
 

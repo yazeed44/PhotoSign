@@ -9,4 +9,7 @@
     <drawable name="main_btn_settings_background">#00a4bf</drawable>
     <drawable name="main_btn_create_background">#dea716</drawable>
 
+
+    <color name="app_primary">#4d73ff</color>
+    <color name="app_primary_dark">#4d69ff</color>
 </resources>

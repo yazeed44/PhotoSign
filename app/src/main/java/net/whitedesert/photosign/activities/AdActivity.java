@@ -1,9 +1,23 @@
 package net.whitedesert.photosign.activities;
 
-import android.app.Activity;
+import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 
 /**
  * Created by yazeed44 on 8/22/14.
  */
-public class AdActivity extends Activity {
+public class AdActivity extends ActionBarActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        if (getParentActivityIntent() != null)
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        getSupportActionBar().setTitle("");
+
+    }
+
+
 }

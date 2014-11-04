@@ -9,22 +9,6 @@
     android:orientation="vertical"
     tools:context=".activities.DrawSignActivity">
 
-    <include
-        layout="@layout/title_bar_sign_draw"
-        android:layout_width="match_parent"
-
-        android:layout_height="wrap_content" />
-
-    <TextView
-
-        style="@style/text_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-
-        android:gravity="center"
-        android:text="@string/sign_draw_titlebar_text"
-
-        />
 
     <net.whitedesert.photosign.views.DrawSignView
         android:id="@+id/drawView"

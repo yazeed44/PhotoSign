@@ -2,7 +2,6 @@ package net.whitedesert.photosign.views;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
@@ -11,7 +10,6 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.ImageView;
 
-import net.whitedesert.photosign.utils.PhotoUtil;
 import net.whitedesert.photosign.utils.Signature;
 import net.whitedesert.photosign.utils.ViewUtil;
 import net.whitedesert.photosign.utils.XY;
@@ -26,8 +24,9 @@ public class SigningView extends ImageView {
     private Bitmap signBitmap;
     private Signature signature;
     private XY orgPhotoDimen = new XY();//Original photo size
-    private float x = -1, y = -1;
+    private float signingX = -1, signingY = -1;
     private float touchX, touchY;
+    private SignatureView signatureView;
 
     public SigningView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -40,41 +39,30 @@ public class SigningView extends ImageView {
         super.onSizeChanged(w, h, oldw, oldh);
 
         Log.i("Signing View : onSizeChanged", "Width  :  " + w + "    , height :  " + h);
-        final int widthFactor = 6;
-        final int heightFactor = 6;
 
         if (photo != null) {
             orgPhotoDimen.setX(photo.getWidth());
             orgPhotoDimen.setY(photo.getHeight());
             photo = Bitmap.createScaledBitmap(photo, w, h, true);
             setImageBitmap(photo);
-            if (signBitmap != null) {
-                //TEMP
-                //TODO
 
-                signBitmap = Bitmap.createScaledBitmap(signBitmap, w / widthFactor, h / heightFactor, true);
-                XY photoCenter = PhotoUtil.getCenter(photo);
-                setXY(photoCenter);
-                touchX = photoCenter.getX();
-                touchY = photoCenter.getY();
-                setupXY();
-                invalidate();
-            }
         }
     }
 
 
-    @Override
+  /*  @Override
     public void onDraw(Canvas canvas) {
 
         super.onDraw(canvas);
 
 
         if (photo != null && x != -1 && y != -1) {
-            canvas.drawBitmap(signBitmap, x, y, null);
+          //  canvas.drawBitmap(signBitmap, x, y, null);
+           //changeSignaturePlace();
+
             Log.i("SigningView", "Signing at X : " + x + "  , Y : " + y);
         }
-    }
+    }*/
 
 
     @Override
@@ -86,11 +74,18 @@ public class SigningView extends ImageView {
         touchY = event.getY();
         Log.i("Original Touch Values", "X  = " + touchX + "  ,  Y   =  " + touchY);
 
+
+        float x, y, dx = 0, dy = 0;
         switch (event.getAction()) {
 
             case MotionEvent.ACTION_DOWN:
                 //finger touches the screen
-                setupXY();
+                //  setupXY();
+                x = event.getX();
+                y = event.getY();
+                dx = x - signatureView.getX();
+                dy = y - signatureView.getY();
+
                 break;
 
             case MotionEvent.ACTION_UP:
@@ -100,14 +95,17 @@ public class SigningView extends ImageView {
 
             case MotionEvent.ACTION_MOVE:
                 //finger moves on the screen
-                setupXY();
-
+                //setupXY();
+                //   changeSignaturePlace();
+                //  signatureView.setX(event.getX()-dx);
+                //  signatureView.setY(event.getY()-dy);
                 break;
         }
 
         return true;
 
     }
+
 
     public Signature getSignature() {
         return this.signature;
@@ -116,6 +114,11 @@ public class SigningView extends ImageView {
     public void setSignature(Signature signature) {
         this.signature = signature;
         setSign(signature.getBitmap());
+    }
+
+    public void setSignatureView(final SignatureView signatureView) {
+        this.signatureView = signatureView;
+        setSignature(signatureView.getSignature());
     }
 
     public void setSign(Bitmap bitmap) {
@@ -136,24 +139,10 @@ public class SigningView extends ImageView {
     }
 
     private void setXY(XY xy) {
-        this.x = xy.getX();
-        this.y = xy.getY();
+        this.signingX = xy.getX();
+        this.signingY = xy.getY();
     }
 
-
-    private void setupXY() {
-        // fixXY();
-
-
-        if (touchX > 0 && touchY > 0) {
-            final XY.Float touches = new XY.Float(touchX, touchY);
-            fixXY(touches);
-            invalidate();
-        } else {
-            Log.e(this.getClass().getSimpleName() + " : setupXY", "it's out of photo range !! ,  touchX = " + touchX + "    ,  touchY  =  " + touchY);
-        }
-
-    }
 
     public XY getSignWidthHeight() {
         return new XY(getSignBitmap().getWidth(), getSignBitmap().getHeight());
@@ -174,8 +163,8 @@ public class SigningView extends ImageView {
     }
 
     private void setXY(XY.Float xy) {
-        this.x = xy.getX();
-        this.y = xy.getY();
+        this.signingX = xy.getX();
+        this.signingY = xy.getY();
     }
 
     public XY getOrgPhotoDimen() {

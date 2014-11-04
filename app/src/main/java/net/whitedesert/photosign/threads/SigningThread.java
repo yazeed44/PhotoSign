@@ -49,6 +49,7 @@ public final class SigningThread extends Thread {
         //final ProgressDialog progressDialog = DialogUtil.getProgressDialog(R.string.wait_please_title, R.string.wait_signing_msg, activity);
         //ThreadUtil.showDialog(progressDialog, activity);
 
+
         final Bitmap signed = Bitmap.createScaledBitmap(SigningUtil.signOnPhoto(photo, signBitmap, x, y), orgPhotoDimen.getX(), orgPhotoDimen.getY(), true);//sign on photo then return it to it's originial size
 
         final String signedPhotoFileName = "Signed Photo - " + signName + RandomUtil.getRandomInt((int) Math.abs(x + 1));
