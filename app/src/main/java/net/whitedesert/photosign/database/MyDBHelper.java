@@ -12,13 +12,14 @@ public class MyDBHelper extends SQLiteOpenHelper {
 
 
     public final static String DB_NAME = "signs.db";
-    public final static int DB_VERSION = 1;
+    public final static int DB_VERSION = 2;
 
 
     public static final String TABLE_SIGNS = "signs";
     public static final String COLUMN_ID = "_id";
     public static final String COLUMN_NAME = "name";
     public static final String COLUMN_PATH = "path";
+    public static final String COLUMN_IS_DEFAULT = "isDefault";
 
 
     public MyDBHelper(Context context) {
@@ -31,7 +32,8 @@ public class MyDBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
 
 
-        final String createSignsTable = "CREATE TABLE " + TABLE_SIGNS + "(" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_NAME + " TEXT NOT NULL UNIQUE," + COLUMN_PATH + " TEXT NOT NULL  " + ");";
+        final String createSignsTable = "CREATE TABLE " + TABLE_SIGNS + "(" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_NAME + " TEXT NOT NULL UNIQUE," + COLUMN_PATH + " TEXT NOT NULL  " +
+                ", " + COLUMN_IS_DEFAULT + " INTEGER NOT NULL" + ");";
 
         sqLiteDatabase.execSQL(createSignsTable);
     }

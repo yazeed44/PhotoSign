@@ -8,15 +8,20 @@ import android.graphics.Bitmap;
  */
 public final class Signature {
 
+    public int counter = 0;
     private String path;
     private String name;
-
     private Bitmap bitmap;
-    private int counter = 0;
+    private boolean isDefault = false;
 
-    public Signature(String path, String name) {
+
+    public Signature(String path, String name, int isDefault) {
         this.path = path;
         this.name = name;
+        if (isDefault == 1)
+            this.isDefault = true;
+
+
     }
 
     public Signature() {
@@ -39,6 +44,19 @@ public final class Signature {
         this.name = name;
     }
 
+    public void setDefault(int isDefault) {
+
+
+        this.isDefault = isDefault == 1;
+    }
+
+    public boolean isDefault() {
+        return isDefault;
+    }
+
+    public void setDefault(boolean isDefault) {
+        this.isDefault = isDefault;
+    }
 
     public Bitmap getBitmap(boolean originalSize) {
         if (originalSize) {
@@ -71,4 +89,19 @@ public final class Signature {
     public Bitmap getBitmap(XY xy) {
         return getBitmap(xy.getX(), xy.getY());
     } // Width and height
+
+    @Override
+    public boolean equals(Object object) {
+        if (object instanceof Signature) {
+            final Signature sign = (Signature) object;
+            return getName().equals(sign.getName()) && getPath().equals(sign.getPath());
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Name  :  " + getName() + "   ,    Path   :  " + getPath() + "   ,  isDefault  :  " + isDefault();
+    }
 }

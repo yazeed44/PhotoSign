@@ -5,15 +5,16 @@ import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import net.whitedesert.photosign.utils.Signature;
+import net.whitedesert.photosign.utils.SignatureUtil;
 
 import java.util.ArrayList;
 
 import static net.whitedesert.photosign.database.MyDBHelper.COLUMN_ID;
+import static net.whitedesert.photosign.database.MyDBHelper.COLUMN_IS_DEFAULT;
 import static net.whitedesert.photosign.database.MyDBHelper.COLUMN_NAME;
 import static net.whitedesert.photosign.database.MyDBHelper.COLUMN_PATH;
 import static net.whitedesert.photosign.database.MyDBHelper.TABLE_SIGNS;
@@ -28,6 +29,8 @@ public final class SignsDB {
     private static SignsDB instance;
     private SQLiteDatabase db;
     private int mOpenCounter;
+
+    private Signature sign = new Signature(); // Object of signature class , used for optimization because creating new objects is expensives
 
 
     public static synchronized void initializeInstance(SQLiteOpenHelper helper) {
@@ -72,6 +75,7 @@ public final class SignsDB {
         ContentValues values = new ContentValues();
         values.put(COLUMN_PATH, signature.getPath());
         values.put(COLUMN_NAME, signature.getName());
+        values.put(COLUMN_IS_DEFAULT, signature.isDefault() ? 1 : 0);
         return db.insert(TABLE_SIGNS, null, values);
 
     }
@@ -80,49 +84,85 @@ public final class SignsDB {
     public Signature getSign(int id) {
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_SIGNS + " WHERE " + COLUMN_ID + " = " + id, null);
         cursor.moveToFirst();
-        Signature signature = initSign(cursor);
+        initSign(cursor);
         cursor.close();
-        return signature;
+        return sign;
     }
 
     public Signature getSign(String name) {
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_SIGNS + " WHERE " + COLUMN_NAME + " = " + "'" + name + "'" + ";", null);
         cursor.moveToFirst();
-        Signature signature = initSign(cursor);
+        initSign(cursor);
         cursor.close();
-        return signature;
+        return sign;
     }
 
     public Signature getLatestSign() {
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_SIGNS + " WHERE " + COLUMN_ID + " = (SELECT MAX(" + COLUMN_ID + ") FROM " + TABLE_SIGNS + ");", null);
         cursor.moveToFirst();
-        Signature signature = initSign(cursor);
+        initSign(cursor);
         cursor.close();
-        return signature;
+        return sign;
     }
 
-    public ArrayList<Signature> getSigns() throws SQLiteException {
-        ArrayList<Signature> signatures = new ArrayList<Signature>();
+    public ArrayList<Signature> getSigns(boolean includeDefault) {
+        final ArrayList<Signature> signatures = new ArrayList<Signature>();
 
-        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_SIGNS, null);
+
+        String query = "SELECT * FROM " + TABLE_SIGNS;
+
+        if (!includeDefault) {
+            query += " WHERE " + COLUMN_IS_DEFAULT + " = 0";
+        }
+
+        Cursor cursor = db.rawQuery(query, null);
 
         cursor.moveToFirst();
 
         while (!cursor.isAfterLast()) {
-            Signature signature = initSign(cursor);
-            signatures.add(signature);
+            final Signature sign = createSign(cursor);
+            signatures.add(sign);
             cursor.moveToNext();
         }
         cursor.close();
+
+        for (Signature signature : signatures) {
+            Log.d("getSigns", signature.toString());
+        }
+
         return signatures;
     }
 
 
-    public Signature initSign(Cursor cursor) {
-        Signature signature = new Signature();
-        signature.setPath(cursor.getString(cursor.getColumnIndex(COLUMN_PATH)));
-        signature.setName(cursor.getString(cursor.getColumnIndex(COLUMN_NAME)));
-        return signature;
+    private void initSign(Cursor cursor) {
+
+        try {
+            sign.setPath(cursor.getString(cursor.getColumnIndex(COLUMN_PATH)));
+            sign.setName(cursor.getString(cursor.getColumnIndex(COLUMN_NAME)));
+            sign.setDefault(cursor.getInt(cursor.getColumnIndex(COLUMN_IS_DEFAULT)));
+            sign.counter = 0;
+        } catch (CursorIndexOutOfBoundsException ex) {
+            sign = SignatureUtil.EMPTY_SIGNATURE;
+        }
+
+        Log.d("initSign", sign.toString());
+
+    }
+
+    //Use only inside array!! in other cases jst use initSign and sign object
+    private Signature createSign(Cursor cursor) {
+
+        Signature sign = new Signature();
+        try {
+            sign.setPath(cursor.getString(cursor.getColumnIndex(COLUMN_PATH)));
+            sign.setName(cursor.getString(cursor.getColumnIndex(COLUMN_NAME)));
+            sign.setDefault(cursor.getInt(cursor.getColumnIndex(COLUMN_IS_DEFAULT)));
+        } catch (CursorIndexOutOfBoundsException ex) {
+            sign = SignatureUtil.EMPTY_SIGNATURE;
+        }
+
+        return sign;
+
     }
 
 
@@ -139,6 +179,48 @@ public final class SignsDB {
         Log.i("SignsDB : is DuplicatedSign", "name  =  " + name + "   ,  is Duplicated ?  = " + isDuplicated);
 
         return isDuplicated;
+
+
+    }
+
+    public Signature getDefaultSignature() {
+        final Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_SIGNS + " WHERE " + COLUMN_IS_DEFAULT + " = " + "1;", null);
+        cursor.moveToFirst();
+
+        initSign(cursor);
+
+        return sign;
+
+    }
+
+    public void setDefaultSignature(String name) {
+        unDefault();
+        final Signature sign = getSign(name);
+
+        final ContentValues updateValues = new ContentValues();
+        updateValues.put(COLUMN_IS_DEFAULT, 1);
+        updateValues.put(COLUMN_PATH, sign.getPath());
+        updateValues.put(COLUMN_NAME, sign.getName());
+
+        db.update(TABLE_SIGNS, updateValues, COLUMN_NAME + " = " + "'" + name + "'", null);
+
+        Log.d("setDefaultSignature", name + "Is the default signature");
+
+    }
+
+    public void unDefault() {
+
+        final Signature defSign = getDefaultSignature();
+
+        if (defSign == SignatureUtil.EMPTY_SIGNATURE)
+            return;
+
+        final ContentValues updateValues = new ContentValues();
+        updateValues.put(COLUMN_IS_DEFAULT, 0);
+        updateValues.put(COLUMN_PATH, defSign.getPath());
+        updateValues.put(COLUMN_NAME, defSign.getName());
+
+        db.update(TABLE_SIGNS, updateValues, COLUMN_NAME + " = " + "'" + defSign.getName() + "'", null);
 
 
     }

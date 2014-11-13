@@ -16,4 +16,10 @@
     <dimen name="text_medium">18sp</dimen>
     <dimen name="text_large">24sp</dimen>
 
+
+    <dimen name="signature_column_width">135dp</dimen>
+    <dimen name="signature_spacing">8dp</dimen>
+
+    <dimen name="signature_name_bottom_margin">40dp</dimen>
+
 </resources>

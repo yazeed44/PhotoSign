@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -43,8 +42,6 @@ public class DrawSignActivity extends AdActivity {
     public void onClickBrushCustomize() {
         final View drawSignCustomize = this.getLayoutInflater().inflate(R.layout.dialog_draw_sign_customize, null);
 
-        final Button chooseColorBtn = (Button) drawSignCustomize.findViewById(R.id.baseChooseColorBtn);
-        setUpChooseColorBtn(chooseColorBtn);
 
         final TextView opacityText = (TextView) drawSignCustomize.findViewById(R.id.drawOpacityText);
         final SeekBar opacitySeek = (SeekBar) drawSignCustomize.findViewById(R.id.drawOpacitySeek);
@@ -118,29 +115,22 @@ public class DrawSignActivity extends AdActivity {
     }
 
 
-    private void setUpChooseColorBtn(final Button chooseColorBtn) {
-        chooseColorBtn.setOnClickListener(new View.OnClickListener() {
+    private void onClickChooseColor() {
+        AmbilWarnaDialog.OnAmbilWarnaListener listener = new AmbilWarnaDialog.OnAmbilWarnaListener() {
             @Override
-            public void onClick(View view) {
-                AmbilWarnaDialog.OnAmbilWarnaListener listener = new AmbilWarnaDialog.OnAmbilWarnaListener() {
-                    @Override
-                    public void onCancel(AmbilWarnaDialog dialog) {
-
-                    }
-
-                    @Override
-                    public void onOk(AmbilWarnaDialog dialog, int color) {
-
-                        draw.getDrawPaint().setColor(color); // update color
-                    }
-                };
-
-                final int initalColor = draw.getDrawPaint().getColor();
-                new AmbilWarnaDialog(DrawSignActivity.this, initalColor, listener).show();
+            public void onCancel(AmbilWarnaDialog dialog) {
 
             }
-        });
 
+            @Override
+            public void onOk(AmbilWarnaDialog dialog, int color) {
+
+                draw.getDrawPaint().setColor(color); // update color
+            }
+        };
+
+        final int initalColor = draw.getDrawPaint().getColor();
+        new AmbilWarnaDialog(DrawSignActivity.this, initalColor, listener).show();
     }
 
     public void onClickReset() {
@@ -170,12 +160,16 @@ public class DrawSignActivity extends AdActivity {
                 onClickDone();
                 return true;
 
-            case R.id.menu_clear_drawing:
+            case R.id.menu_redo_drawing:
                 onClickReset();
                 return true;
 
-            case R.id.menu_pen_customize:
+            case R.id.menu_brush_settings:
                 onClickBrushCustomize();
+                return true;
+
+            case R.id.menu_brush_color:
+                onClickChooseColor();
                 return true;
 
 

@@ -11,7 +11,6 @@ import net.whitedesert.photosign.R;
  */
 public final class ToastUtil {
     public static Activity activity;
-    public static Toast toast;
 
     private ToastUtil() {
         throw new AssertionError();
@@ -20,7 +19,7 @@ public final class ToastUtil {
     public static synchronized void initializeInstance(Activity pActivity) {
 
         activity = pActivity;
-        toast = new Toast(activity);
+
 
     }
 
@@ -29,8 +28,7 @@ public final class ToastUtil {
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                toast.setText(message);
-                toast.show();
+                Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -44,8 +42,7 @@ public final class ToastUtil {
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                toast.setText(message);
-                toast.show();
+                Toast.makeText(activity, message, Toast.LENGTH_LONG).show();
             }
         });
     }

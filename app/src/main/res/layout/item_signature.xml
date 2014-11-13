@@ -1,7 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-</LinearLayout>
+    <ImageView
+        android:id="@+id/signature_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.2"
+        android:background="#ffffff"
+        android:contentDescription="@string/signature_item_image"
+        android:scaleType="centerCrop" />
+
+    <TextView
+        android:id="@+id/signature_name"
+        style="@style/TextAppearance.AppCompat.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_gravity="bottom"
+
+
+        android:layout_marginBottom="@dimen/signature_name_bottom_margin"
+        android:layout_marginStart="10dp"
+        android:text="Signature name Test" />
+
+    <ImageView
+        android:id="@+id/signature_star"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:contentDescription="@string/signature_is_default"
+        android:src="@drawable/ic_star_outline"
+
+
+        />
+
+
+</FrameLayout>

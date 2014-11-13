@@ -4,12 +4,17 @@
     <drawable name="button_background">#222326</drawable>
     <drawable name="button_pressed_background">#ff57585b</drawable>
     <drawable name="main_btn_pressed_background">#ffd0c9d2</drawable>
-    <drawable name="main_btn_sign_background">#e23200</drawable>
+
     <drawable name="main_btn_last_background">#64aa0b</drawable>
     <drawable name="main_btn_settings_background">#00a4bf</drawable>
-    <drawable name="main_btn_create_background">#dea716</drawable>
+
+    <drawable name="main_btn_sign_background">#c2185b</drawable>
+    <drawable name="main_btn_signatures_background">#7b1fa2</drawable>
 
 
     <color name="app_primary">#4d73ff</color>
     <color name="app_primary_dark">#4d69ff</color>
+    <color name="app_accent">#ffff990e</color>
+
+    <color name="star_default_color">#FACC37</color>
 </resources>

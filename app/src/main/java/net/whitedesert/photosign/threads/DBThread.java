@@ -1,5 +1,7 @@
 package net.whitedesert.photosign.threads;
 
+import android.util.Log;
+
 import net.whitedesert.photosign.database.SignsDB;
 import net.whitedesert.photosign.utils.Signature;
 
@@ -15,6 +17,8 @@ public final class DBThread {
 
         public final static String GET_LATEST_SIGN = "get_latest_sign_44";
         public final static String GET_ALL_SIGNS = "get_all_signs_44";
+        public final static String GET_ALL_SIGNS_NO_DEFAULT = "get_all_signs_44_no_default";
+        public final static String GET_DEFAULT_SIGN = "get_default_sign_44";
         private final String name;
         private Signature signature;
         private ArrayList<Signature> signatures;
@@ -30,10 +34,19 @@ public final class DBThread {
             db.openDatabase();
             if (name != null) {
 
+                //
+
+
                 if (name.equals(GET_LATEST_SIGN)) {
                     signature = db.getLatestSign();
                 } else if (name.equals(GET_ALL_SIGNS)) {
-                    signatures = db.getSigns();
+                    signatures = db.getSigns(true);
+                } else if (name.equals(GET_ALL_SIGNS_NO_DEFAULT)) {
+                    signatures = db.getSigns(false);
+                    Log.d("GET_ALL_SIGNS_NO_DEFAULT", signatures.toString());
+                    return;
+                } else if (name.equals(GET_DEFAULT_SIGN)) {
+                    signature = db.getDefaultSignature();
                 } else {
                     signature = db.getSign(name);
                 }
@@ -46,7 +59,13 @@ public final class DBThread {
         }
 
         public ArrayList<Signature> getSignatures() {
+
+            for (Signature sign : signatures) {
+                Log.d("getSignatures", "Got Sign :  " + sign.toString());
+            }
+
             return this.signatures;
+
         }
     }
 
@@ -93,7 +112,7 @@ public final class DBThread {
             db.closeDatabase();
         }
 
-        public boolean getIsDuplicated() {
+        public boolean isDuplicated() {
             return this.duplicated;
         }
 

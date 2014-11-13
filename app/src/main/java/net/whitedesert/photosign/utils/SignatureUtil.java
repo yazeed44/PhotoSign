@@ -1,10 +1,9 @@
 package net.whitedesert.photosign.utils;
 
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
+import net.whitedesert.photosign.database.SignsDB;
 import net.whitedesert.photosign.threads.DBThread;
 
 import java.util.ArrayList;
@@ -17,6 +16,7 @@ public final class SignatureUtil {
 
     public static final int DEFAULT_SIGN_HEIGHT = 200;
     public static final int DEFAULT_SIGN_WIDTH = 200;
+    public static final Signature EMPTY_SIGNATURE = new Signature();
 
 
     private SignatureUtil() {
@@ -40,9 +40,17 @@ public final class SignatureUtil {
         return thread.getSignature();
     }
 
-    public static ArrayList<Signature> getSigns() {
+    public static ArrayList<Signature> getSigns(boolean includeDefault) {
 
-        DBThread.GetSignThread thread = new DBThread.GetSignThread(DBThread.GetSignThread.GET_ALL_SIGNS);
+
+        String getSignaturesOption = DBThread.GetSignThread.GET_ALL_SIGNS;
+
+        if (!includeDefault) {
+            getSignaturesOption = DBThread.GetSignThread.GET_ALL_SIGNS_NO_DEFAULT;
+        }
+
+
+        final DBThread.GetSignThread thread = new DBThread.GetSignThread(getSignaturesOption);
         ThreadUtil.startAndJoin(thread);
 
         return thread.getSignatures();
@@ -52,7 +60,7 @@ public final class SignatureUtil {
         DBThread.IsDuplicatedSignThread thread = new DBThread.IsDuplicatedSignThread(name);
         ThreadUtil.startAndJoin(thread);
 
-        return thread.getIsDuplicated();
+        return thread.isDuplicated();
     }
 
     public static Signature getLatestSign() {
@@ -60,6 +68,26 @@ public final class SignatureUtil {
         ThreadUtil.startAndJoin(thread);
         return thread.getSignature();
     }
+
+
+    public static Signature getDefaultSignature() {
+        final DBThread.GetSignThread thread = new DBThread.GetSignThread(DBThread.GetSignThread.GET_DEFAULT_SIGN);
+        ThreadUtil.startAndJoin(thread);
+        return thread.getSignature();
+    }
+
+
+    public static void setDefaultSignature(String name) {
+        //TODO
+        //Moving to a thread
+        final SignsDB db = SignsDB.getInstance();
+        db.openDatabase();
+        db.setDefaultSignature(name);
+        db.closeDatabase();
+
+
+    }
+
 
     /**
      * @return the default paint for drawing a signature
@@ -78,29 +106,10 @@ public final class SignatureUtil {
     }
 
 
-    public static Bitmap createBitmap(SignatureRaw signatureRaw, int width, int height) {
-        final Paint paint = signatureRaw.getPaint();
-
-        final float baseline = (int) (-paint.ascent() + 0.5f); // ascent() is negative
-        final Bitmap image = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-        final Canvas canvas = new Canvas(image);
-        canvas.drawText(signatureRaw.getText(), 0, baseline, paint);
-        return image;
-    }
-
-
-    public static Bitmap createBitmap(SignatureRaw signatureRaw, boolean measured) {
-
-        if (measured)
-            return createBitmap(signatureRaw, signatureRaw.getMeasuredWidth(), signatureRaw.getMeasuredHeight());
-        else {
-            return createBitmap(signatureRaw, signatureRaw.getWidth(), signatureRaw.getHeight());
-        }
-    }
-
-
     public static boolean noSigns() {
-        return SignatureUtil.getSigns().isEmpty();
+        return SignatureUtil.getSigns(true).isEmpty();
     }
+
+
 
 }

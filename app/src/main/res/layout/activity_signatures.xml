@@ -4,10 +4,18 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <ListView
+
+    <net.whitedesert.photosign.views.HeaderGridView
+
         android:id="@+id/list_signatures"
-        style="@style/list_view"
+        style="@style/GridView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:columnWidth="@dimen/signature_column_width"
+        android:horizontalSpacing="@dimen/signature_spacing"
+        android:numColumns="auto_fit"
+
+
+        android:verticalSpacing="@dimen/signature_spacing" />
 
 </LinearLayout>

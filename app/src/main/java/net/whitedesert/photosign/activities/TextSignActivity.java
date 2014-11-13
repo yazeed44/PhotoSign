@@ -34,8 +34,8 @@ public class TextSignActivity extends AdActivity {
 
 
         text = (EditText) this.findViewById(R.id.signTextEdit);
-        setPreviewText("Preview");
         setUpText();
+        setPreviewText("Preview");
 
 
     }
@@ -44,14 +44,6 @@ public class TextSignActivity extends AdActivity {
         SaveUtil.askNameAndAddSign(SignatureUtil.createBitmap(preview.getSignRaw(), true), this);
     }
 
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-
-        super.onWindowFocusChanged(hasFocus);
-        //Here you can get the size!
-
-
-    }
 
     public void onClickBoldCheck(View view) {
         final CheckBox box = (CheckBox) view;
@@ -69,7 +61,7 @@ public class TextSignActivity extends AdActivity {
     }
 
     //When user click on choose color btn
-    public void onClickChooseColor() {
+    private void onClickChooseColor() {
 
         AmbilWarnaDialog.OnAmbilWarnaListener listener = new AmbilWarnaDialog.OnAmbilWarnaListener() {
             @Override
@@ -91,6 +83,7 @@ public class TextSignActivity extends AdActivity {
 
 
     private void setUpText() {
+
 
         text.addTextChangedListener(new TextWatcher() {
             @Override

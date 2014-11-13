@@ -25,10 +25,4 @@ public final class BitmapUtil {
         ThreadUtil.startAndJoin(thread);
         return thread.getBitmap();
     }
-
-    public static Bitmap getUpdatedOpacity(final Bitmap bitmap, final int opacity) {
-        BitmapThread.UpdateOpacity thread = new BitmapThread.UpdateOpacity(bitmap, opacity);
-        ThreadUtil.startAndJoin(thread);
-        return thread.getUpdatedBitmap();
-    }
 }

@@ -6,6 +6,10 @@
         <item name="actionBarStyle">@style/MyActionBarStyle</item>
         <item name="android:actionBarStyle">@style/MyActionBarStyle</item>
 
+        <item name="colorPrimary">@color/app_primary</item>
+        <item name="colorPrimaryDark">@color/app_primary_dark</item>
+        <item name="colorAccent">@color/app_accent</item>
+
 
     </style>
 
@@ -32,6 +36,10 @@
         <item name="android:background">#222326</item>
         -->
 
+
+    </style>
+
+    <style name="TextViewTitle" parent="TextAppearance.AppCompat.Title">
 
     </style>
 
@@ -86,6 +94,9 @@
 
     <style name="SeekBar">
 
+    </style>
+
+    <style name="GridView" parent="list_view">
 
     </style>
 

@@ -160,8 +160,15 @@ public final class SaveUtil {
 
 
     public static void addSignShowDialog(final Signature signature, final Activity activity) {
-        Log.i("DrawSignActivity : onClickSave", "sign name : " + signature.getName() + " , sign Path : " + signature.getPath());
+        Log.d("DrawSignActivity : onClickSave", "sign name : " + signature.getName() + " , sign Path : " + signature.getPath());
+        final boolean isFirstSignature = SignatureUtil.noSigns();
+
+        if (isFirstSignature) {
+            signature.setDefault(true);
+        }
+
         SignatureUtil.addSign(signature);
+
 
         AskUtil.getWannaSignDialog(activity).show();
 

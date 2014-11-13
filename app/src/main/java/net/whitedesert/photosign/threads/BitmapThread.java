@@ -79,7 +79,7 @@ public final class BitmapThread {
                 bitmap.compress(Bitmap.CompressFormat.PNG, 90, out);
                 out.flush();
                 out.close();
-                Log.i("Photo Util : ", "saved the photo successfully to  " + myDir + "/" + fname);
+                Log.d("Photo Util : ", "saved the photo successfully to  " + myDir + "/" + fname);
                 if (toast)
                     ToastUtil.toastShort(savedFileStr + myDir + "/" + fname);
 

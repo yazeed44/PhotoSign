@@ -9,8 +9,9 @@
     <string name="sign_name_hint">Type text here</string>
     <string name="file_saved">File saved to : </string>
     <string name="sign_draw_titlebar_text">Draw your signature</string>
-    <string name="clear_drawing">Clear the signature drawing</string>
-    <string name="brush_customize">Customize the brush</string>
+    <string name="redo_drawing">Redo the drawing</string>
+    <string name="brush_color_customize">Change brush color</string>
+    <string name="brush_settings">Brush settings</string>
     <string name="sign_draw_reminder">When you are done signing click the save button</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
@@ -37,16 +38,20 @@
     <string name="choose_color">Choose color</string>
 
     <string name="draw_size_text">Brush Width : </string>
-    <string name="draw_opacity_text">Opacity of Brush : </string>
+    <string name="draw_opacity_text">Opacity : </string>
     <string name="empty"></string>
-    <string name="draw_sign_customize_title">Customize your pen</string>
+    <string name="draw_sign_customize_title">Customize your brush</string>
     <string name="sign_text_preview">Preview the signature</string>
     <string name="check_mark_bold">Bold</string>
     <string name="main_activity_btn_sign_pic">Sign on a photo</string>
-    <string name="main_activity_btn_create_sign">Create signature</string>
+    <string name="main_activity_btn_my_signatures">The signatures</string>
 
     <string name="unavailable">Unavailable</string>
     <string name="last_image_view_desc">Last image</string>
+
+    <string name="signature_item_image">Signature image</string>
+    <string name="signature_is_default">Default</string>
+    <string name="about_title">About</string>
 
 
     <string-array name="wanna_sign_choices">

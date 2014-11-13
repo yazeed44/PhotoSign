@@ -3,4 +3,6 @@
 
     <integer name="opacity_max">255</integer>
     <integer name="size_max">50</integer>
+    <integer name="signature_image_alpha">100</integer>
+
 </resources>

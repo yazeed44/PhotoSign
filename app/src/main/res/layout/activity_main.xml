@@ -7,76 +7,56 @@
     android:weightSum="1"
     tools:context=".MainActivity">
 
-    <LinearLayout
+
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.50">
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:contentDescription="@string/unavailable"
-            android:src="#ffff" />
-    </LinearLayout>
+        android:layout_weight="0.35"
+        android:text="Signed photos" />
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.25"
+        android:layout_weight="0.50"
         android:orientation="horizontal"
         android:weightSum="1">
 
         <Button
-
             style="@style/MainActivityBtn"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.70"
-            android:background="@drawable/main_btn_sign_selector"
-            android:onClick="onClickChoose"
-            android:text="@string/main_activity_btn_sign_pic"
-
-            />
-
-        <ImageButton
-            android:id="@+id/lastImage"
-
-            style="@style/MainActivityBtn"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.30"
-            android:background="@drawable/main_btn_last_selector"
-            android:contentDescription="@string/last_image_view_desc"
-            android:onClick="onClickLastImage"
-
-            />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.25"
-        android:orientation="horizontal"
-        android:weightSum="1">
+            android:layout_weight="0.50"
+            android:background="@drawable/main_btn_signatures_selector"
+            android:drawableBottom="@drawable/ic_dehaze"
+            android:onClick="onClickMySignatures"
 
 
-        <Button
-
-            style="@style/MainActivityBtn"
-            android:layout_width="match_parent"
-
-            android:layout_height="match_parent"
-            android:background="@drawable/main_btn_create_selector"
-            android:drawableBottom="@drawable/create_sign_icon"
-            android:onClick="onClickCreateSign"
             android:paddingBottom="20dp"
+            android:text="@string/main_activity_btn_my_signatures" />
 
 
-            android:text="@string/main_activity_btn_create_sign" />
+        <Button
+
+
+            style="@style/MainActivityBtn"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.50"
+            android:background="@drawable/main_btn_sign_selector"
+            android:drawableBottom="@drawable/ic_photo"
+            android:onClick="onClickChoose"
+            android:paddingBottom="20dp"
+            android:text="@string/main_activity_btn_sign_pic" />
 
     </LinearLayout>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.15"
+        android:text="AD" />
 
 
 </LinearLayout>
