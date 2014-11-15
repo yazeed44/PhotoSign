@@ -9,6 +9,8 @@ import com.afollestad.materialdialogs.MaterialDialog;
 
 import net.whitedesert.photosign.R;
 
+import java.io.File;
+
 /**
  * Created by yazeed44 on 8/16/14.
  * Class for checking objects , if they have something wrong it will return false (Method) also it will shows Error dialog
@@ -120,6 +122,10 @@ public final class CheckUtil {
             return false;
         }
         return true;
+    }
+
+    public static boolean checkPath(final String path) {
+        return new File(path).exists();
     }
 
     public static boolean checkString(String s) {

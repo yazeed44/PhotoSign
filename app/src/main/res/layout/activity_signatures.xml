@@ -15,9 +15,11 @@
         android:columnWidth="@dimen/signature_column_width"
         android:horizontalSpacing="@dimen/signature_spacing"
         android:listSelector="@drawable/list_selector"
-        android:numColumns="auto_fit"
+        android:numColumns="2"
+
 
         android:verticalSpacing="@dimen/signature_spacing" />
+
 
     <com.melnykov.fab.FloatingActionButton
         android:id="@+id/add_signature_fab"
@@ -30,5 +32,6 @@
         fab:fab_colorNormal="@color/app_accent"
         fab:fab_colorPressed="@drawable/fab_pressed"
         fab:fab_colorRipple="@drawable/fab_ripple" />
+
 
 </FrameLayout>

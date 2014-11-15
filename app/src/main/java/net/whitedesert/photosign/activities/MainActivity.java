@@ -9,6 +9,8 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import net.whitedesert.photosign.R;
 import net.whitedesert.photosign.database.MyDBHelper;
@@ -44,6 +46,9 @@ public class MainActivity extends AdActivity {
         SignsDB.initializeInstance(new MyDBHelper(getApplicationContext()));
         ToastUtil.initializeInstance(this);
         ThreadUtil.initalizeInstance(this);
+        // Create global configuration and initialize ImageLoader with this config
+        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this).build();
+        ImageLoader.getInstance().init(config);
 
     }
 

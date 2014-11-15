@@ -10,6 +10,7 @@ import android.os.Environment;
 import android.util.Log;
 
 import net.whitedesert.photosign.R;
+import net.whitedesert.photosign.utils.CheckUtil;
 import net.whitedesert.photosign.utils.ToastUtil;
 
 import java.io.File;
@@ -35,12 +36,63 @@ public final class BitmapThread {
 
         @Override
         public void run() {
-            bitmap = BitmapFactory.decodeFile(path);
+
+            if (!CheckUtil.checkPath(path)) {
+                Log.e("DecodeFileThread", "The file dosen't exist");
+                return;
+            }
+
+            final BitmapFactory.Options options = new BitmapFactory.Options();
+
+            options.inPreferredConfig = Bitmap.Config.RGB_565;
+            options.inDither = true;
+
+
             if (width != -1 && height != -1) {
+
+                options.inJustDecodeBounds = true;
+                BitmapFactory.decodeFile(path, options);
+
+                options.inSampleSize = calculateInSampleSize(options, width, height);
+
+                options.inJustDecodeBounds = false;
+
+                bitmap = BitmapFactory.decodeFile(path, options);
+
+
                 bitmap = Bitmap.createScaledBitmap(bitmap, width, height, true);
+
+
+                //bitmap = Bitmap.createScaledBitmap(bitmap,width,height,true);
+
+
+            } else {
+                bitmap = BitmapFactory.decodeFile(path);
             }
 
 
+        }
+
+        public int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+            // Raw height and width of image
+            final int height = options.outHeight;
+            final int width = options.outWidth;
+            int inSampleSize = 1;
+
+            if (height > reqHeight || width > reqWidth) {
+
+                final int halfHeight = height / 2;
+                final int halfWidth = width / 2;
+
+                // Calculate the largest inSampleSize value that is a power of 2 and keeps both
+                // height and width larger than the requested height and width.
+                while ((halfHeight / inSampleSize) > reqHeight
+                        && (halfWidth / inSampleSize) > reqWidth) {
+                    inSampleSize *= 2;
+                }
+            }
+
+            return inSampleSize;
         }
 
         public Bitmap getBitmap() {

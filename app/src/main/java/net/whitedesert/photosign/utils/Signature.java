@@ -1,6 +1,7 @@
 package net.whitedesert.photosign.utils;
 
 import android.graphics.Bitmap;
+import android.util.Log;
 
 /**
  * Created by yazeed44 on 8/9/14.
@@ -74,20 +75,38 @@ public final class Signature {
 
     public Bitmap getBitmap(int width, int height) {
 
-/*        if (counter == 0) {
+        if (counter == 0) {
+
             bitmap = BitmapUtil.decodeFile(getPath(), width, height);
+
+
+            handleNull(bitmap);
+
 
             counter++;
             return bitmap;
-        } else if (width == bitmap.getWidth() && height == bitmap.getHeight()) {
+        } else if (bitmap != null && width == bitmap.getWidth() && height == bitmap.getHeight()) {
             return bitmap;
         } else {
+
             bitmap = BitmapUtil.decodeFile(getPath(), width, height);
+
+
+            handleNull(bitmap);
+
+        }
+
             return bitmap;
-        }*/
 
-        return BitmapUtil.decodeFile(getPath(), width, height);
+    }
 
+
+    private void handleNull(final Bitmap bitmap) {
+
+        if (bitmap == null) {
+            Log.e("getBitmap", "There was problem with " + getName() + "  - Signature , deleting it ..");
+            SignatureUtil.deleteSignature(this, true);
+        }
     }
 
     public Bitmap getBitmap(XY xy) {

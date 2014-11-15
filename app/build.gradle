@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 21
-    buildToolsVersion '20.0.0'
+    buildToolsVersion '21.1.1'
 
     defaultConfig {
         applicationId "net.whitedesert.photosign"
@@ -13,15 +13,15 @@ android {
     }
     buildTypes {
         release {
-            runProguard false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            minifyEnabled true;
+
         }
     }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile "com.android.support:appcompat-v7:21.0.0"
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile 'com.android.support:appcompat-v7:21.0.0'
     compile 'com.melnykov:floatingactionbutton:1.0.7'
     compile 'com.afollestad:material-dialogs:0.0.6'
 }

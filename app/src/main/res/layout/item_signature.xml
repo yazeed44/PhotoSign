@@ -11,7 +11,7 @@
 
         android:background="#ffffff"
         android:contentDescription="@string/signature_item_image"
-        android:scaleType="centerCrop" />
+        android:scaleType="fitXY" />
 
     <ImageView
         android:id="@+id/signature_menu"

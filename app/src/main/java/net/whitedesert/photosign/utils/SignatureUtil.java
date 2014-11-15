@@ -1,5 +1,8 @@
 package net.whitedesert.photosign.utils;
 
+import android.database.Cursor;
+import android.util.Log;
+
 import net.whitedesert.photosign.database.SignsDB;
 import net.whitedesert.photosign.threads.DBThread;
 
@@ -19,6 +22,7 @@ public final class SignatureUtil {
     private SignatureUtil() {
         throw new AssertionError();
     }
+
 
     public static long addSign(final Signature signature, boolean toast) {
 
@@ -57,6 +61,7 @@ public final class SignatureUtil {
 
         if (!includeDefault) {
             getSignaturesOption = DBThread.GetSignThread.GET_ALL_SIGNS_NO_DEFAULT;
+
         }
 
 
@@ -86,11 +91,6 @@ public final class SignatureUtil {
         return thread.getSignature();
     }
 
-    public static void setDefaultSignature(final Signature signature) {
-        setDefaultSignature(signature.getName());
-        signature.setDefault(true);
-    }
-
     public static void setDefaultSignature(String name) {
         //TODO Moving to a thread
         final SignsDB db = SignsDB.getInstance();
@@ -101,13 +101,28 @@ public final class SignatureUtil {
 
     }
 
-    public static void deleteSignature(final String name, boolean deleteFile) {
+    public static void setDefaultSignature(final Signature signature) {
+        setDefaultSignature(signature.getName());
+        signature.setDefault(true);
+        Log.d("setDefaultSignature", signature.getName() + "   is default now");
+    }
+
+    public static void deleteSignature(final Signature signature, boolean deleteFile) {
 
         //TODO move to thread
         final SignsDB db = SignsDB.getInstance();
         db.openDatabase();
-        db.deleteSign(name, deleteFile);
+        db.deleteSign(signature, deleteFile);
         db.closeDatabase();
+    }
+
+    public static Cursor getSignsCursor(boolean includeDefault) {
+        //TODO move to thread
+        final SignsDB db = SignsDB.getInstance();
+        db.openDatabase();
+        final Cursor cursor = db.getSignsCursor(includeDefault);
+        db.closeDatabase();
+        return cursor;
     }
 
 

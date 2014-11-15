@@ -31,6 +31,7 @@ public final class SignsDB {
     private static SignsDB instance;
     private SQLiteDatabase db;
     private int mOpenCounter;
+    private ArrayList<Signature> signs = new ArrayList<Signature>(); // Used for optimization
 
     private Signature sign = new Signature(); // Object of signature class , used for optimization because creating new objects is expensives
 
@@ -108,7 +109,7 @@ public final class SignsDB {
     }
 
     public ArrayList<Signature> getSigns(boolean includeDefault) {
-        final ArrayList<Signature> signatures = new ArrayList<Signature>();
+        signs.clear();
 
 
         String query = "SELECT * FROM " + TABLE_SIGNS;
@@ -123,18 +124,26 @@ public final class SignsDB {
 
         while (!cursor.isAfterLast()) {
             final Signature sign = createSign(cursor);
-            signatures.add(sign);
+            signs.add(sign);
             cursor.moveToNext();
         }
         cursor.close();
 
-        for (Signature signature : signatures) {
-            Log.d("getSigns", signature.toString());
+
+        Log.d("Signs count", signs.size() + "");
+
+        return signs;
+    }
+
+    public Cursor getSignsCursor(boolean includeDefault) {
+        String query = "SELECT * FROM " + TABLE_SIGNS;
+
+        if (!includeDefault) {
+            query += " WHERE " + COLUMN_IS_DEFAULT + " = 0";
         }
 
-        Log.d("Signs count", signatures.size() + "");
+        return db.rawQuery(query, null);
 
-        return signatures;
     }
 
 
@@ -149,7 +158,7 @@ public final class SignsDB {
             sign = SignatureUtil.EMPTY_SIGNATURE;
         }
 
-        Log.d("initSign", sign.toString());
+        //    Log.d("initSign", sign.toString());
 
     }
 
@@ -166,7 +175,7 @@ public final class SignsDB {
             Log.e("createSign", "Exception happend !!" + " The signature is empty now");
         }
 
-        Log.d("createSign", sign.toString());
+        //      Log.d("createSign", sign.toString());
 
         return sign;
 
@@ -183,7 +192,7 @@ public final class SignsDB {
             isDuplicated = false;
         }
 
-        Log.i("SignsDB : is DuplicatedSign", "name  =  " + name + "   ,  is Duplicated ?  = " + isDuplicated);
+//        Log.i("SignsDB : is DuplicatedSign", "name  =  " + name + "   ,  is Duplicated ?  = " + isDuplicated);
 
         return isDuplicated;
 
@@ -233,20 +242,25 @@ public final class SignsDB {
 
         db.update(TABLE_SIGNS, updateValues, COLUMN_NAME + " = " + "'" + defSign.getName() + "'", null);
 
-        //  Log.d("unDefault",defSign.getName() + "  is Default ?   =  " + SignatureUtil.getSign(defSign.getName()).isDefault());
+
+        Log.d("unDefault", defSign.getName() + "  is Default ?   =  " + SignatureUtil.getSign(defSign.getName()).isDefault());
 
 
     }
 
-    public boolean deleteSign(final String name, boolean deleteFile) {
+    public boolean deleteSign(final Signature signature, boolean deleteFile) {
 
-        db.delete(TABLE_SIGNS, COLUMN_NAME + " = " + "'" + name + "'", null);
+        int deleteResult;
 
+        deleteResult = db.delete(TABLE_SIGNS, COLUMN_NAME + " = " + "'" + signature.getName() + "'", null);
+
+        boolean fileDeleted = true;
         if (deleteFile) {
-            FileUtil.deleteSignature(name);
+            fileDeleted = FileUtil.deleteSignature(signature.getName());
         }
 
-        return true;
+
+        return deleteResult > 1 && fileDeleted;
 
 
     }

@@ -60,10 +60,6 @@ public final class DBThread {
 
         public ArrayList<Signature> getSignatures() {
 
-            for (Signature sign : signatures) {
-                Log.d("getSignatures", "Got Sign :  " + sign.toString());
-            }
-
             return this.signatures;
 
         }
