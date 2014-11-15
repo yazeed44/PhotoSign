@@ -11,8 +11,8 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="0.15">
+        android:layout_height="0dp"
+        android:layout_weight="0.90">
 
         <net.whitedesert.photosign.views.SigningView
             android:id="@+id/signingView"
@@ -39,7 +39,7 @@
 
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.15"
+        android:layout_weight="0.10"
         android:orientation="horizontal">
 
         <TextView
@@ -47,11 +47,11 @@
             style="@style/text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:text="@string/opacity_text" />
 
         <SeekBar
             android:id="@+id/opacity_seek"
+            style="@style/SeekBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 

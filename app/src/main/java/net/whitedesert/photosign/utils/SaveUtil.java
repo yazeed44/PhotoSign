@@ -1,12 +1,13 @@
 package net.whitedesert.photosign.utils;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import net.whitedesert.photosign.R;
 import net.whitedesert.photosign.threads.BitmapThread;
@@ -22,7 +23,10 @@ import java.io.File;
 public final class SaveUtil {
 
     public static final String SIGNS_DIR = "/signs";
+    public static final String SIGNS_FOLDER_NAME = "signs";
     public static final String SIGNED_PHOTO_DIR = "/signed_photos";
+    public static final String SIGNED_PHOTO_FOLDER_NAME = "signed_photo";
+
 
     private SaveUtil() {
         throw new AssertionError();
@@ -31,17 +35,21 @@ public final class SaveUtil {
     public static void askNameAndAddSign(final String picPath, final Activity activity) {
 
         final File pic = new File(picPath);
-        final EditText nameInput = ViewUtil.getEditText(pic.getName(), activity);
+        final EditText nameInput = ViewUtil.getEditTextForAskingName(pic.getName(), activity);
         nameInput.setText(pic.getName());
-        final DialogInterface.OnClickListener posListener = getPosListenerForAskingName(BitmapUtil.decodeFile(picPath), nameInput, activity);
-        DialogUtil.getInputDialog(R.string.save_title, R.string.save_message, posListener, nameInput, activity).show();
+        final MaterialDialog.SimpleCallback posListener = getPosListenerForAskingName(BitmapUtil.decodeFile(picPath), nameInput, activity);
+
+        getTypeNameDialog(nameInput, posListener, activity)
+                .build()
+                .show();
+
 
     }
 
-    public static DialogInterface.OnClickListener getPosListenerForAskingName(final Bitmap signBitmap, final EditText nameInput, final Activity activity) {
-        return new DialogInterface.OnClickListener() {
+    public static MaterialDialog.SimpleCallback getPosListenerForAskingName(final Bitmap signBitmap, final EditText nameInput, final Activity activity) {
+        return new MaterialDialog.SimpleCallback() {
             @Override
-            public void onClick(DialogInterface dialogInterface, int which) {
+            public void onPositive(MaterialDialog materialDialog) {
                 final String signName = nameInput.getText().toString();
 
                 if (!CheckUtil.checkSign(signName, signBitmap, activity)) {
@@ -59,7 +67,6 @@ public final class SaveUtil {
 
                 signature.setPath(savedPath);
                 addSignShowDialog(signature, activity);
-
             }
         };
     }
@@ -67,23 +74,29 @@ public final class SaveUtil {
 
     public static void askNameAndAddSign(final Bitmap sign, final Activity activity) {
         // Don't waste your time on this
-        final EditText nameInput = ViewUtil.getEditText(RandomUtil.getRandomInt(SIGNED_PHOTO_DIR.length() + SIGNS_DIR.length()) + sign.getWidth() + sign.getDensity(), activity);
-        final DialogInterface.OnClickListener posListener = getPosListenerForAskingName(sign, nameInput, activity);
-        DialogUtil.getInputDialog(R.string.save_title, R.string.save_message, posListener, nameInput, activity).show();
+        final EditText nameInput = ViewUtil.getEditTextForAskingName(RandomUtil.getRandomInt(SIGNED_PHOTO_DIR.length() + SIGNS_DIR.length()) + sign.getWidth() + sign.getDensity(), activity);//Random
+
+        final MaterialDialog.SimpleCallback posListener = getPosListenerForAskingName(sign, nameInput, activity);
+
+        getTypeNameDialog(nameInput, posListener, activity)
+                .build()
+                .show();
     }
 
     public static void askNameAndAddSign(final View drawView, final Activity activity) {
-        final EditText nameInput = ViewUtil.getEditText(RandomUtil.getRandomInt(drawView.getWidth()), activity);
+        final EditText nameInput = ViewUtil.getEditTextForAskingName(RandomUtil.getRandomInt(drawView.getWidth()), activity);
 
-        final DialogInterface.OnClickListener posListener = getPosListenerForAskingName(drawView, nameInput, activity);
+        final MaterialDialog.SimpleCallback posListener = getPosListenerForAskingName(drawView, nameInput, activity);
 
-        DialogUtil.getInputDialog(R.string.save_title, R.string.save_message, posListener, nameInput, activity).show();
+        getTypeNameDialog(nameInput, posListener, activity)
+                .build()
+                .show();
     }
 
-    public static DialogInterface.OnClickListener getPosListenerForAskingName(final View drawView, final EditText nameInput, final Activity activity) {
-        return new DialogInterface.OnClickListener() {
+    public static MaterialDialog.SimpleCallback getPosListenerForAskingName(final View drawView, final EditText nameInput, final Activity activity) {
+        return new MaterialDialog.SimpleCallback() {
             @Override
-            public void onClick(DialogInterface dialogInterface, int which) {
+            public void onPositive(MaterialDialog materialDialog) {
                 final String signName = nameInput.getText().toString();
                 final Signature signature = new Signature();
                 if (!CheckUtil.checkSign(signName, drawView, activity)) {
@@ -102,9 +115,18 @@ public final class SaveUtil {
 
                 signature.setPath(savedPath);
                 addSignShowDialog(signature, activity);
-
             }
         };
+
+    }
+
+
+    public static MaterialDialog.Builder getTypeNameDialog(final EditText nameInput, MaterialDialog.SimpleCallback callback, final Activity activity) {
+        final MaterialDialog.Builder dialog = DialogUtil.initDialog(R.string.save_title, R.string.save_msg, activity);
+        dialog.customView(nameInput)
+                .callback(callback);
+
+        return dialog;
 
     }
 
@@ -167,10 +189,10 @@ public final class SaveUtil {
             signature.setDefault(true);
         }
 
-        SignatureUtil.addSign(signature);
+        SignatureUtil.addSign(signature, true);
 
 
-        AskUtil.getWannaSignDialog(activity).show();
+        AskUtil.getWannaSignDialog(activity).build().show();
 
     }
 

@@ -5,53 +5,87 @@
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     <string name="gallery_name">Gallery</string>
-    <string name="sign_text_view">Your name :</string>
-    <string name="sign_name_hint">Type text here</string>
     <string name="file_saved">File saved to : </string>
-    <string name="sign_draw_titlebar_text">Draw your signature</string>
+
     <string name="redo_drawing">Redo the drawing</string>
     <string name="brush_color_customize">Change brush color</string>
     <string name="brush_settings">Brush settings</string>
     <string name="sign_draw_reminder">When you are done signing click the save button</string>
-    <string name="ok">OK</string>
-    <string name="cancel">Cancel</string>
-    <string name="save_title">Save the signature</string>
-    <string name="save_message">Type the signature name , it must be unique</string>
-    <string name="error_title">Error</string>
-    <string name="error_name_empty">The name is empty , you have to type a name</string>
-    <string name="error_name_repeated">This name is used , please type another name</string>
-    <string name="sign_method_title">Creating a signature</string>
-    <string name="sign_method_message">Choose your method to create a signature</string>
-    <string name="list_view_default_title">Choose</string>
-    <string name="list_view_default_message">Choose an item</string>
-    <string name="unsupported">This feature is not available right now</string>
+
+
+    <string name="type_sign_hint">Type text here</string>
+
+
+    <string name="error_name_empty">you have to type a name</string>
+    <string name="error_name_repeated">Used name ,please type another name</string>
     <string name="error_save_sign">Error while saving the signature , please try again</string>
+
+
+    <string name="unsupported">This feature is not available right now</string>
+
     <string name="saved_sign_success">Saved signature successfully</string>
     <string name="wanna_sign_title">You can make another signature , or sign a photo</string>
     <string name="oops_no_sign">Oops !! you don\'t have signatures</string>
     <string name="opacity_text">Opacity</string>
     <string name="done_signing_text">Done</string>
-    <string name="wait_please_title">Wait please</string>
-    <string name="wait_signing_msg">The photo is being signed on</string>
+
+
     <string name="saving_sign">Adding signature to database so you can use it later</string>
     <string name="text_size_view">Text size : </string>
     <string name="choose_color">Choose color</string>
-
+    <string name="list_view_default_message">Choose an item</string>
     <string name="draw_size_text">Brush Width : </string>
     <string name="draw_opacity_text">Opacity : </string>
     <string name="empty"></string>
-    <string name="draw_sign_customize_title">Customize your brush</string>
+
     <string name="sign_text_preview">Preview the signature</string>
     <string name="check_mark_bold">Bold</string>
-    <string name="main_activity_btn_sign_pic">Sign on a photo</string>
-    <string name="main_activity_btn_my_signatures">The signatures</string>
+
 
     <string name="unavailable">Unavailable</string>
     <string name="last_image_view_desc">Last image</string>
 
     <string name="signature_item_image">Signature image</string>
     <string name="signature_is_default">Default</string>
+
+    <string name="retrieved_signs_success_toast">Signs has successfully retrieved</string>
+    <string name="deleted_signs_toast">Signs has been deleted</string>
+    <string name="default_sign_is_used_toast">The default signature is used</string>
+
+    <string name="set_default_signature_popup">Set default</string>
+    <string name="delete_signature_popup">Delete</string>
+
+
+    <string name="my_signatures_title">My signatures</string>
     <string name="about_title">About</string>
+    <string name="sign_draw_title">Draw signature</string>
+    <string name="sign_method_title">Creating a signature</string>
+    <string name="list_view_default_title">Choose</string>
+    <string name="wait_please_title">Wait please</string>
+    <string name="save_title">Save the signature</string>
+    <string name="draw_sign_customize_title">Customize your brush</string>
+    <string name="type_sign_title">Type signature</string>
+    <string name="error_title">Error</string>
+    <string name="retrieve_title">Retrieve the signatures</string>
+
+
+    <string name="retrieve_msg">We have found 0 signatures unused , want to retrieve them ?</string>
+    <string name="sign_method_msg">Choose your method to create a signature</string>
+    <string name="wait_signing_msg">The photo is being signed on</string>
+    <string name="save_msg">Type the signature name , it must be unique</string>
+    <string name="delete_sign_file_msg">Do you want to delete the file of this signature ?</string>
+
+
+    <string name="sign_on_photo_btn">SIGN ON PHOTO</string>
+    <string name="my_signatures_btn">MY SIGNATURES</string>
+    <string name="delete_unused_signatures_btn">DELETE THEM</string>
+    <string name="yes_btn">YES</string>
+    <string name="no_btn">NO</string>
+    <string name="ok_btn">OK</string>
+    <string name="cancel_btn">CANCEL</string>
+    <string name="dismiss_btn">DISMISS</string>
+    <string name="signature_menu">Signature menu</string>
+    <string name="delete_only_signature_btn">NO , JUST THE SIGNATURE</string>
 
 
     <string-array name="wanna_sign_choices">
@@ -60,8 +94,8 @@
     </string-array>
     <string-array name="select_method_signature_choices">
         <item>Draw a signature</item>
-        <item>Import a picture using it as signature</item>
-        <item>Sign using customized text</item>
+        <item>Import a signature </item>
+        <item>Type a signature</item>
     </string-array>
 
 

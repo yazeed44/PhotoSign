@@ -62,5 +62,14 @@ public final class ThreadUtil {
         join(t);
     }
 
+    public static void sleep(final long time) {
+        try {
+            Thread.sleep(time);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            Log.e("ThreadUtil : sleep", e.getMessage());
+        }
+    }
+
 
 }

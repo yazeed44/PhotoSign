@@ -17,8 +17,9 @@
 
         >
 
-        <activity android:name="net.whitedesert.photosign.activities.DrawSignActivity"
-
+        <activity
+            android:name="net.whitedesert.photosign.activities.DrawSignActivity"
+            android:parentActivityName="net.whitedesert.photosign.activities.SignaturesActivity"
 
             />
 
@@ -66,7 +67,7 @@
 
         <activity
             android:name=".activities.TextSignActivity"
-            android:parentActivityName=".activities.MainActivity" />
+            android:parentActivityName=".activities.SignaturesActivity" />
 
         <activity
             android:name=".activities.SignaturesActivity"

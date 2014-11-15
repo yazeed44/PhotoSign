@@ -55,7 +55,9 @@ public final class Signature {
     }
 
     public void setDefault(boolean isDefault) {
+
         this.isDefault = isDefault;
+
     }
 
     public Bitmap getBitmap(boolean originalSize) {
@@ -72,7 +74,7 @@ public final class Signature {
 
     public Bitmap getBitmap(int width, int height) {
 
-        if (counter == 0) {
+/*        if (counter == 0) {
             bitmap = BitmapUtil.decodeFile(getPath(), width, height);
 
             counter++;
@@ -82,7 +84,9 @@ public final class Signature {
         } else {
             bitmap = BitmapUtil.decodeFile(getPath(), width, height);
             return bitmap;
-        }
+        }*/
+
+        return BitmapUtil.decodeFile(getPath(), width, height);
 
     }
 
@@ -94,7 +98,7 @@ public final class Signature {
     public boolean equals(Object object) {
         if (object instanceof Signature) {
             final Signature sign = (Signature) object;
-            return getName().equals(sign.getName()) && getPath().equals(sign.getPath());
+            return this == sign;
         } else {
             return false;
         }

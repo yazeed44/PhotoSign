@@ -33,7 +33,7 @@
 
 
             android:paddingBottom="20dp"
-            android:text="@string/main_activity_btn_my_signatures" />
+            android:text="@string/my_signatures_btn" />
 
 
         <Button
@@ -47,7 +47,7 @@
             android:drawableBottom="@drawable/ic_photo"
             android:onClick="onClickChoose"
             android:paddingBottom="20dp"
-            android:text="@string/main_activity_btn_sign_pic" />
+            android:text="@string/sign_on_photo_btn" />
 
     </LinearLayout>
 

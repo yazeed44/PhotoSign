@@ -1,11 +1,11 @@
 package net.whitedesert.photosign.utils;
 
 import android.app.Activity;
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.View;
+
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import net.whitedesert.photosign.R;
 
@@ -21,27 +21,40 @@ public final class CheckUtil {
 
     public static boolean checkSign(final String name, final Bitmap bitmap, final Activity activity) {
 
-        final DialogInterface.OnDismissListener askAgain = new DialogInterface.OnDismissListener() {
+        final MaterialDialog.FullCallback askAgain = new MaterialDialog.FullCallback() {
             @Override
-            public void onDismiss(DialogInterface dialogInterface1) {
+            public void onNeutral(MaterialDialog materialDialog) {
+
+            }
+
+            @Override
+            public void onPositive(MaterialDialog materialDialog) {
+
+            }
+
+            @Override
+            public void onNegative(MaterialDialog materialDialog) {
                 SaveUtil.askNameAndAddSign(bitmap, activity);
             }
         };
 
-        final Dialog errorDialog = DialogUtil.createErrorDialog(R.string.error_title, activity);
-        errorDialog.setOnDismissListener(askAgain);
+
+        final MaterialDialog.Builder errorDialog = DialogUtil.createErrorDialog(null, activity);
+        errorDialog.
+                negativeText(R.string.dismiss_btn).
+                callback(askAgain);
 
 
         if (!checkString(name)) {
-            errorDialog.setTitle(R.string.error_name_empty);
+            errorDialog.content(R.string.error_name_empty);
 
-            errorDialog.show();
-            ToastUtil.toastShort(R.string.error_name_empty);
+            errorDialog.build().show();
+            //ToastUtil.toastShort(R.string.error_name_empty);
             return false;
         } else if (SignatureUtil.isDuplicatedSign(name)) {
-            errorDialog.setTitle(R.string.error_name_repeated);
-            errorDialog.show();
-            ToastUtil.toastShort(R.string.error_name_repeated);
+            errorDialog.content(R.string.error_name_repeated);
+            errorDialog.build().show();
+            //ToastUtil.toastShort(R.string.error_name_repeated);
             return false;
 
         }
@@ -57,9 +70,9 @@ public final class CheckUtil {
 
 
         if (!checkString(path)) {
-            final Dialog errorDialog = DialogUtil.createErrorDialog(R.string.error_save_sign, activity);
-            errorDialog.show();
-            ToastUtil.toastLong(R.string.error_save_sign);
+            final MaterialDialog.Builder errorDialog = DialogUtil.createErrorDialog(R.string.error_save_sign, activity);
+            errorDialog.build().show();
+            //ToastUtil.toastLong(R.string.error_save_sign);
             return false;
         }
 
@@ -68,15 +81,45 @@ public final class CheckUtil {
     }
 
 
-    public static boolean checkSign(final long id) {
+    public static boolean checkSign(final long id, boolean toast) {
         if (id != -1) {
             Log.i("CheckSign", "it has successfully added the sign");
-            ToastUtil.toastSavedSignSuccess();
+            if (toast)
+                ToastUtil.toastSavedSignSuccess();
+
             return true;
         } else {
             Log.e("CheckSign", "Failed to add sign");
+
             return false;
         }
+    }
+
+    public static boolean checkSigns(final long[] ids, boolean toast) {
+        boolean noError = true;
+
+        for (long id : ids) {
+            if (id == -1) {
+                noError = false;
+                Log.e("checkSigns", "Failed to add sign ");
+
+                if (toast)
+                    ToastUtil.toastLong(R.string.error_save_sign);
+            }
+        }
+
+        return noError;
+    }
+
+    public static boolean checkSign(final Signature signature) {
+        assert (signature != null);
+
+        if (signature.equals(SignatureUtil.EMPTY_SIGNATURE)) {
+            return false;
+        } else if (!checkString(signature.getName()) || !checkString(signature.getPath())) {
+            return false;
+        }
+        return true;
     }
 
     public static boolean checkString(String s) {

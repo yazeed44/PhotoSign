@@ -1,6 +1,5 @@
 package net.whitedesert.photosign.activities;
 
-import android.app.AlertDialog;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.Menu;
@@ -8,6 +7,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import net.whitedesert.photosign.R;
 import net.whitedesert.photosign.utils.DialogUtil;
@@ -22,7 +23,66 @@ import yuku.ambilwarna.AmbilWarnaDialog;
  */
 public class DrawSignActivity extends AdActivity {
 
+
+    private final AmbilWarnaDialog.OnAmbilWarnaListener chooseColorListener = new AmbilWarnaDialog.OnAmbilWarnaListener() {
+        @Override
+        public void onCancel(AmbilWarnaDialog dialog) {
+
+        }
+
+        @Override
+        public void onOk(AmbilWarnaDialog dialog, int color) {
+
+            draw.getDrawPaint().setColor(color); // update color
+        }
+    };
+    private SeekBar.OnSeekBarChangeListener widthListener = new SeekBar.OnSeekBarChangeListener() {
+        @Override
+        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            final float px = ViewUtil.convertDpToPixel(progress, draw.getContext());
+            final Paint paint = draw.getDrawPaint();
+            paint.setStrokeWidth(px);
+            draw.setDrawPaint(paint);
+            widthText.setText(widthText.getResources().getText(R.string.draw_size_text) + "" + progress);
+        }
+
+        @Override
+        public void onStartTrackingTouch(SeekBar seekBar) {
+
+        }
+
+        @Override
+        public void onStopTrackingTouch(SeekBar seekBar) {
+
+        }
+    };
     private DrawSignView draw;
+    private View brushCustomizeLayout;
+    private String brushCustomizeTitle;
+    private TextView widthText;
+    private SeekBar widthSeek;
+    private TextView opacityText;
+    private String opacityString;
+    private final SeekBar.OnSeekBarChangeListener opacityListener = new SeekBar.OnSeekBarChangeListener() {
+        @Override
+        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            draw.getDrawPaint().setAlpha(progress);
+
+            opacityText.setText(opacityString + progress);
+        }
+
+        @Override
+        public void onStartTrackingTouch(SeekBar seekBar) {
+
+        }
+
+        @Override
+        public void onStopTrackingTouch(SeekBar seekBar) {
+
+        }
+    };
+    private SeekBar opacitySeek;
+
 
     @Override
     public void onCreate(Bundle savedInstance) {
@@ -32,7 +92,26 @@ public class DrawSignActivity extends AdActivity {
         setContentView(R.layout.activity_sign_drawing);
         draw = (DrawSignView) this.findViewById(R.id.drawView);
 
-        getSupportActionBar().setTitle(R.string.sign_draw_titlebar_text);
+        getSupportActionBar().setTitle(R.string.sign_draw_title);
+
+
+    }
+
+    private void initializeBrushCustomizeDialog() {
+        brushCustomizeLayout = this.getLayoutInflater().inflate(R.layout.dialog_draw_sign_customize, null);
+
+
+        opacityText = (TextView) brushCustomizeLayout.findViewById(R.id.drawOpacityText);
+        opacitySeek = (SeekBar) brushCustomizeLayout.findViewById(R.id.drawOpacitySeek);
+        opacitySeek.setOnSeekBarChangeListener(opacityListener);
+
+
+        widthText = (TextView) brushCustomizeLayout.findViewById(R.id.drawSizeText);
+        widthSeek = (SeekBar) brushCustomizeLayout.findViewById(R.id.baseSizeSeek);
+        widthSeek.setOnSeekBarChangeListener(widthListener);
+
+        opacityString = getResources().getString(R.string.draw_opacity_text);
+        brushCustomizeTitle = getResources().getString(R.string.draw_sign_customize_title);
 
 
     }
@@ -40,97 +119,42 @@ public class DrawSignActivity extends AdActivity {
 
     //When user clicks on customizing Brush
     public void onClickBrushCustomize() {
-        final View drawSignCustomize = this.getLayoutInflater().inflate(R.layout.dialog_draw_sign_customize, null);
 
 
-        final TextView opacityText = (TextView) drawSignCustomize.findViewById(R.id.drawOpacityText);
-        final SeekBar opacitySeek = (SeekBar) drawSignCustomize.findViewById(R.id.drawOpacitySeek);
+        initializeBrushCustomizeDialog();
+
+
+        final MaterialDialog.Builder dialog = DialogUtil.initDialog(brushCustomizeTitle, "", this);
+        setUpSize(widthText, widthSeek);
         setUpOpacity(opacityText, opacitySeek);
+        dialog.customView(brushCustomizeLayout);
 
-
-        final TextView sizeText = (TextView) drawSignCustomize.findViewById(R.id.drawSizeText);
-        final SeekBar sizeSeek = (SeekBar) drawSignCustomize.findViewById(R.id.baseSizeSeek);
-        setUpSize(sizeText, sizeSeek);
-
-
-        final String title = this.getResources().getString(R.string.draw_sign_customize_title);
-        final AlertDialog.Builder dialog = DialogUtil.initDialog(title, android.R.drawable.ic_dialog_info, false, this);
-        dialog.setView(drawSignCustomize);
-
-        dialog.show();
+        dialog.build().show();
     }
 
 
-    private void setUpSize(final TextView sizeText, final SeekBar sizeSeek) {
-        sizeSeek.setProgress((int) ViewUtil.convertPixelsToDp(draw.getDrawPaint().getStrokeWidth(), this));
-        sizeText.setText(sizeText.getResources().getText(R.string.draw_size_text) + "" + sizeSeek.getProgress());
+    private void setUpSize(final TextView sizeText, final SeekBar widthSeek) {
+        widthSeek.setProgress((int) ViewUtil.convertPixelsToDp(draw.getDrawPaint().getStrokeWidth(), this));
+        sizeText.setText(sizeText.getResources().getText(R.string.draw_size_text) + "" + widthSeek.getProgress());
 
 
-        sizeSeek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
-                final float px = ViewUtil.convertDpToPixel(progress, draw.getContext());
-                final Paint paint = draw.getDrawPaint();
-                paint.setStrokeWidth(px);
-                draw.setDrawPaint(paint);
-                sizeText.setText(sizeText.getResources().getText(R.string.draw_size_text) + "" + progress);
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
     }
 
 
     private void setUpOpacity(final TextView opacityText, final SeekBar opacitySeek) {
-        final String opacityString = opacityText.getContext().getResources().getString(R.string.draw_opacity_text);
+
         opacitySeek.setProgress(draw.getDrawPaint().getAlpha());
         opacityText.setText(opacityString + opacitySeek.getProgress());
 
-        opacitySeek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
-                draw.getDrawPaint().setAlpha(progress);
 
-                opacityText.setText(opacityString + progress);
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
     }
 
 
     private void onClickChooseColor() {
-        AmbilWarnaDialog.OnAmbilWarnaListener listener = new AmbilWarnaDialog.OnAmbilWarnaListener() {
-            @Override
-            public void onCancel(AmbilWarnaDialog dialog) {
 
-            }
-
-            @Override
-            public void onOk(AmbilWarnaDialog dialog, int color) {
-
-                draw.getDrawPaint().setColor(color); // update color
-            }
-        };
 
         final int initalColor = draw.getDrawPaint().getColor();
-        new AmbilWarnaDialog(DrawSignActivity.this, initalColor, listener).show();
+        new AmbilWarnaDialog(DrawSignActivity.this, initalColor, chooseColorListener).show();
     }
 
     public void onClickReset() {

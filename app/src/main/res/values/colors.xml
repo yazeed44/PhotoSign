@@ -2,19 +2,24 @@
 <resources>
 
     <drawable name="button_background">#222326</drawable>
+    <drawable name="list_item_background">#ffffff</drawable>
     <drawable name="button_pressed_background">#ff57585b</drawable>
+    <drawable name="list_item_pressed_background">#ffd0c9d2</drawable>
     <drawable name="main_btn_pressed_background">#ffd0c9d2</drawable>
 
     <drawable name="main_btn_last_background">#64aa0b</drawable>
     <drawable name="main_btn_settings_background">#00a4bf</drawable>
 
-    <drawable name="main_btn_sign_background">#c2185b</drawable>
-    <drawable name="main_btn_signatures_background">#7b1fa2</drawable>
+    <drawable name="main_btn_sign_background">#e53935</drawable>
+    <drawable name="main_btn_signatures_background">#00a4bf</drawable>
+
+    <drawable name="fab_pressed">#F50075</drawable>
+    <drawable name="fab_ripple">#fff551a6</drawable>
 
 
-    <color name="app_primary">#4d73ff</color>
-    <color name="app_primary_dark">#4d69ff</color>
-    <color name="app_accent">#ffff990e</color>
+    <color name="app_primary">#3F51B5</color>
+    <color name="app_primary_dark">#303F9F</color>
+    <color name="app_accent">#FF80AB</color>
 
     <color name="star_default_color">#FACC37</color>
 </resources>

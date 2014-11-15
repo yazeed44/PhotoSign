@@ -33,7 +33,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.8"
-            android:hint="@string/sign_name_hint"
+            android:hint="@string/type_sign_hint"
             android:inputType="text" />
 
         <CheckBox

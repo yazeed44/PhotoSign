@@ -3,6 +3,7 @@ package net.whitedesert.photosign.utils;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Typeface;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 
@@ -78,4 +79,39 @@ public final class FileUtil {
             throw new NullPointerException("The latest image returns null ? !");
         }
     }
+
+    public static boolean deleteDirectory(File path) {
+
+        if (path.exists()) {
+            File[] files = path.listFiles();
+            for (int i = 0; i < files.length; i++) {
+                if (files[i].isDirectory()) {
+                    deleteDirectory(files[i]);
+                } else {
+                    files[i].delete();
+                }
+            }
+
+
+        }
+        return (path.delete());
+    }
+
+    public static boolean deleteSignature(final String name) {
+        final File signFile = new File(Environment.getExternalStorageDirectory(), SaveUtil.SIGNS_FOLDER_NAME + "/" + name);
+
+        return signFile.delete();
+    }
+
+    public static File[] getFilesOfSigns() {
+        final String path = Environment.getExternalStorageDirectory().toString() + SaveUtil.SIGNS_DIR;
+
+        final File signsFolder = new File(Environment.getExternalStorageDirectory(), SaveUtil.SIGNS_FOLDER_NAME);
+        Log.d("Path to /signs", path);
+        return signsFolder.listFiles();
+
+
+    }
+
+
 }

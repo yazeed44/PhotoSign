@@ -13,6 +13,7 @@ import net.whitedesert.photosign.utils.BitmapUtil;
 import net.whitedesert.photosign.utils.SaveUtil;
 import net.whitedesert.photosign.utils.Signature;
 import net.whitedesert.photosign.utils.SignatureUtil;
+import net.whitedesert.photosign.utils.ToastUtil;
 import net.whitedesert.photosign.views.SignatureView;
 import net.whitedesert.photosign.views.SigningView;
 
@@ -45,6 +46,8 @@ public class SigningActivity extends AdActivity {
         final Signature lastSignature = SignatureUtil.getLatestSign();
 
         signatureView.setSignature(lastSignature);
+
+        ToastUtil.toastShort(R.string.default_sign_is_used_toast);
 
 
         signingView.setSignatureView(signatureView);

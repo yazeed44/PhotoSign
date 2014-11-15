@@ -3,12 +3,13 @@
     <!-- Application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
 
-        <item name="actionBarStyle">@style/MyActionBarStyle</item>
-        <item name="android:actionBarStyle">@style/MyActionBarStyle</item>
 
         <item name="colorPrimary">@color/app_primary</item>
         <item name="colorPrimaryDark">@color/app_primary_dark</item>
         <item name="colorAccent">@color/app_accent</item>
+
+        <item name="popupMenuStyle">@style/PopupMenu</item>
+        <item name="android:popupMenuStyle">@style/PopupMenu</item>
 
 
     </style>
@@ -97,6 +98,11 @@
     </style>
 
     <style name="GridView" parent="list_view">
+
+    </style>
+
+    <style name="PopupMenu" parent="@style/Widget.AppCompat.Light.PopupMenu">
+
 
     </style>
 

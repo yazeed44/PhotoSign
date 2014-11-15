@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Point;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.view.ContextThemeWrapper;
 import android.view.Display;
@@ -58,10 +60,41 @@ public final class ViewUtil {
         return px;
     }
 
-    public static EditText getEditText(final String text, final Activity activity) {
+    public static EditText getEditTextForAskingName(final String text, final Activity activity) {
         final EditText editText = new EditText(new ContextThemeWrapper(activity, R.style.text_edit));
         editText.setText(text);
         editText.setTextAppearance(activity, R.style.text_edit);
+
+        editText.addTextChangedListener(new TextWatcher() {
+            private void checkText(CharSequence s) {
+                if (s.length() == 0) {
+                    editText.setError(activity.getResources().getString(R.string.error_name_empty));
+                } else if (SignatureUtil.isDuplicatedSign(s.toString())) {
+                    editText.setError(activity.getResources().getString(R.string.error_name_repeated));
+                } else {
+                    //If there's nothing wrong
+
+                    editText.setError(null);
+
+                }
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                checkText(s);
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                checkText(s);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                checkText(s);
+            }
+        });
+
         return editText;
     }
 

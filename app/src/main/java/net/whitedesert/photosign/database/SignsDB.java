@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import net.whitedesert.photosign.utils.CheckUtil;
+import net.whitedesert.photosign.utils.FileUtil;
 import net.whitedesert.photosign.utils.Signature;
 import net.whitedesert.photosign.utils.SignatureUtil;
 
@@ -130,6 +132,8 @@ public final class SignsDB {
             Log.d("getSigns", signature.toString());
         }
 
+        Log.d("Signs count", signatures.size() + "");
+
         return signatures;
     }
 
@@ -159,7 +163,10 @@ public final class SignsDB {
             sign.setDefault(cursor.getInt(cursor.getColumnIndex(COLUMN_IS_DEFAULT)));
         } catch (CursorIndexOutOfBoundsException ex) {
             sign = SignatureUtil.EMPTY_SIGNATURE;
+            Log.e("createSign", "Exception happend !!" + " The signature is empty now");
         }
+
+        Log.d("createSign", sign.toString());
 
         return sign;
 
@@ -202,25 +209,44 @@ public final class SignsDB {
         updateValues.put(COLUMN_PATH, sign.getPath());
         updateValues.put(COLUMN_NAME, sign.getName());
 
+
         db.update(TABLE_SIGNS, updateValues, COLUMN_NAME + " = " + "'" + name + "'", null);
 
-        Log.d("setDefaultSignature", name + "Is the default signature");
+        //  Log.d("setDefaultSignature", name + "  Is the default signature" +  "  "+SignatureUtil.getSign(name).isDefault());
 
     }
+
 
     public void unDefault() {
 
         final Signature defSign = getDefaultSignature();
 
-        if (defSign == SignatureUtil.EMPTY_SIGNATURE)
+        if (!CheckUtil.checkSign(defSign))
             return;
+
 
         final ContentValues updateValues = new ContentValues();
         updateValues.put(COLUMN_IS_DEFAULT, 0);
         updateValues.put(COLUMN_PATH, defSign.getPath());
         updateValues.put(COLUMN_NAME, defSign.getName());
 
+
         db.update(TABLE_SIGNS, updateValues, COLUMN_NAME + " = " + "'" + defSign.getName() + "'", null);
+
+        //  Log.d("unDefault",defSign.getName() + "  is Default ?   =  " + SignatureUtil.getSign(defSign.getName()).isDefault());
+
+
+    }
+
+    public boolean deleteSign(final String name, boolean deleteFile) {
+
+        db.delete(TABLE_SIGNS, COLUMN_NAME + " = " + "'" + name + "'", null);
+
+        if (deleteFile) {
+            FileUtil.deleteSignature(name);
+        }
+
+        return true;
 
 
     }

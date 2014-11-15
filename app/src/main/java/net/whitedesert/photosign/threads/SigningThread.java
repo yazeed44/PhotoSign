@@ -1,17 +1,14 @@
 package net.whitedesert.photosign.threads;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.graphics.Bitmap;
 import android.os.Looper;
 
 import net.whitedesert.photosign.utils.CheckUtil;
-import net.whitedesert.photosign.utils.DialogUtil;
 import net.whitedesert.photosign.utils.RandomUtil;
 import net.whitedesert.photosign.utils.SaveUtil;
 import net.whitedesert.photosign.utils.SigningOptions;
 import net.whitedesert.photosign.utils.SigningUtil;
-import net.whitedesert.photosign.utils.ThreadUtil;
 import net.whitedesert.photosign.utils.XY;
 
 /**
@@ -45,6 +42,7 @@ public final class SigningThread extends Thread {
         final float x = signingXY.getX(), y = signingXY.getY();
 
         Looper.prepare();
+        //TODO clean this
 
         //final ProgressDialog progressDialog = DialogUtil.getProgressDialog(R.string.wait_please_title, R.string.wait_signing_msg, activity);
         //ThreadUtil.showDialog(progressDialog, activity);
@@ -60,8 +58,8 @@ public final class SigningThread extends Thread {
 
 
 //        ThreadUtil.dismissDialog(progressDialog, activity);
-        final AlertDialog.Builder previewDialog = DialogUtil.getImageViewDialog("Test", "Test", signed, activity);
-        ThreadUtil.showDialog(previewDialog);
+        // final AlertDialog.Builder previewDialog = DialogUtil.getImageViewDialog("Test", "Test", signed, activity);
+        // ThreadUtil.showDialog(previewDialog);
 
     }
 

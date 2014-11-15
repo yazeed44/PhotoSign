@@ -1,8 +1,5 @@
 package net.whitedesert.photosign.utils;
 
-import android.graphics.Color;
-import android.graphics.Paint;
-
 import net.whitedesert.photosign.database.SignsDB;
 import net.whitedesert.photosign.threads.DBThread;
 
@@ -23,14 +20,27 @@ public final class SignatureUtil {
         throw new AssertionError();
     }
 
-    public static long addSign(final Signature signature) {
+    public static long addSign(final Signature signature, boolean toast) {
 
         DBThread.AddSignThread thread = new DBThread.AddSignThread(signature);
         ThreadUtil.startAndJoin(thread);
+
         long id = thread.getId();
-        CheckUtil.checkSign(id);
+        CheckUtil.checkSign(id, toast);
 
         return id;
+    }
+
+    public static long[] addSigns(final ArrayList<Signature> signatures) {
+        final long[] ids = new long[signatures.size()];
+
+        for (int i = 0; i < signatures.size(); i++) {
+            final long id = addSign(signatures.get(i), false);
+            ids[i] = id;
+
+        }
+
+        return ids;
     }
 
 
@@ -76,10 +86,13 @@ public final class SignatureUtil {
         return thread.getSignature();
     }
 
+    public static void setDefaultSignature(final Signature signature) {
+        setDefaultSignature(signature.getName());
+        signature.setDefault(true);
+    }
 
     public static void setDefaultSignature(String name) {
-        //TODO
-        //Moving to a thread
+        //TODO Moving to a thread
         final SignsDB db = SignsDB.getInstance();
         db.openDatabase();
         db.setDefaultSignature(name);
@@ -88,28 +101,19 @@ public final class SignatureUtil {
 
     }
 
+    public static void deleteSignature(final String name, boolean deleteFile) {
 
-    /**
-     * @return the default paint for drawing a signature
-     */
-    public static Paint getDefaultPaintForDraw() {
-        final Paint paint = new Paint();
-        paint.setColor(Color.BLACK);
-        paint.setAntiAlias(true);
-        paint.setStrokeWidth(20);
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeJoin(Paint.Join.ROUND);
-        paint.setStrokeCap(Paint.Cap.ROUND);
-        paint.setAlpha(255);
-
-        return paint;
+        //TODO move to thread
+        final SignsDB db = SignsDB.getInstance();
+        db.openDatabase();
+        db.deleteSign(name, deleteFile);
+        db.closeDatabase();
     }
 
 
     public static boolean noSigns() {
         return SignatureUtil.getSigns(true).isEmpty();
     }
-
 
 
 }

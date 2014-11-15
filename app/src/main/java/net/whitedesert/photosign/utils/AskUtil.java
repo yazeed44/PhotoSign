@@ -1,10 +1,11 @@
 package net.whitedesert.photosign.utils;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.view.View;
+
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import net.whitedesert.photosign.R;
 import net.whitedesert.photosign.activities.DrawSignActivity;
@@ -23,26 +24,29 @@ public final class AskUtil {
 
 
     //the user to make another signature or sign a photo
-    public static AlertDialog.Builder getWannaSignDialog(final Activity activity) {
+    public static MaterialDialog.Builder getWannaSignDialog(final Activity activity) {
         final Resources r = activity.getResources();
         final String[] choices = r.getStringArray(R.array.wanna_sign_choices);
         final String makeSign = choices[0];
         final String signPhoto = choices[1];
 
-        final DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
+        final MaterialDialog.ListCallback listener = new MaterialDialog.ListCallback() {
             @Override
-            public void onClick(DialogInterface dialogInterface, int which) {
-                String choice = choices[which];
-                if (choice.equals(makeSign)) {
-                    AskUtil.selectMethodSign(activity);
-                } else if (choice.equals(signPhoto)) {
+            public void onSelection(MaterialDialog materialDialog, View view, int which, String text) {
+                if (text.equals(makeSign)) {
+                    selectMethodSign(activity);
+                } else if (text.equals(signPhoto)) {
                     SigningUtil.openGalleryToSignSingle(activity);
                 }
             }
         };
 
 
-        return DialogUtil.getSingleChooseDialog(R.string.wanna_sign_title, R.array.wanna_sign_choices, listener, activity);
+        final MaterialDialog.Builder wannaSignDialog = DialogUtil.getSingleChooseDialog(r.getString(R.string.wanna_sign_title), choices, activity)
+                .itemsCallbackSingleChoice(-1, listener);
+
+
+        return wannaSignDialog;
     }
 
     //the user choose how to sign
@@ -56,19 +60,17 @@ public final class AskUtil {
         final String text = choices[2];
 
 
-        final DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
-
-
+        final MaterialDialog.ListCallback listener = new MaterialDialog.ListCallback() {
             @Override
-            public void onClick(DialogInterface dialogInterface, int which) {
-                String method = choices[which];
-                if (method.equals(draw)) {
+            public void onSelection(MaterialDialog materialDialog, View view, int which, String chosenMethod) {
+
+                if (chosenMethod.equals(draw)) {
                     Intent i = new Intent(activity, DrawSignActivity.class);
                     activity.startActivity(i);
-                } else if (method.equals(text)) {
+                } else if (chosenMethod.equals(text)) {
                     Intent i = new Intent(activity, TextSignActivity.class);
                     activity.startActivity(i);
-                } else if (method.equals(external)) {
+                } else if (chosenMethod.equals(external)) {
                     Intent i = new Intent(activity, GalleryActivity.class);
                     i.putExtra(Types.TYPE, Types.OPEN_GALLERY_SINGLE_CHOOSE_TYPE);
                     activity.startActivity(i);
@@ -76,8 +78,10 @@ public final class AskUtil {
             }
         };
 
-
-        DialogUtil.getSingleChooseDialog(R.string.sign_method_message, R.array.select_method_signature_choices, listener, activity).show();
+        DialogUtil.getSingleChooseDialog(res.getString(R.string.sign_method_title), choices, activity)
+                .itemsCallbackSingleChoice(-1, listener)
+                .build()
+                .show();
 
 
     }

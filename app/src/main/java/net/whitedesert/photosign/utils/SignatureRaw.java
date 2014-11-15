@@ -95,23 +95,23 @@ public final class SignatureRaw {
         this.height = height;
     }
 
-    public Bitmap createBitmap(SignatureRaw signatureRaw, int width, int height) {
-        final Paint paint = signatureRaw.getPaint();
+    public Bitmap createBitmap(int width, int height) {
+        final Paint paint = getPaint();
 
         final float baseline = (int) (-paint.ascent() + 0.5f); // ascent() is negative
         final Bitmap image = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         final Canvas canvas = new Canvas(image);
-        canvas.drawText(signatureRaw.getText(), 0, baseline, paint);
+        canvas.drawText(getText(), 0, baseline, paint);
         return image;
     }
 
 
-    public Bitmap createBitmap(SignatureRaw signatureRaw, boolean measured) {
+    public Bitmap createBitmap(boolean measured) {
 
         if (measured)
-            return createBitmap(signatureRaw, signatureRaw.getMeasuredWidth(), signatureRaw.getMeasuredHeight());
+            return createBitmap(getMeasuredWidth(), getMeasuredHeight());
         else {
-            return createBitmap(signatureRaw, signatureRaw.getWidth(), signatureRaw.getHeight());
+            return createBitmap(getWidth(), getHeight());
         }
     }
 

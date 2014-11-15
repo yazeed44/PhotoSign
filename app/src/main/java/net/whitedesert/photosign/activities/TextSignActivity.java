@@ -12,7 +12,6 @@ import android.widget.EditText;
 
 import net.whitedesert.photosign.R;
 import net.whitedesert.photosign.utils.SaveUtil;
-import net.whitedesert.photosign.utils.SignatureUtil;
 import net.whitedesert.photosign.views.TypeSignPreviewView;
 
 import yuku.ambilwarna.AmbilWarnaDialog;
@@ -31,17 +30,17 @@ public class TextSignActivity extends AdActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_text_sign_customize);
         preview = (TypeSignPreviewView) this.findViewById(R.id.signTextPreview);
-
-
         text = (EditText) this.findViewById(R.id.signTextEdit);
-        setUpText();
-        setPreviewText("Preview");
 
+        getSupportActionBar().setTitle(R.string.type_sign_title); //TODO get better title
+
+        setPreviewText("Preview");
+        setUpText();
 
     }
 
     public void onClickDone() {
-        SaveUtil.askNameAndAddSign(SignatureUtil.createBitmap(preview.getSignRaw(), true), this);
+        SaveUtil.askNameAndAddSign(preview.getSignRaw().createBitmap(true), this);
     }
 
 

@@ -3,13 +3,12 @@ package net.whitedesert.photosign.views;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
-
-import net.whitedesert.photosign.utils.SignatureUtil;
 
 /**
  * Created by yazeed44 on 8/14/14.
@@ -35,7 +34,7 @@ public class DrawSignView extends View {
 
     private void setupDrawing() {
         drawPath = new Path();
-        drawPaint = SignatureUtil.getDefaultPaintForDraw();
+        drawPaint = getDefaultPaintForDraw();
         canvasPaint = new Paint(Paint.DITHER_FLAG);
 
     }
@@ -94,6 +93,22 @@ public class DrawSignView extends View {
 
     public void setDrawPaint(final Paint paint) {
         this.drawPaint = paint;
+    }
+
+    /**
+     * @return the default paint for drawing a signature
+     */
+    public Paint getDefaultPaintForDraw() {
+        final Paint paint = new Paint();
+        paint.setColor(Color.BLACK);
+        paint.setAntiAlias(true);
+        paint.setStrokeWidth(20);
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setStrokeJoin(Paint.Join.ROUND);
+        paint.setStrokeCap(Paint.Cap.ROUND);
+        paint.setAlpha(255);
+
+        return paint;
     }
 
 }
