@@ -1,6 +1,7 @@
 package net.whitedesert.photosign.activities;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -9,8 +10,13 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiscCache;
+import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
+import com.nostra13.universalimageloader.utils.StorageUtils;
 
 import net.whitedesert.photosign.R;
 import net.whitedesert.photosign.database.MyDBHelper;
@@ -31,6 +37,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AdActivity {
 
+    public static ImageLoader imageLoader;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,10 +53,43 @@ public class MainActivity extends AdActivity {
         SignsDB.initializeInstance(new MyDBHelper(getApplicationContext()));
         ToastUtil.initializeInstance(this);
         ThreadUtil.initalizeInstance(this);
-        // Create global configuration and initialize ImageLoader with this config
-        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this).build();
-        ImageLoader.getInstance().init(config);
+        initImageLoader();
 
+
+    }
+
+    private void initImageLoader() {
+        try {
+            String CACHE_DIR = Environment.getExternalStorageDirectory()
+                    .getAbsolutePath() + "/.temp_tmp";
+            new File(CACHE_DIR).mkdirs();
+
+            File cacheDir = StorageUtils.getOwnCacheDirectory(getBaseContext(),
+                    CACHE_DIR);
+
+            DisplayImageOptions displayImageOptions = new DisplayImageOptions.Builder()
+                    .cacheOnDisc(true).imageScaleType(ImageScaleType.EXACTLY)
+                    .bitmapConfig(Bitmap.Config.RGB_565)
+                    .showImageOnFail(R.drawable.ic_error)
+                            //.showImageOnLoading(R.drawable.no_media)
+                    .resetViewBeforeLoading(true)
+                    .build();
+
+
+            ImageLoaderConfiguration.Builder builder = new ImageLoaderConfiguration.Builder(
+                    getBaseContext())
+                    .defaultDisplayImageOptions(displayImageOptions)
+                    .discCache(new UnlimitedDiscCache(cacheDir))
+                    .memoryCache(new WeakMemoryCache());
+
+
+            ImageLoaderConfiguration config = builder.build();
+            imageLoader = ImageLoader.getInstance();
+            imageLoader.init(config);
+
+        } catch (Exception e) {
+            Log.e("MainActivity", e.getMessage());
+        }
     }
 
     //Check the signs in /signs folder , and then ask user if he want to retrieve them
@@ -121,13 +161,13 @@ public class MainActivity extends AdActivity {
         final boolean noError = CheckUtil.checkSigns(ids, true);
 
         if (noError) {
-            ToastUtil.toastShort(R.string.retrieved_signs_success_toast);
+            ToastUtil.toastLong(R.string.retrieved_signs_success_toast);
             SignatureUtil.setDefaultSignature(signatures.get(0));
 
 
         } else {
             //TODO handle the error
-            Log.e("retrieveSigns", "Some error happend when retrieving the signatures ");
+            Log.e("retrieveSigns", "Some error happened when retrieving the signatures ");
 
         }
     }
@@ -187,11 +227,11 @@ public class MainActivity extends AdActivity {
         // Handle presses on the action bar items
         switch (item.getItemId()) {
             case R.id.menu_settings:
-                openSettings();
+                showSettings();
                 return true;
 
             case R.id.menu_about:
-                openAbout();
+                showAbout();
                 return true;
 
             default:
@@ -199,11 +239,11 @@ public class MainActivity extends AdActivity {
         }
     }
 
-    private void openAbout() {
+    private void showAbout() {
         //TODO
     }
 
-    private void openSettings() {
+    private void showSettings() {
         //TODO
 
 

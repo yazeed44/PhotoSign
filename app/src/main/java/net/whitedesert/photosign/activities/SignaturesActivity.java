@@ -1,16 +1,19 @@
 package net.whitedesert.photosign.activities;
 
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ImageView;
 
 import com.melnykov.fab.FloatingActionButton;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import net.whitedesert.photosign.R;
 import net.whitedesert.photosign.adapters.SignaturesGridAdapter;
 import net.whitedesert.photosign.utils.AskUtil;
+import net.whitedesert.photosign.utils.BitmapUtil;
 import net.whitedesert.photosign.utils.CheckUtil;
 import net.whitedesert.photosign.utils.Signature;
 import net.whitedesert.photosign.utils.SignatureUtil;
@@ -31,6 +34,7 @@ public class SignaturesActivity extends AdActivity {
     private boolean isListEmpty = false;
 
     private SignaturesGridAdapter adapter;
+
 
     @Override
     protected void onCreate(Bundle state) {
@@ -53,12 +57,7 @@ public class SignaturesActivity extends AdActivity {
         }
 
 
-    }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        refreshAdapter();
     }
 
 
@@ -68,7 +67,7 @@ public class SignaturesActivity extends AdActivity {
 
     private void setupEmptyView() {
         if (isListEmpty) {
-            // signaturesList.setEmptyView(getLayoutInflater().inf);
+            signaturesList.setEmptyView(getLayoutInflater().inflate(R.layout.empty_view_signatures, (ViewGroup) signaturesList.getParent()));
         }
     }
 
@@ -85,6 +84,7 @@ public class SignaturesActivity extends AdActivity {
         final Signature defSign = SignatureUtil.getDefaultSignature();
 
         if (!CheckUtil.checkSign(defSign)) {
+            Log.e("setupDefaultSign", "There's no default sign");
             return;
         }
 
@@ -94,11 +94,17 @@ public class SignaturesActivity extends AdActivity {
 
         final View defSignLayout = getLayoutInflater().inflate(R.layout.item_default_sign, null);
 
-        final ImageView defImage = (ImageView) defSignLayout.findViewById(R.id.def_sign_image);
+        defSignLayout.setLayoutParams(new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height));
 
-        final Drawable signImage = new BitmapDrawable(getResources(), defSign.getBitmap(width, height));
+        final ImageView defImage = (ImageView) defSignLayout.findViewById(R.id.signature_image);
 
-        defImage.setImageDrawable(signImage);
+        // final Drawable signImage = new BitmapDrawable(getResources(), defSign.getBitmap(width, height));
+
+//        defImage.setImageDrawable(signImage);
+
+        ImageLoader.getInstance().displayImage(BitmapUtil.GLOBAL_PATH + defSign.getPath(), defImage);
+        // defImage.setColorFilter(ViewUtil.makeSessionImageScrimColorFilter(getResources().getColor(R.color.def_sign_image_overlay)));
+        // defSignLayout.setBackgroundResource(R.color.def_sign_image);
 
 
         final ImageView starImage = (ImageView) defSignLayout.findViewById(R.id.def_sign_star);
@@ -106,24 +112,15 @@ public class SignaturesActivity extends AdActivity {
 
 
         signaturesList.addHeaderView(defSignLayout);
-
-
     }
 
-    private void setupAdapter() {
-        signaturesArray = SignatureUtil.getSigns(false);
+    public void setupAdapter() {
 
-        adapter = new SignaturesGridAdapter(signaturesArray, this);
+
+        adapter = new SignaturesGridAdapter(SignatureUtil.getSigns(false), this);
         signaturesList.setAdapter(adapter);
 
     }
-
-    public void refreshAdapter() {
-        signaturesArray = SignatureUtil.getSigns(false);
-        adapter = new SignaturesGridAdapter(signaturesArray, this);
-        signaturesList.setAdapter(adapter);
-    }
-
 
 
 

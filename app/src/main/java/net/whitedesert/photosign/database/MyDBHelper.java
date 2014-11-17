@@ -41,10 +41,13 @@ public class MyDBHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
 
+
         Log.w(MyDBHelper.class.getName(),
                 "Upgrading database from version " + oldVersion + " to "
                         + newVersion + ", which will destroy all old data");
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_SIGNS + ";");
         onCreate(sqLiteDatabase);
     }
+
+
 }

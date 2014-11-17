@@ -12,10 +12,12 @@
         style="@style/GridView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:clipToPadding="false"
         android:columnWidth="@dimen/signature_column_width"
         android:horizontalSpacing="@dimen/signature_spacing"
         android:listSelector="@drawable/list_selector"
         android:numColumns="2"
+        android:scrollbarStyle="outsideOverlay"
 
 
         android:verticalSpacing="@dimen/signature_spacing" />

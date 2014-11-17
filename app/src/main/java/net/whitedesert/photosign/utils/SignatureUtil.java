@@ -1,9 +1,7 @@
 package net.whitedesert.photosign.utils;
 
-import android.database.Cursor;
 import android.util.Log;
 
-import net.whitedesert.photosign.database.SignsDB;
 import net.whitedesert.photosign.threads.DBThread;
 
 import java.util.ArrayList;
@@ -91,39 +89,34 @@ public final class SignatureUtil {
         return thread.getSignature();
     }
 
-    public static void setDefaultSignature(String name) {
-        //TODO Moving to a thread
-        final SignsDB db = SignsDB.getInstance();
-        db.openDatabase();
-        db.setDefaultSignature(name);
-        db.closeDatabase();
-
-
-    }
-
     public static void setDefaultSignature(final Signature signature) {
         setDefaultSignature(signature.getName());
         signature.setDefault(true);
         Log.d("setDefaultSignature", signature.getName() + "   is default now");
     }
 
-    public static void deleteSignature(final Signature signature, boolean deleteFile) {
+    public static void setDefaultSignature(String name) {
+        final DBThread.SetDefaultSignThread thread = new DBThread.SetDefaultSignThread(name);
+        ThreadUtil.startAndJoin(thread);
 
-        //TODO move to thread
-        final SignsDB db = SignsDB.getInstance();
-        db.openDatabase();
-        db.deleteSign(signature, deleteFile);
-        db.closeDatabase();
+
     }
 
-    public static Cursor getSignsCursor(boolean includeDefault) {
-        //TODO move to thread
-        final SignsDB db = SignsDB.getInstance();
-        db.openDatabase();
-        final Cursor cursor = db.getSignsCursor(includeDefault);
-        db.closeDatabase();
-        return cursor;
+    public static int deleteSignature(Signature signature, boolean deleteFile) {
+
+        if (deleteFile) {
+            FileUtil.deleteSignature(signature.getName());
+        }
+
+        final DBThread.DeleteSignThread thread = new DBThread.DeleteSignThread(signature.getName());
+
+        ThreadUtil.startAndJoin(thread);
+
+
+        signature = null;
+        return thread.getResult();
     }
+
 
 
     public static boolean noSigns() {

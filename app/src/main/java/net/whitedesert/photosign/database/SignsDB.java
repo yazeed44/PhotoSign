@@ -6,10 +6,10 @@ import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Looper;
 import android.util.Log;
 
 import net.whitedesert.photosign.utils.CheckUtil;
-import net.whitedesert.photosign.utils.FileUtil;
 import net.whitedesert.photosign.utils.Signature;
 import net.whitedesert.photosign.utils.SignatureUtil;
 
@@ -47,6 +47,10 @@ public final class SignsDB {
         if (instance == null) {
             throw new IllegalStateException(SignsDB.class.getSimpleName() +
                     " is not initialized, call initializeInstance(..) method first.");
+        }
+
+        if (Thread.currentThread().getName().equals(Looper.getMainLooper().getThread().getName())) {
+            throw new IllegalStateException("Don't use main thread to access the database !!");
         }
 
         Log.i("SignsDB : getInstance", Thread.currentThread().getName() + "  is gonna take an instance!");
@@ -163,7 +167,7 @@ public final class SignsDB {
     }
 
     //Use only inside array!! in other cases jst use initSign and sign object
-    private Signature createSign(Cursor cursor) {
+    public Signature createSign(Cursor cursor) {
 
         Signature sign = new Signature();
         try {
@@ -248,19 +252,9 @@ public final class SignsDB {
 
     }
 
-    public boolean deleteSign(final Signature signature, boolean deleteFile) {
+    public int deleteSign(final String name) {
 
-        int deleteResult;
-
-        deleteResult = db.delete(TABLE_SIGNS, COLUMN_NAME + " = " + "'" + signature.getName() + "'", null);
-
-        boolean fileDeleted = true;
-        if (deleteFile) {
-            fileDeleted = FileUtil.deleteSignature(signature.getName());
-        }
-
-
-        return deleteResult > 1 && fileDeleted;
+        return db.delete(TABLE_SIGNS, COLUMN_NAME + " = " + "'" + name + "'", null);
 
 
     }

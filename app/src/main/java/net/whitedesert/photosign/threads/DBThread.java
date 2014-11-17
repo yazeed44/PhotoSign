@@ -114,4 +114,43 @@ public final class DBThread {
 
     }
 
+    public static class SetDefaultSignThread extends Thread {
+        private final String signature;
+
+        public SetDefaultSignThread(final String signature) {
+            this.signature = signature;
+        }
+
+        @Override
+        public void run() {
+            final SignsDB db = SignsDB.getInstance();
+            db.openDatabase();
+            db.setDefaultSignature(signature);
+            db.closeDatabase();
+        }
+    }
+
+    public static class DeleteSignThread extends Thread {
+
+        private final String name;
+        private int result;
+
+        public DeleteSignThread(final String name) {
+            this.name = name;
+        }
+
+        @Override
+        public void run() {
+            final SignsDB db = SignsDB.getInstance();
+            db.openDatabase();
+            result = db.deleteSign(name);
+            Log.d("DeleteSignThread", "Deleting  " + name + "   ,  result  = " + result);
+            db.closeDatabase();
+        }
+
+        public int getResult() {
+            return result;
+        }
+    }
+
 }

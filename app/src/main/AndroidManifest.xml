@@ -72,6 +72,9 @@
         <activity
             android:name=".activities.SignaturesActivity"
             android:parentActivityName=".activities.MainActivity" />
+
+
     </application>
+
 
 </manifest>

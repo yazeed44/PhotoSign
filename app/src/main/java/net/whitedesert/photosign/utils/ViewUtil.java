@@ -3,6 +3,9 @@ package net.whitedesert.photosign.utils;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Point;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -18,6 +21,14 @@ import net.whitedesert.photosign.R;
  * Created by yazeed44 on 9/12/14.
  */
 public final class ViewUtil {
+
+    /**
+     * Factor applied to session color to derive the background color on panels and when
+     * a session photo could not be downloaded (or while it is being downloaded)
+     */
+    public static final float SIGN_BG_COLOR_SCALE_FACTOR = 0.75f;
+    private static final float SIGN_PHOTO_SCRIM_ALPHA = 0.25f; // 0=invisible, 1=visible image
+    private static final float SIGN_PHOTO_SCRIM_SATURATION = 0.2f; // 0=gray, 1=color image
 
     private ViewUtil() {
         throw new AssertionError();
@@ -96,6 +107,35 @@ public final class ViewUtil {
         });
 
         return editText;
+    }
+
+    public static int scaleColor(int color, float factor, boolean scaleAlpha) {
+        return Color.argb(scaleAlpha ? (Math.round(Color.alpha(color) * factor)) : Color.alpha(color),
+                Math.round(Color.red(color) * factor), Math.round(Color.green(color) * factor),
+                Math.round(Color.blue(color) * factor));
+    }
+
+    public static int scaleSessionColorToDefaultBG(int color) {
+        return scaleColor(color, SIGN_BG_COLOR_SCALE_FACTOR, false);
+    }
+
+    // Desaturates and color-scrims the image
+    public static ColorFilter makeSessionImageScrimColorFilter(int signColor) {
+        float a = SIGN_PHOTO_SCRIM_ALPHA;
+        float sat = SIGN_PHOTO_SCRIM_SATURATION; // saturation (0=gray, 1=color)
+        return new ColorMatrixColorFilter(new float[]{
+                ((1 - 0.213f) * sat + 0.213f) * a, ((0 - 0.715f) * sat + 0.715f) * a, ((0 - 0.072f) * sat + 0.072f) * a, 0, Color.red(signColor) * (1 - a),
+                ((0 - 0.213f) * sat + 0.213f) * a, ((1 - 0.715f) * sat + 0.715f) * a, ((0 - 0.072f) * sat + 0.072f) * a, 0, Color.green(signColor) * (1 - a),
+                ((0 - 0.213f) * sat + 0.213f) * a, ((0 - 0.715f) * sat + 0.715f) * a, ((1 - 0.072f) * sat + 0.072f) * a, 0, Color.blue(signColor) * (1 - a),
+                0, 0, 0, 0, 255
+        });
+
+    }
+
+    public static int[] getColorsForSigns(final Resources r) {
+        return new int[]{r.getColor(R.color.sign_blue), r.getColor(R.color.sign_orange),
+                r.getColor(R.color.sign_purple), r.getColor(R.color.sign_red)
+                , r.getColor(R.color.sign_tyan)};
     }
 
 

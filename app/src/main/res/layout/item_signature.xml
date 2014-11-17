@@ -4,14 +4,10 @@
     android:layout_height="match_parent"
     android:background="@drawable/list_item_selector">
 
-    <ImageView
-        android:id="@+id/signature_image"
+    <include
+        layout="@layout/image_signature"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-
-        android:background="#ffffff"
-        android:contentDescription="@string/signature_item_image"
-        android:scaleType="fitXY" />
+        android:layout_height="match_parent" />
 
     <ImageView
         android:id="@+id/signature_menu"

@@ -117,8 +117,10 @@ public final class CheckUtil {
         assert (signature != null);
 
         if (signature.equals(SignatureUtil.EMPTY_SIGNATURE)) {
+            Log.e("checkSign", signature.getName() + "   is Empty");
             return false;
         } else if (!checkString(signature.getName()) || !checkString(signature.getPath())) {
+            Log.e("checkSign", signature.getName() + "   is Empty");
             return false;
         }
         return true;

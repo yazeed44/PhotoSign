@@ -22,4 +22,16 @@
     <color name="app_accent">#FF80AB</color>
 
     <color name="star_default_color">#FACC37</color>
+
+
+    <color name="sign_image">#dc333333</color>
+    <color name="def_sign_image_overlay">#50333333</color>
+    <color name="def_sign_image">@color/app_primary</color>
+
+    <color name="sign_red">#50f44336</color>
+    <color name="sign_purple">#50673ab7</color>
+    <color name="sign_blue">#502196f3</color>
+    <color name="sign_tyan">#50009688</color>
+    <color name="sign_orange">#50ffc107</color>
+
 </resources>
