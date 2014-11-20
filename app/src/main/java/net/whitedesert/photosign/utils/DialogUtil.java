@@ -64,7 +64,7 @@ public final class DialogUtil {
 
     public static MaterialDialog.Builder createErrorDialog(String msg, final Activity activity) {
 
-        String title = r.getString(R.string.error_title);
+        final String title = r.getString(R.string.error_title);
         final MaterialDialog.Builder dialog = initDialog(title, msg, activity);
 
 

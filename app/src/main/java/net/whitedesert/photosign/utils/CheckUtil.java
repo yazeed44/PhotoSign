@@ -116,18 +116,25 @@ public final class CheckUtil {
     public static boolean checkSign(final Signature signature) {
         assert (signature != null);
 
-        if (signature.equals(SignatureUtil.EMPTY_SIGNATURE)) {
-            Log.e("checkSign", signature.getName() + "   is Empty");
-            return false;
-        } else if (!checkString(signature.getName()) || !checkString(signature.getPath())) {
-            Log.e("checkSign", signature.getName() + "   is Empty");
+        if (!checkPath(signature.getPath())) {
+            Log.e("CheckSign", "Path is wrong");
+            SignatureUtil.deleteSignature(signature, true);
             return false;
         }
         return true;
     }
 
     public static boolean checkPath(final String path) {
-        return new File(path).exists();
+        boolean exists;
+
+        try {
+            exists = new File(path).exists();
+        } catch (NullPointerException ex) {
+            Log.e("checkPath", path + "     Dosen't exist");
+            exists = false;
+        }
+
+        return exists;
     }
 
     public static boolean checkString(String s) {

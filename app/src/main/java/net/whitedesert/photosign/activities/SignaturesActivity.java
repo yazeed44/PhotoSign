@@ -57,7 +57,6 @@ public class SignaturesActivity extends AdActivity {
         }
 
 
-
     }
 
 
@@ -83,8 +82,8 @@ public class SignaturesActivity extends AdActivity {
 
         final Signature defSign = SignatureUtil.getDefaultSignature();
 
-        if (!CheckUtil.checkSign(defSign)) {
-            Log.e("setupDefaultSign", "There's no default sign");
+        if (!CheckUtil.checkSign(defSign) || signaturesList.getHeaderViewCount() > 0) {
+            Log.e("setupDefaultSign", "There's no need to setup Default signature");
             return;
         }
 
@@ -123,10 +122,11 @@ public class SignaturesActivity extends AdActivity {
     }
 
 
-
-
-
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setupDefaultSign();
+    }
 
 
 }

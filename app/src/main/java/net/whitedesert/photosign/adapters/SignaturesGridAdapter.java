@@ -125,8 +125,9 @@ public class SignaturesGridAdapter extends BaseAdapter {
         //holder.image.setLayoutParams(new LinearLayout.LayoutParams(colWidth, colHeight));
         grid.setLayoutParams(new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, colHeight));
 
+        final String path = BitmapUtil.GLOBAL_PATH + signature.getPath();
 
-        ImageLoader.getInstance().displayImage(BitmapUtil.GLOBAL_PATH + signature.getPath(), holder.image);
+        ImageLoader.getInstance().displayImage(path, holder.image);
 
         //  holder.image.setColorFilter(new PorterDuffColorFilter(signColor, PorterDuff.Mode.SRC_ATOP));
 
@@ -198,7 +199,7 @@ public class SignaturesGridAdapter extends BaseAdapter {
     }
 
     private MaterialDialog createDeleteFileDialog(final Signature signature) {
-        final String msg = activity.getResources().getString(R.string.delete_sign_file_msg);
+        final String msg = getMsg(signature);
         final MaterialDialog.Builder deleteFileDialog = DialogUtil.initDialog(null, msg, activity);
 
         return deleteFileDialog.positiveText(R.string.yes_btn)
@@ -207,6 +208,10 @@ public class SignaturesGridAdapter extends BaseAdapter {
                 .callback(getCallBackForDeleteFileDialog(signature))
                 .build();
 
+    }
+
+    private String getMsg(final Signature signature) {
+        return activity.getResources().getString(R.string.delete_sign_file_msg).replace("0", signature.getName());
     }
 
     private MaterialDialog.FullCallback getCallBackForDeleteFileDialog(final Signature signature) {

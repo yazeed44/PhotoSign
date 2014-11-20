@@ -48,9 +48,10 @@
     <string name="signature_item_image">Signature image</string>
     <string name="signature_is_default">Default</string>
 
-    <string name="retrieved_signs_success_toast">Signs has successfully retrieved</string>
-    <string name="deleted_signs_toast">Signs has been deleted</string>
+    <string name="retrieved_signs_success_toast">Signatures has successfully retrieved</string>
+    <string name="deleted_signs_toast">Signatures has been deleted</string>
     <string name="default_sign_is_used_toast">The default signature is used</string>
+    <string name="latest_sign_is_used_toast">The latest signature is used</string>
 
     <string name="set_default_signature_popup">Set default</string>
     <string name="delete_signature_popup">Delete</string>
@@ -67,13 +68,15 @@
     <string name="type_sign_title">Type signature</string>
     <string name="error_title">Error</string>
     <string name="retrieve_title">Retrieve the signatures</string>
+    <string name="choose_signature_title">Choose signature</string>
+    <string name="share_signed_photo">Share signed photo</string>
 
 
     <string name="retrieve_msg">We have found 0 signatures unused , want to retrieve them ?</string>
     <string name="sign_method_msg">Choose your method to create a signature</string>
     <string name="wait_signing_msg">The photo is being signed on</string>
     <string name="save_msg">Type the signature name , it must be unique</string>
-    <string name="delete_sign_file_msg">Do you want to delete the file of this signature ?</string>
+    <string name="delete_sign_file_msg">Do you want to delete the file of 0 signature ?</string>
 
 
     <string name="sign_on_photo_btn">SIGN ON PHOTO</string>
@@ -86,6 +89,8 @@
     <string name="dismiss_btn">DISMISS</string>
     <string name="signature_menu">Signature menu</string>
     <string name="delete_only_signature_btn">NO , JUST THE SIGNATURE</string>
+
+    <string name="change_signature_menu">Change signature</string>
 
 
     <string-array name="wanna_sign_choices">

@@ -1,9 +1,13 @@
 package net.whitedesert.photosign.threads;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Looper;
 
+import net.whitedesert.photosign.R;
+import net.whitedesert.photosign.utils.BitmapUtil;
 import net.whitedesert.photosign.utils.CheckUtil;
 import net.whitedesert.photosign.utils.RandomUtil;
 import net.whitedesert.photosign.utils.SaveUtil;
@@ -60,6 +64,20 @@ public final class SigningThread extends Thread {
 //        ThreadUtil.dismissDialog(progressDialog, activity);
         // final AlertDialog.Builder previewDialog = DialogUtil.getImageViewDialog("Test", "Test", signed, activity);
         // ThreadUtil.showDialog(previewDialog);
+
+        showShare();
+
+    }
+
+    private void showShare() {
+        final Intent share = new Intent(Intent.ACTION_SEND);
+        share.setType("image/png");
+
+        share.putExtra(Intent.EXTRA_STREAM, Uri.parse(BitmapUtil.GLOBAL_PATH + getPath()));
+
+        final String title = activity.getResources().getString(R.string.share_signed_photo);
+
+        activity.startActivity(Intent.createChooser(share, title));
 
     }
 

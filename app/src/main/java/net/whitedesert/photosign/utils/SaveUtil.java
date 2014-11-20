@@ -37,7 +37,7 @@ public final class SaveUtil {
         final File pic = new File(picPath);
         final EditText nameInput = ViewUtil.getEditTextForAskingName(pic.getName(), activity);
         nameInput.setText(pic.getName());
-        final MaterialDialog.SimpleCallback posListener = getPosListenerForAskingName(BitmapUtil.decodeFile(picPath), nameInput, activity);
+        final MaterialDialog.FullCallback posListener = getPosListenerForAskingName(BitmapUtil.decodeFile(picPath), nameInput, activity);
 
         getTypeNameDialog(nameInput, posListener, activity)
                 .build()
@@ -46,8 +46,13 @@ public final class SaveUtil {
 
     }
 
-    public static MaterialDialog.SimpleCallback getPosListenerForAskingName(final Bitmap signBitmap, final EditText nameInput, final Activity activity) {
-        return new MaterialDialog.SimpleCallback() {
+    public static MaterialDialog.FullCallback getPosListenerForAskingName(final Bitmap signBitmap, final EditText nameInput, final Activity activity) {
+        return new MaterialDialog.FullCallback() {
+            @Override
+            public void onNeutral(MaterialDialog materialDialog) {
+                materialDialog.dismiss();
+            }
+
             @Override
             public void onPositive(MaterialDialog materialDialog) {
                 final String signName = nameInput.getText().toString();
@@ -68,6 +73,11 @@ public final class SaveUtil {
                 signature.setPath(savedPath);
                 addSignShowDialog(signature, activity);
             }
+
+            @Override
+            public void onNegative(MaterialDialog materialDialog) {
+
+            }
         };
     }
 
@@ -76,7 +86,7 @@ public final class SaveUtil {
         // Don't waste your time on this
         final EditText nameInput = ViewUtil.getEditTextForAskingName(RandomUtil.getRandomInt(SIGNED_PHOTO_DIR.length() + SIGNS_DIR.length()) + sign.getWidth() + sign.getDensity(), activity);//Random
 
-        final MaterialDialog.SimpleCallback posListener = getPosListenerForAskingName(sign, nameInput, activity);
+        final MaterialDialog.FullCallback posListener = getPosListenerForAskingName(sign, nameInput, activity);
 
         getTypeNameDialog(nameInput, posListener, activity)
                 .build()
@@ -86,15 +96,20 @@ public final class SaveUtil {
     public static void askNameAndAddSign(final View drawView, final Activity activity) {
         final EditText nameInput = ViewUtil.getEditTextForAskingName(RandomUtil.getRandomInt(drawView.getWidth()), activity);
 
-        final MaterialDialog.SimpleCallback posListener = getPosListenerForAskingName(drawView, nameInput, activity);
+        final MaterialDialog.FullCallback posListener = getPosListenerForAskingName(drawView, nameInput, activity);
 
         getTypeNameDialog(nameInput, posListener, activity)
                 .build()
                 .show();
     }
 
-    public static MaterialDialog.SimpleCallback getPosListenerForAskingName(final View drawView, final EditText nameInput, final Activity activity) {
-        return new MaterialDialog.SimpleCallback() {
+    public static MaterialDialog.FullCallback getPosListenerForAskingName(final View drawView, final EditText nameInput, final Activity activity) {
+        return new MaterialDialog.FullCallback() {
+            @Override
+            public void onNeutral(MaterialDialog materialDialog) {
+                materialDialog.dismiss();
+            }
+
             @Override
             public void onPositive(MaterialDialog materialDialog) {
                 final String signName = nameInput.getText().toString();
@@ -116,15 +131,22 @@ public final class SaveUtil {
                 signature.setPath(savedPath);
                 addSignShowDialog(signature, activity);
             }
-        };
 
+            @Override
+            public void onNegative(MaterialDialog materialDialog) {
+
+            }
+        };
     }
 
 
-    public static MaterialDialog.Builder getTypeNameDialog(final EditText nameInput, MaterialDialog.SimpleCallback callback, final Activity activity) {
+    public static MaterialDialog.Builder getTypeNameDialog(final EditText nameInput, MaterialDialog.FullCallback callback, final Activity activity) {
         final MaterialDialog.Builder dialog = DialogUtil.initDialog(R.string.save_title, R.string.save_msg, activity);
         dialog.customView(nameInput)
-                .callback(callback);
+                .callback(callback)
+                .positiveText(R.string.ok_btn)
+                .neutralText(R.string.dismiss_btn)
+        ;
 
         return dialog;
 
@@ -144,7 +166,9 @@ public final class SaveUtil {
         final XY originalPhotoDimen = signingView.getOrgPhotoDimen();
         final XY signDimension = signingView.getSignDimension();
 
-        final SigningOptions options = new SigningOptions().setSignature(signature).setSigningXY(signingXY).setOriginalPhotoDimen(originalPhotoDimen)
+        final SigningOptions options = new SigningOptions().setSignature(signature)
+                .setSigningXY(signingXY)
+                .setOriginalPhotoDimen(originalPhotoDimen)
                 .setSignDimension(signDimension).setPhoto(photo);
 
 
