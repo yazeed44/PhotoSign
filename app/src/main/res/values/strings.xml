@@ -89,8 +89,20 @@
     <string name="dismiss_btn">DISMISS</string>
     <string name="signature_menu">Signature menu</string>
     <string name="delete_only_signature_btn">NO , JUST THE SIGNATURE</string>
+    <string name="choose_btn">CHOOSE</string>
+
 
     <string name="change_signature_menu">Change signature</string>
+
+    <string name="about_body_html">
+        <![CDATA[
+      Photo sign , app developed by <br/> <b>White desert team</b>.<br/>
+
+       <a href=\'https://twitter.com/WhiteDesertT\'>Twitter</a>&nbsp;&nbsp;
+       <a href=\'mailto:whitedesertteam@gmail.com\'>Email</a>
+
+]]>
+    </string>
 
 
     <string-array name="wanna_sign_choices">

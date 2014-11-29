@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Environment;
+import android.text.Html;
+import android.text.Spanned;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -217,7 +219,7 @@ public class MainActivity extends AdActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_settings, menu);
+        //  getMenuInflater().inflate(R.menu.menu_settings, menu);
         getMenuInflater().inflate(R.menu.menu_about, menu);
         return true;
     }
@@ -226,9 +228,6 @@ public class MainActivity extends AdActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle presses on the action bar items
         switch (item.getItemId()) {
-            case R.id.menu_settings:
-                showSettings();
-                return true;
 
             case R.id.menu_about:
                 showAbout();
@@ -236,17 +235,34 @@ public class MainActivity extends AdActivity {
 
             default:
                 return super.onOptionsItemSelected(item);
+
         }
     }
 
     private void showAbout() {
-        //TODO
+
+
+        final String title = getString(R.string.about_title);
+        final Spanned content = Html.fromHtml(getString(R.string.about_body_html));
+        DialogUtil.initDialog(title, null, this)
+                .content(content)
+                .contentLineSpacing(1.6f)
+                .positiveText(R.string.dismiss_btn)
+                .callback(getDismissCallback())
+                .build()
+                .show();
+
+
     }
 
-    private void showSettings() {
-        //TODO
+    private MaterialDialog.SimpleCallback getDismissCallback() {
+        return new MaterialDialog.SimpleCallback() {
 
-
+            @Override
+            public void onPositive(MaterialDialog materialDialog) {
+                materialDialog.dismiss();
+            }
+        };
     }
 
 }

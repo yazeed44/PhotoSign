@@ -32,7 +32,7 @@ public final class AskUtil {
 
         final MaterialDialog.ListCallback listener = new MaterialDialog.ListCallback() {
             @Override
-            public void onSelection(MaterialDialog materialDialog, View view, int which, String text) {
+            public void onSelection(MaterialDialog materialDialog, View view, int which, CharSequence text) {
                 if (text.equals(makeSign)) {
                     selectMethodSign(activity);
                 } else if (text.equals(signPhoto)) {
@@ -62,7 +62,7 @@ public final class AskUtil {
 
         final MaterialDialog.ListCallback listener = new MaterialDialog.ListCallback() {
             @Override
-            public void onSelection(MaterialDialog materialDialog, View view, int which, String chosenMethod) {
+            public void onSelection(MaterialDialog materialDialog, View view, int which, CharSequence chosenMethod) {
 
                 if (chosenMethod.equals(draw)) {
                     Intent i = new Intent(activity, DrawSignActivity.class);
@@ -80,6 +80,8 @@ public final class AskUtil {
 
         DialogUtil.getSingleChooseDialog(res.getString(R.string.sign_method_title), choices, activity)
                 .itemsCallbackSingleChoice(-1, listener)
+                .positiveText(R.string.choose_btn)
+                .negativeText(R.string.cancel_btn)
                 .build()
                 .show();
 

@@ -194,7 +194,7 @@ public class SigningActivity extends AdActivity {
         gridView.setNumColumns(3);
 
 
-        final int height = (int) (getResources().getDimensionPixelSize(R.dimen.mini_signature_column_width) * (signatures.size() / 2) * (1.5));
+        final int height = (int) (getResources().getDimensionPixelSize(R.dimen.mini_signature_column_width) * (signatures.size() / 2) * (1.07));
 
 
         gridView.setAdapter(new ChooseSignatureAdapter(signatures, this));
@@ -282,9 +282,6 @@ public class SigningActivity extends AdActivity {
             } else {
                 holder = (ViewHolder) grid.getTag();
             }
-
-            Log.d("getView", "Loading   " + selectedSignature.getName());
-
 
             setupImage(holder, grid, selectedSignature);
 

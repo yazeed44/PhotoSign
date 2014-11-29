@@ -21,7 +21,7 @@ import yuku.ambilwarna.AmbilWarnaDialog;
  */
 public class TextSignActivity extends AdActivity {
 
-    //  private final SignRaw raw = new SignRaw();
+
     private TypeSignPreviewView preview;
     private EditText text;
 
@@ -32,9 +32,10 @@ public class TextSignActivity extends AdActivity {
         preview = (TypeSignPreviewView) this.findViewById(R.id.signTextPreview);
         text = (EditText) this.findViewById(R.id.signTextEdit);
 
-        getSupportActionBar().setTitle(R.string.type_sign_title); //TODO get better title
+        getSupportActionBar().setTitle(R.string.type_sign_title);
 
         setPreviewText("Preview");
+        preview.setTypeface(null, Typeface.BOLD);
         setUpText();
 
     }
@@ -48,8 +49,7 @@ public class TextSignActivity extends AdActivity {
         final CheckBox box = (CheckBox) view;
 
         if (box.isChecked()) {
-            //TODO
-            //it will be a bug when we add fonts
+            //TODO it will be a bug when we add fonts Because of null
 
             preview.setTypeface(null, Typeface.BOLD);
         } else {

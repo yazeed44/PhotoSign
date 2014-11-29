@@ -83,7 +83,7 @@ public class SignaturesActivity extends AdActivity {
         final Signature defSign = SignatureUtil.getDefaultSignature();
 
         if (!CheckUtil.checkSign(defSign) || signaturesList.getHeaderViewCount() > 0) {
-            Log.e("setupDefaultSign", "There's no need to setup Default signature");
+            Log.i("setupDefaultSign", "There's no need to setup Default signature");
             return;
         }
 
