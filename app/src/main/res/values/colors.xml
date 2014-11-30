@@ -5,13 +5,8 @@
     <drawable name="list_item_background">#ffffff</drawable>
     <drawable name="button_pressed_background">#ff57585b</drawable>
     <drawable name="list_item_pressed_background">#ffd0c9d2</drawable>
-    <drawable name="main_btn_pressed_background">#ffd0c9d2</drawable>
-
-    <drawable name="main_btn_last_background">#64aa0b</drawable>
-    <drawable name="main_btn_settings_background">#00a4bf</drawable>
-
-    <drawable name="main_btn_sign_background">#e53935</drawable>
-    <drawable name="main_btn_signatures_background">#00a4bf</drawable>
+    <drawable name="main_btn_sign_background">@color/sign_btn_layout</drawable>
+    <drawable name="main_btn_sign_pressed_background">@color/sign_btn_layout_disabled</drawable>
 
     <drawable name="fab_pressed">#F50075</drawable>
     <drawable name="fab_ripple">#fff551a6</drawable>
@@ -28,10 +23,11 @@
     <color name="def_sign_image_overlay">#50333333</color>
     <color name="def_sign_image">@color/app_primary</color>
 
-    <color name="sign_red">#50f44336</color>
-    <color name="sign_purple">#50673ab7</color>
-    <color name="sign_blue">#502196f3</color>
-    <color name="sign_tyan">#50009688</color>
-    <color name="sign_orange">#50ffc107</color>
+    <color name="sign_btn_layout">#3F51B5</color>
+    <color name="sign_btn_layout_disabled">#ff253378</color>
+
+    <color name="sign_btn_text">#ffffff</color>
+    <color name="sign_btn_disabled_text">#ffc4c4c4</color>
+
 
 </resources>

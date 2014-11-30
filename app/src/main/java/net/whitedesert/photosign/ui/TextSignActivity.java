@@ -1,4 +1,4 @@
-package net.whitedesert.photosign.activities;
+package net.whitedesert.photosign.ui;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -12,7 +12,6 @@ import android.widget.EditText;
 
 import net.whitedesert.photosign.R;
 import net.whitedesert.photosign.utils.SaveUtil;
-import net.whitedesert.photosign.views.TypeSignPreviewView;
 
 import yuku.ambilwarna.AmbilWarnaDialog;
 

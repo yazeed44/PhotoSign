@@ -1,7 +1,10 @@
 package net.whitedesert.photosign.utils;
 
 import android.graphics.Bitmap;
+import android.graphics.Point;
 import android.util.Log;
+
+import java.io.File;
 
 /**
  * Created by yazeed44 on 8/9/14.
@@ -10,17 +13,17 @@ import android.util.Log;
 public final class Signature {
 
     public int counter = 0;
-    private String path;
-    private String name;
-    private Bitmap bitmap;
-    private boolean isDefault = false;
+    private String mPath;
+    private String mName;
+    private Bitmap mBitmap;
+    private boolean mIsDefault = false;
 
 
     public Signature(String path, String name, int isDefault) {
-        this.path = path;
-        this.name = name;
+        this.mPath = path;
+        this.mName = name;
         if (isDefault == 1)
-            this.isDefault = true;
+            this.mIsDefault = true;
 
 
     }
@@ -29,35 +32,41 @@ public final class Signature {
 
     }
 
+    public Signature(final String path) {
+        this.mPath = path;
+        this.mName = new File(path).getName();
+        this.mIsDefault = false;
+    }
+
     public String getPath() {
-        return this.path;
+        return this.mPath;
     }
 
     public void setPath(String path) {
-        this.path = path;
+        this.mPath = path;
     }
 
     public String getName() {
-        return this.name;
+        return this.mName;
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.mName = name;
     }
 
     public void setDefault(int isDefault) {
 
 
-        this.isDefault = isDefault == 1;
+        this.mIsDefault = isDefault == 1;
     }
 
     public boolean isDefault() {
-        return isDefault;
+        return mIsDefault;
     }
 
     public void setDefault(boolean isDefault) {
 
-        this.isDefault = isDefault;
+        this.mIsDefault = isDefault;
 
     }
 
@@ -77,26 +86,26 @@ public final class Signature {
 
         if (counter == 0) {
 
-            bitmap = BitmapUtil.decodeFile(getPath(), width, height);
+            mBitmap = BitmapUtil.decodeFile(getPath(), width, height);
 
 
-            handleNull(bitmap);
+            handleNull(mBitmap);
 
 
             counter++;
-            return bitmap;
-        } else if (bitmap != null && width == bitmap.getWidth() && height == bitmap.getHeight()) {
-            return bitmap;
+            return mBitmap;
+        } else if (mBitmap != null && width == mBitmap.getWidth() && height == mBitmap.getHeight()) {
+            return mBitmap;
         } else {
 
-            bitmap = BitmapUtil.decodeFile(getPath(), width, height);
+            mBitmap = BitmapUtil.decodeFile(getPath(), width, height);
 
 
-            handleNull(bitmap);
+            handleNull(mBitmap);
 
         }
 
-            return bitmap;
+        return mBitmap;
 
     }
 
@@ -109,8 +118,8 @@ public final class Signature {
         }
     }
 
-    public Bitmap getBitmap(XY xy) {
-        return getBitmap(xy.getX(), xy.getY());
+    public Bitmap getBitmap(Point xy) {
+        return getBitmap(xy.x, xy.y);
     } // Width and height
 
     @Override
@@ -125,6 +134,6 @@ public final class Signature {
 
     @Override
     public String toString() {
-        return "Name  :  " + getName() + "   ,    Path   :  " + getPath() + "   ,  isDefault  :  " + isDefault();
+        return "Name  :  " + getName() + "   ,    Path   :  " + getPath() + "   ,  mIsDefault  :  " + isDefault();
     }
 }

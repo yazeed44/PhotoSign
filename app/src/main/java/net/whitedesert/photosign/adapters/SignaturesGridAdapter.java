@@ -12,11 +12,10 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import net.whitedesert.photosign.R;
-import net.whitedesert.photosign.activities.SignaturesActivity;
+import net.whitedesert.photosign.ui.MySignaturesFragment;
 import net.whitedesert.photosign.utils.BitmapUtil;
 import net.whitedesert.photosign.utils.CheckUtil;
 import net.whitedesert.photosign.utils.DialogUtil;
-import net.whitedesert.photosign.utils.PopupMenuUtil;
 import net.whitedesert.photosign.utils.Signature;
 import net.whitedesert.photosign.utils.SignatureUtil;
 import net.whitedesert.photosign.utils.ViewUtil;
@@ -29,24 +28,15 @@ import java.util.ArrayList;
 public class SignaturesGridAdapter extends BaseAdapter {
 
 
-    private SignaturesActivity activity;
-    private int colWidth, colHeight; // Column height and width
+    private final MySignaturesFragment mFragment;
 
 
-    private ArrayList<Signature> signatures;
+    private final ArrayList<Signature> signatures;
 
 
-    private int colorIndex;
-    private int[] colors;
-
-    public SignaturesGridAdapter(final ArrayList<Signature> signatures, final SignaturesActivity activity) {
+    public SignaturesGridAdapter(final ArrayList<Signature> signatures, final MySignaturesFragment fragment) {
         this.signatures = signatures;
-        this.activity = activity;
-        initColor();
-    }
-
-    private void initColor() {
-        colors = ViewUtil.getColorsForSigns(activity.getResources());
+        this.mFragment = fragment;
     }
 
 
@@ -82,7 +72,7 @@ public class SignaturesGridAdapter extends BaseAdapter {
         final ViewHolder holder;
 
         if (convertView == null) {
-            grid = activity.getLayoutInflater().inflate(R.layout.item_signature, parent, false);
+            grid = mFragment.getActivity().getLayoutInflater().inflate(R.layout.item_signature, parent, false);
             holder = new ViewHolder();
             initializeGrid(grid, holder);
             grid.setTag(holder);
@@ -113,38 +103,18 @@ public class SignaturesGridAdapter extends BaseAdapter {
     private void loadNormalSign(ViewHolder holder, final View grid, final Signature signature) {
 
 
-        colWidth = activity.getResources().getDimensionPixelSize(R.dimen.signature_column_width);
+        int colWidth = mFragment.getResources().getDimensionPixelSize(R.dimen.signature_column_width);
 
-        colHeight = (int) (colWidth * 1.5);
+        int colHeight = (int) (colWidth * 1.5);
 
         //      int signColor = getSignColor();
-
-
-//        final int darkSignColor = ViewUtil.scaleSessionColorToDefaultBG(signColor);
-
-        //holder.image.setLayoutParams(new LinearLayout.LayoutParams(colWidth, colHeight));
         grid.setLayoutParams(new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, colHeight));
 
         final String path = BitmapUtil.GLOBAL_PATH + signature.getPath();
 
         ImageLoader.getInstance().displayImage(path, holder.image);
 
-        //  holder.image.setColorFilter(new PorterDuffColorFilter(signColor, PorterDuff.Mode.SRC_ATOP));
 
-//        grid.setBackgroundColor(darkSignColor);
-
-
-    }
-
-    private int getSignColor() {
-
-        if (colorIndex >= colors.length) {
-            colorIndex = 0;
-        }
-
-        final int signColor = colors[colorIndex];
-        colorIndex++;
-        return signColor;
     }
 
     private void setupMenu(final ViewHolder holder, final Signature signature) {
@@ -153,7 +123,7 @@ public class SignaturesGridAdapter extends BaseAdapter {
             @Override
             public void onClick(final View view) {
 
-                final PopupMenu popupMenu = PopupMenuUtil.initMenu(holder.menu, R.menu.popup_signature);
+                final PopupMenu popupMenu = ViewUtil.createMenu(holder.menu, R.menu.popup_signature);
 
 
                 setupPopupMenuListener(popupMenu, signature);
@@ -191,7 +161,7 @@ public class SignaturesGridAdapter extends BaseAdapter {
 
     private void setDefault(final Signature signature) {
         SignatureUtil.setDefaultSignature(signature);
-        reloadActivity();
+        reloadFragment();
     }
 
     private void delete(final Signature signature) {
@@ -200,7 +170,7 @@ public class SignaturesGridAdapter extends BaseAdapter {
 
     private MaterialDialog createDeleteFileDialog(final Signature signature) {
         final String msg = getMsg(signature);
-        final MaterialDialog.Builder deleteFileDialog = DialogUtil.initDialog(null, msg, activity);
+        final MaterialDialog.Builder deleteFileDialog = DialogUtil.createDialog(null, msg, mFragment.getActivity());
 
         return deleteFileDialog.positiveText(R.string.yes_btn)
                 .negativeText(R.string.delete_only_signature_btn)
@@ -211,7 +181,7 @@ public class SignaturesGridAdapter extends BaseAdapter {
     }
 
     private String getMsg(final Signature signature) {
-        return activity.getResources().getString(R.string.delete_sign_file_msg).replace("0", signature.getName());
+        return mFragment.getResources().getString(R.string.delete_sign_file_msg).replace("0", signature.getName());
     }
 
     private MaterialDialog.FullCallback getCallBackForDeleteFileDialog(final Signature signature) {
@@ -239,13 +209,16 @@ public class SignaturesGridAdapter extends BaseAdapter {
 
     private void refresh() {
 
-        activity.setupAdapter();
+        mFragment.setupAdapter();
     }
 
-    private void reloadActivity() {
+    private void reloadFragment() {
 
-        activity.startActivity(activity.getIntent());
-        activity.finish();
+        mFragment.getActivity().getSupportFragmentManager().beginTransaction()
+                .detach(mFragment)
+                .attach(mFragment)
+                .commit()
+        ;
 
     }
 

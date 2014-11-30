@@ -1,4 +1,4 @@
-package net.whitedesert.photosign.views;
+package net.whitedesert.photosign.ui;
 
 import android.content.Context;
 import android.graphics.Bitmap;

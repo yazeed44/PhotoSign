@@ -1,4 +1,4 @@
-package net.whitedesert.photosign.activities;
+package net.whitedesert.photosign.ui;
 
 /**
  * Created by yazeed44 on 8/23/14.

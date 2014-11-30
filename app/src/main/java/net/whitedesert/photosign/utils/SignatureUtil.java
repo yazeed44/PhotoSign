@@ -89,12 +89,6 @@ public final class SignatureUtil {
         return thread.getSignature();
     }
 
-    public static void setDefaultSignature(final Signature signature) {
-        setDefaultSignature(signature.getName());
-        signature.setDefault(true);
-        Log.d("setDefaultSignature", signature.getName() + "   is default now");
-    }
-
     public static void setDefaultSignature(String name) {
         final DBThread.SetDefaultSignThread thread = new DBThread.SetDefaultSignThread(name);
         ThreadUtil.startAndJoin(thread);
@@ -102,10 +96,16 @@ public final class SignatureUtil {
 
     }
 
+    public static void setDefaultSignature(final Signature signature) {
+        setDefaultSignature(signature.getName());
+        signature.setDefault(true);
+        Log.d("setDefaultSignature", signature.getName() + "   is default now");
+    }
+
     public static int deleteSignature(Signature signature, boolean deleteFile) {
 
         if (deleteFile) {
-            FileUtil.deleteSignature(signature.getName());
+            FileUtil.deleteSignatureFile(signature.getName());
         }
 
         final DBThread.DeleteSignThread thread = new DBThread.DeleteSignThread(signature.getName());
@@ -116,7 +116,6 @@ public final class SignatureUtil {
         signature = null;
         return thread.getResult();
     }
-
 
 
     public static boolean noSigns() {

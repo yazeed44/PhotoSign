@@ -17,14 +17,13 @@
 
         >
 
-        <activity
-            android:name="net.whitedesert.photosign.activities.DrawSignActivity"
-            android:parentActivityName="net.whitedesert.photosign.activities.SignaturesActivity"
+        <activity android:name="net.yazeed44.imagepicker.PickerActivity" />
+        <activity android:name="net.whitedesert.photosign.ui.DrawSignActivity"
 
             />
 
         <activity
-            android:name="net.whitedesert.photosign.activities.MainActivity"
+            android:name="net.whitedesert.photosign.ui.MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -34,44 +33,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".activities.GalleryActivity"
-            android:parentActivityName=".activities.MainActivity">
-            <intent-filter>
-                <category android:name="android.intent.category.APP_GALLERY" />
-            </intent-filter>
 
-        </activity>
 
-        <activity
-            android:name=".activities.SigningActivity"
-            android:parentActivityName=".activities.MainActivity" />
-        <activity
-            android:name="com.luminous.pick.MainActivity"
-
-            android:label="@string/gallery_name">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity android:name="com.luminous.pick.CustomGalleryActivity">
-            <intent-filter>
-                <action android:name="luminous.ACTION_PICK" />
-                <action android:name="luminous.ACTION_MULTIPLE_PICK" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-
-        <activity
-            android:name=".activities.TextSignActivity"
-            android:parentActivityName=".activities.SignaturesActivity" />
-
-        <activity
-            android:name=".activities.SignaturesActivity"
-            android:parentActivityName=".activities.MainActivity" />
+        <activity android:name=".ui.TextSignActivity" />
 
 
     </application>

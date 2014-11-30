@@ -16,7 +16,7 @@ public final class ThreadUtil {
         throw new AssertionError();
     }
 
-    public static void initalizeInstance(final Activity activity) {
+    public static void initInstance(final Activity activity) {
         mActivity = activity;
     }
 
@@ -60,15 +60,6 @@ public final class ThreadUtil {
     public static void startAndJoin(Thread t) {
         t.start();
         join(t);
-    }
-
-    public static void sleep(final long time) {
-        try {
-            Thread.sleep(time);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-            Log.e("ThreadUtil : sleep", e.getMessage());
-        }
     }
 
 

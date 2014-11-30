@@ -6,7 +6,7 @@
     android:orientation="vertical">
 
 
-    <net.whitedesert.photosign.views.HeaderGridView
+    <net.whitedesert.photosign.ui.HeaderGridView
 
         android:id="@+id/list_signatures"
         style="@style/GridView"
@@ -29,7 +29,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|right"
         android:layout_margin="16dp"
-        android:onClick="onClickAdd"
         android:src="@drawable/ic_add"
         fab:fab_colorNormal="@color/app_accent"
         fab:fab_colorPressed="@drawable/fab_pressed"

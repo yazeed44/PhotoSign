@@ -1,4 +1,4 @@
-package net.whitedesert.photosign.activities;
+package net.whitedesert.photosign.ui;
 
 import android.graphics.Paint;
 import android.os.Bundle;
@@ -14,7 +14,6 @@ import net.whitedesert.photosign.R;
 import net.whitedesert.photosign.utils.DialogUtil;
 import net.whitedesert.photosign.utils.SaveUtil;
 import net.whitedesert.photosign.utils.ViewUtil;
-import net.whitedesert.photosign.views.DrawSignView;
 
 import yuku.ambilwarna.AmbilWarnaDialog;
 
@@ -36,7 +35,7 @@ public class DrawSignActivity extends AdActivity {
             draw.getDrawPaint().setColor(color); // update color
         }
     };
-    private SeekBar.OnSeekBarChangeListener widthListener = new SeekBar.OnSeekBarChangeListener() {
+    private final SeekBar.OnSeekBarChangeListener widthListener = new SeekBar.OnSeekBarChangeListener() {
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
             final float px = ViewUtil.convertDpToPixel(progress, draw.getContext());
@@ -124,7 +123,7 @@ public class DrawSignActivity extends AdActivity {
         initializeBrushCustomizeDialog();
 
 
-        final MaterialDialog.Builder dialog = DialogUtil.initDialog(brushCustomizeTitle, "", this);
+        final MaterialDialog.Builder dialog = DialogUtil.createDialog(brushCustomizeTitle, "", this);
         setUpSize(widthText, widthSeek);
         setUpOpacity(opacityText, opacitySeek);
         dialog.customView(brushCustomizeLayout);

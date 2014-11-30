@@ -1,6 +1,8 @@
 package net.whitedesert.photosign.utils;
 
 import android.graphics.Bitmap;
+import android.graphics.Point;
+import android.graphics.PointF;
 
 /**
  * Created by yazeed44 on 10/10/14.
@@ -8,9 +10,9 @@ import android.graphics.Bitmap;
 public final class SigningOptions {
 
     private Signature signature;
-    private XY.Float signingXY;
-    private XY signDimension;
-    private XY originalPhotoDimen; // Original photo dimension
+    private PointF signingXY;
+    private Point signDimension;
+    private Point originalPhotoDimen; // Original photo dimension
     private Bitmap photo;
 
 
@@ -23,29 +25,29 @@ public final class SigningOptions {
         return this;
     }
 
-    public XY.Float getSigningXY() {
+    public PointF getSigningXY() {
         return signingXY;
     }
 
-    public SigningOptions setSigningXY(XY.Float signingXY) {
+    public SigningOptions setSigningXY(final PointF signingXY) {
         this.signingXY = signingXY;
         return this;
     }
 
-    public XY getSignDimension() {
+    public Point getSignDimension() {
         return signDimension;
     }
 
-    public SigningOptions setSignDimension(XY signDimension) {
+    public SigningOptions setSignDimension(Point signDimension) {
         this.signDimension = signDimension;
         return this;
     }
 
-    public XY getOriginalPhotoDimen() {
+    public Point getOriginalPhotoDimen() {
         return originalPhotoDimen;
     }
 
-    public SigningOptions setOriginalPhotoDimen(XY originalPhotoDimen) {
+    public SigningOptions setOriginalPhotoDimen(Point originalPhotoDimen) {
         this.originalPhotoDimen = originalPhotoDimen;
         return this;
     }

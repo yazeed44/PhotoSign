@@ -3,6 +3,8 @@ package net.whitedesert.photosign.utils;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Point;
+import android.graphics.PointF;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -10,9 +12,9 @@ import android.widget.EditText;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import net.whitedesert.photosign.R;
-import net.whitedesert.photosign.threads.BitmapThread;
+import net.whitedesert.photosign.threads.SaveBitmapThread;
 import net.whitedesert.photosign.threads.SigningThread;
-import net.whitedesert.photosign.views.SigningView;
+import net.whitedesert.photosign.ui.SigningView;
 
 import java.io.File;
 
@@ -35,7 +37,7 @@ public final class SaveUtil {
     public static void askNameAndAddSign(final String picPath, final Activity activity) {
 
         final File pic = new File(picPath);
-        final EditText nameInput = ViewUtil.getEditTextForAskingName(pic.getName(), activity);
+        final EditText nameInput = ViewUtil.createEditTextForAskingName(pic.getName(), activity);
         nameInput.setText(pic.getName());
         final MaterialDialog.FullCallback posListener = getPosListenerForAskingName(BitmapUtil.decodeFile(picPath), nameInput, activity);
 
@@ -46,7 +48,7 @@ public final class SaveUtil {
 
     }
 
-    public static MaterialDialog.FullCallback getPosListenerForAskingName(final Bitmap signBitmap, final EditText nameInput, final Activity activity) {
+    private static MaterialDialog.FullCallback getPosListenerForAskingName(final Bitmap signBitmap, final EditText nameInput, final Activity activity) {
         return new MaterialDialog.FullCallback() {
             @Override
             public void onNeutral(MaterialDialog materialDialog) {
@@ -71,7 +73,7 @@ public final class SaveUtil {
                 }
 
                 signature.setPath(savedPath);
-                addSignShowDialog(signature, activity);
+                showWannaSignDialog(signature, activity);
             }
 
             @Override
@@ -84,7 +86,7 @@ public final class SaveUtil {
 
     public static void askNameAndAddSign(final Bitmap sign, final Activity activity) {
         // Don't waste your time on this
-        final EditText nameInput = ViewUtil.getEditTextForAskingName(RandomUtil.getRandomInt(SIGNED_PHOTO_DIR.length() + SIGNS_DIR.length()) + sign.getWidth() + sign.getDensity(), activity);//Random
+        final EditText nameInput = ViewUtil.createEditTextForAskingName(RandomUtil.getRandomInt(SIGNED_PHOTO_DIR.length() + SIGNS_DIR.length()) + sign.getWidth() + sign.getDensity(), activity);//Random
 
         final MaterialDialog.FullCallback posListener = getPosListenerForAskingName(sign, nameInput, activity);
 
@@ -94,7 +96,7 @@ public final class SaveUtil {
     }
 
     public static void askNameAndAddSign(final View drawView, final Activity activity) {
-        final EditText nameInput = ViewUtil.getEditTextForAskingName(RandomUtil.getRandomInt(drawView.getWidth()), activity);
+        final EditText nameInput = ViewUtil.createEditTextForAskingName(RandomUtil.getRandomInt(drawView.getWidth()), activity);
 
         final MaterialDialog.FullCallback posListener = getPosListenerForAskingName(drawView, nameInput, activity);
 
@@ -103,7 +105,7 @@ public final class SaveUtil {
                 .show();
     }
 
-    public static MaterialDialog.FullCallback getPosListenerForAskingName(final View drawView, final EditText nameInput, final Activity activity) {
+    private static MaterialDialog.FullCallback getPosListenerForAskingName(final View drawView, final EditText nameInput, final Activity activity) {
         return new MaterialDialog.FullCallback() {
             @Override
             public void onNeutral(MaterialDialog materialDialog) {
@@ -129,7 +131,7 @@ public final class SaveUtil {
                 }
 
                 signature.setPath(savedPath);
-                addSignShowDialog(signature, activity);
+                showWannaSignDialog(signature, activity);
             }
 
             @Override
@@ -141,7 +143,7 @@ public final class SaveUtil {
 
 
     public static MaterialDialog.Builder getTypeNameDialog(final EditText nameInput, MaterialDialog.FullCallback callback, final Activity activity) {
-        final MaterialDialog.Builder dialog = DialogUtil.initDialog(R.string.save_title, R.string.save_msg, activity);
+        final MaterialDialog.Builder dialog = DialogUtil.createDialog(R.string.save_title, R.string.save_msg, activity);
         dialog.customView(nameInput)
                 .callback(callback)
                 .positiveText(R.string.ok_btn)
@@ -153,18 +155,12 @@ public final class SaveUtil {
     }
 
 
-    /**
-     * When user click on done btn in Signing Activity
-     *
-     * @param signingView
-     * @param activity
-     */
     public static void doneSigningPhoto(final SigningView signingView, final Activity activity) {
         final Signature signature = signingView.getSignature();
         final Bitmap photo = signingView.getPhoto(), signBitmap = signingView.getSignBitmap();
-        final XY.Float signingXY = signingView.getXY();
-        final XY originalPhotoDimen = signingView.getOrgPhotoDimen();
-        final XY signDimension = signingView.getSignDimension();
+        final PointF signingXY = signingView.getXY();
+        final Point originalPhotoDimen = signingView.getOrgPhotoDimen();
+        final Point signDimension = signingView.getSignDimension();
 
         final SigningOptions options = new SigningOptions().setSignature(signature)
                 .setSigningXY(signingXY)
@@ -178,7 +174,14 @@ public final class SaveUtil {
     }
 
     public static String savePicFromBitmap(Bitmap finalBitmap, Activity activity, String dir, String name, boolean toast) {
-        final BitmapThread.SaveBitmapThread thread = new BitmapThread.SaveBitmapThread(finalBitmap, activity, dir, name, toast);
+        final SaveBitmapThread thread = new SaveBitmapThread.Builder(activity)
+                .bitmap(finalBitmap)
+                .dir(dir)
+                .name(name)
+                .toast(toast)
+                .build();
+
+
         ThreadUtil.startAndJoin(thread);
         return thread.getPath();
     }
@@ -205,7 +208,7 @@ public final class SaveUtil {
     }
 
 
-    public static void addSignShowDialog(final Signature signature, final Activity activity) {
+    public static void showWannaSignDialog(final Signature signature, final Activity activity) {
         Log.d("DrawSignActivity : onClickSave", "sign name : " + signature.getName() + " , sign Path : " + signature.getPath());
         final boolean isFirstSignature = SignatureUtil.noSigns();
 
@@ -216,7 +219,7 @@ public final class SaveUtil {
         SignatureUtil.addSign(signature, true);
 
 
-        AskUtil.getWannaSignDialog(activity).build().show();
+        DialogUtil.createWannaSignDialog(activity).build().show();
 
     }
 

@@ -1,4 +1,4 @@
-package net.whitedesert.photosign.activities;
+package net.whitedesert.photosign.ui;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -27,9 +27,7 @@ import net.whitedesert.photosign.utils.DialogUtil;
 import net.whitedesert.photosign.utils.SaveUtil;
 import net.whitedesert.photosign.utils.Signature;
 import net.whitedesert.photosign.utils.SignatureUtil;
-import net.whitedesert.photosign.utils.ToastUtil;
-import net.whitedesert.photosign.views.SignatureView;
-import net.whitedesert.photosign.views.SigningView;
+import net.whitedesert.photosign.utils.ViewUtil;
 
 import java.util.ArrayList;
 
@@ -41,7 +39,7 @@ public class SigningActivity extends AdActivity {
     private SigningView signingView;
     private SeekBar opacitySeek;
     private TextView opacityText;
-    private SignatureView signatureView;
+    //private SignatureView signatureView;
 
     private Signature signature;
 
@@ -61,7 +59,7 @@ public class SigningActivity extends AdActivity {
 
 
         initSignature();
-        setupSignatureView();
+        //setupSignatureView();
         signingView.setPhoto(photo);
 
 
@@ -74,7 +72,7 @@ public class SigningActivity extends AdActivity {
         signingView = (SigningView) this.findViewById(R.id.signingView);
         opacitySeek = (SeekBar) this.findViewById(R.id.opacity_seek);
         opacityText = (TextView) this.findViewById(R.id.opacity_text);
-        signatureView = (SignatureView) findViewById(R.id.signatureView);
+        //    signatureView = (SignatureView) findViewById(R.id.signatureView);
     }
 
     private void initSignature() {
@@ -83,19 +81,19 @@ public class SigningActivity extends AdActivity {
         if (!CheckUtil.checkSign(signature)) {
             //If there's no default signature
             signature = SignatureUtil.getLatestSign();
-            ToastUtil.toastShort(R.string.latest_sign_is_used_toast);
+            ViewUtil.toastShort(R.string.latest_sign_is_used_toast);
         } else {
-            ToastUtil.toastShort(R.string.default_sign_is_used_toast);
+            ViewUtil.toastShort(R.string.default_sign_is_used_toast);
         }
     }
 
-    private void setupSignatureView() {
+    /*private void setupSignatureView() {
 
         signatureView.setSignature(signature);
 
 
         signingView.setSignatureView(signatureView);
-    }
+    }*/
 
     private void setUpOpacity() {
         opacitySeek.setMax(getResources().getInteger(R.integer.opacity_max));
@@ -107,7 +105,7 @@ public class SigningActivity extends AdActivity {
         opacitySeek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
-                signatureView.setImageAlpha(progress); // Set opacity
+                //         signatureView.setImageAlpha(progress); // Set opacity
                 opacityText.setText(opacityString + progress);
                 signingView.invalidate();
             }
@@ -159,7 +157,7 @@ public class SigningActivity extends AdActivity {
 
         final String title = getResources().getString(R.string.choose_signature_title);
 
-        changeDialog = DialogUtil.initDialog(title, null, this)
+        changeDialog = DialogUtil.createDialog(title, null, this)
                 .customView(getChooseView())
                 .build();
 
@@ -308,7 +306,7 @@ public class SigningActivity extends AdActivity {
                 public void onClick(View v) {
 
                     signature = selectedSignature;
-                    setupSignatureView();
+                    //setupSignatureView();
                     changeDialog.dismiss();
                 }
             });

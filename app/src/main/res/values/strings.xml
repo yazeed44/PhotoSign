@@ -79,7 +79,7 @@
     <string name="delete_sign_file_msg">Do you want to delete the file of 0 signature ?</string>
 
 
-    <string name="sign_on_photo_btn">SIGN ON PHOTO</string>
+    <string name="sign_on_photo_btn">SIGN</string>
     <string name="my_signatures_btn">MY SIGNATURES</string>
     <string name="delete_unused_signatures_btn">DELETE THEM</string>
     <string name="yes_btn">YES</string>

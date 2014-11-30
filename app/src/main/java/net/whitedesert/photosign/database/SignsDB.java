@@ -29,14 +29,13 @@ public final class SignsDB {
 
     private static SQLiteOpenHelper mHelper;
     private static SignsDB instance;
+    private final ArrayList<Signature> signs = new ArrayList<Signature>(); // Used for optimization
     private SQLiteDatabase db;
     private int mOpenCounter;
-    private ArrayList<Signature> signs = new ArrayList<Signature>(); // Used for optimization
-
     private Signature sign = new Signature(); // Object of signature class , used for optimization because creating new objects is expensives
 
 
-    public static synchronized void initializeInstance(SQLiteOpenHelper helper) {
+    public static synchronized void initInstance(SQLiteOpenHelper helper) {
         if (instance == null) {
             instance = new SignsDB();
             mHelper = helper;
@@ -46,7 +45,7 @@ public final class SignsDB {
     public static synchronized SignsDB getInstance() {
         if (instance == null) {
             throw new IllegalStateException(SignsDB.class.getSimpleName() +
-                    " is not initialized, call initializeInstance(..) method first.");
+                    " is not initialized, call initInstance(..) method first.");
         }
 
         if (Thread.currentThread().getName().equals(Looper.getMainLooper().getThread().getName())) {
@@ -225,7 +224,7 @@ public final class SignsDB {
 
         db.update(TABLE_SIGNS, updateValues, COLUMN_NAME + " = " + "'" + name + "'", null);
 
-        //  Log.d("setDefaultSignature", name + "  Is the default signature" +  "  "+SignatureUtil.getSign(name).isDefault());
+        //  Log.d("setDefaultSignature", name + "  Is the default signature" +  "  "+SignatureUtil.getSign(name).ismIsDefault());
 
     }
 

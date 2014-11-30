@@ -1,15 +1,19 @@
-package net.whitedesert.photosign.activities;
+package net.whitedesert.photosign.ui;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Environment;
 import android.text.Html;
 import android.text.Spanned;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiscCache;
@@ -31,34 +35,70 @@ import net.whitedesert.photosign.utils.Signature;
 import net.whitedesert.photosign.utils.SignatureUtil;
 import net.whitedesert.photosign.utils.SigningUtil;
 import net.whitedesert.photosign.utils.ThreadUtil;
-import net.whitedesert.photosign.utils.ToastUtil;
+import net.whitedesert.photosign.utils.ViewUtil;
+import net.yazeed44.imagepicker.AlbumUtil;
+import net.yazeed44.imagepicker.AlbumsFragment;
+import net.yazeed44.imagepicker.ImagesFragment;
+import net.yazeed44.imagepicker.PickerActivity;
 
 import java.io.File;
 import java.util.ArrayList;
 
 
-public class MainActivity extends AdActivity {
+public class MainActivity extends AdActivity implements AlbumsFragment.OnClickAlbum, ImagesFragment.OnPickImage {
 
-    public static ImageLoader imageLoader;
+
+    public static final String IS_FOR_SIGNING_KEY = "isForSigningKey";
+    public static SparseArray<String> sChosenImagePaths = new SparseArray<String>();
+    private AlbumsFragment mAlbumsFragment;
+    private ImagesFragment mImagesFragment;
+    private MySignaturesFragment mSignaturesFragment;
+    private TextView mSignBtnBadge;
+    private Button mSignBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initUtils();
-        checkSigns();
 
+
+        initSignBtn();
+        updateTextAndBadge();
+        setupGalleryFragment(savedInstanceState);
+        checkSigns();
 
     }
 
     private void initUtils() {
-        SignsDB.initializeInstance(new MyDBHelper(getApplicationContext()));
-        ToastUtil.initializeInstance(this);
-        ThreadUtil.initalizeInstance(this);
+        SignsDB.initInstance(new MyDBHelper(getApplicationContext()));
+        ViewUtil.initInstance(this);
+        ThreadUtil.initInstance(this);
         initImageLoader();
 
 
     }
+
+    private void initSignBtn() {
+        mSignBtn = (Button) findViewById(R.id.sign_btn);
+        mSignBtnBadge = (TextView) findViewById(R.id.sign_btn_badge);
+    }
+
+    private void setupGalleryFragment(final Bundle savedInstanceState) {
+
+
+        if (savedInstanceState == null && findViewById(R.id.main_container) != null) {
+
+            mAlbumsFragment = new AlbumsFragment();
+
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.main_container, mAlbumsFragment)
+                    .commit();
+        }
+
+    }
+
+
 
     private void initImageLoader() {
         try {
@@ -85,9 +125,8 @@ public class MainActivity extends AdActivity {
                     .memoryCache(new WeakMemoryCache());
 
 
-            ImageLoaderConfiguration config = builder.build();
-            imageLoader = ImageLoader.getInstance();
-            imageLoader.init(config);
+            final ImageLoaderConfiguration config = builder.build();
+            ImageLoader.getInstance().init(config);
 
         } catch (Exception e) {
             Log.e("MainActivity", e.getMessage());
@@ -125,7 +164,7 @@ public class MainActivity extends AdActivity {
     private void showRetrieveDialog(final ArrayList<Signature> signatures) {
         final String title = getResources().getString(R.string.retrieve_title);
 
-        final MaterialDialog.Builder retrieveDialog = DialogUtil.initDialog(title, getRetrieveMsg(signatures.size()), this);
+        final MaterialDialog.Builder retrieveDialog = DialogUtil.createDialog(title, getRetrieveMsg(signatures.size()), this);
 
         retrieveDialog.negativeText(R.string.delete_unused_signatures_btn)
                 .positiveText(R.string.yes_btn)
@@ -156,15 +195,15 @@ public class MainActivity extends AdActivity {
     }
 
 
-    private void retrieveSigns(final ArrayList<Signature> signatures) {
+    private void retrieveSigns(final ArrayList<Signature> lostSignatures) {
 
 
-        final long[] ids = SignatureUtil.addSigns(signatures);
+        final long[] ids = SignatureUtil.addSigns(lostSignatures);
         final boolean noError = CheckUtil.checkSigns(ids, true);
 
         if (noError) {
-            ToastUtil.toastLong(R.string.retrieved_signs_success_toast);
-            SignatureUtil.setDefaultSignature(signatures.get(0));
+            ViewUtil.toastLong(R.string.retrieved_signs_success_toast);
+            SignatureUtil.setDefaultSignature(lostSignatures.get(0));
 
 
         } else {
@@ -178,7 +217,7 @@ public class MainActivity extends AdActivity {
         boolean deleted = FileUtil.deleteDirectory(new File(Environment.getExternalStorageDirectory(), SaveUtil.SIGNS_FOLDER_NAME));
 
         if (deleted) {
-            ToastUtil.toastShort(R.string.deleted_signs_toast);
+            ViewUtil.toastShort(R.string.deleted_signs_toast);
         } else {
             Log.e("Delete /signs folder", "Failed to delete");
         }
@@ -209,10 +248,54 @@ public class MainActivity extends AdActivity {
 
     }
 
-    public void onClickMySignatures(View view) {
 
-        final Intent signatureIntent = new Intent(this, SignaturesActivity.class);
-        startActivity(signatureIntent);
+    private void showAbout() {
+
+
+        final String title = getString(R.string.about_title);
+        final Spanned content = Html.fromHtml(getString(R.string.about_body_html));
+        DialogUtil.createDialog(title, null, this)
+                .content(content)
+                .contentLineSpacing(1.6f)
+                .positiveText(R.string.dismiss_btn)
+                .callback(getDismissCallback())
+                .build()
+                .show();
+
+
+    }
+
+    private MaterialDialog.SimpleCallback getDismissCallback() {
+        return new MaterialDialog.SimpleCallback() {
+
+            @Override
+            public void onPositive(MaterialDialog materialDialog) {
+                materialDialog.dismiss();
+            }
+        };
+    }
+
+
+    private void updateTextAndBadge() {
+
+        Log.d("updateTextAndBadge", sChosenImagePaths.toString());
+
+        if (sChosenImagePaths.size() == 0) {
+            mSignBtn.setBackgroundColor(getResources().getColor(R.color.sign_btn_layout_disabled));
+            mSignBtn.setClickable(false);
+            mSignBtn.setTextColor(getResources().getColor(R.color.sign_btn_disabled_text));
+            mSignBtnBadge.setVisibility(View.GONE);
+            mSignBtn.setTypeface(Typeface.create("", Typeface.NORMAL));
+
+        } else {
+            mSignBtn.setBackgroundColor(getResources().getColor(R.color.sign_btn_layout));
+            mSignBtn.setClickable(true);
+            mSignBtn.setTextColor(getResources().getColor(R.color.sign_btn_text));
+            mSignBtnBadge.setText(sChosenImagePaths.size() + "");
+            mSignBtnBadge.setVisibility(View.VISIBLE);
+            mSignBtn.setTypeface(Typeface.create("", Typeface.BOLD));
+
+        }
     }
 
 
@@ -239,30 +322,84 @@ public class MainActivity extends AdActivity {
         }
     }
 
-    private void showAbout() {
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
+        //When user import external images to use as signatures
+        super.onActivityResult(requestCode, resultCode, data);
 
-        final String title = getString(R.string.about_title);
-        final Spanned content = Html.fromHtml(getString(R.string.about_body_html));
-        DialogUtil.initDialog(title, null, this)
-                .content(content)
-                .contentLineSpacing(1.6f)
-                .positiveText(R.string.dismiss_btn)
-                .callback(getDismissCallback())
-                .build()
-                .show();
+        if (resultCode == RESULT_OK && requestCode == PickerActivity.PICK_REQUEST) {
+            final String[] paths = data.getStringArrayExtra(PickerActivity.PICKED_IMAGES_KEY);
+            final Signature[] chosenImages = new Signature[paths.length];
 
-
-    }
-
-    private MaterialDialog.SimpleCallback getDismissCallback() {
-        return new MaterialDialog.SimpleCallback() {
-
-            @Override
-            public void onPositive(MaterialDialog materialDialog) {
-                materialDialog.dismiss();
+            for (int i = 0; i < paths.length; i++) {
+                //TODO move this to utils
+                final String path = paths[i];
+                Signature image = chosenImages[i];
+                image = new Signature(path);
+                SignatureUtil.addSign(image, false);
             }
-        };
+
+            ViewUtil.toastShort(R.string.saved_sign_success);
+
+        }
     }
 
+    @Override
+    public void finish() {
+
+        if (mImagesFragment != null && mImagesFragment.isVisible()) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.main_container, mAlbumsFragment)
+                    .commit();
+            getSupportActionBar().setTitle(R.string.albums_title);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        } else {
+            super.finish();
+        }
+    }
+
+    @Override
+    public void onClickAlbum(AlbumUtil.AlbumEntry album) {
+        final Bundle albumBundle = new Bundle();
+        albumBundle.putSerializable(PickerActivity.ALBUM_KEY, album);
+        albumBundle.putBoolean(IS_FOR_SIGNING_KEY, true);
+
+
+        mImagesFragment = new ImagesFragment();
+        mImagesFragment.setArguments(albumBundle);
+
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.main_container, mImagesFragment)
+                .commit();
+
+        getSupportActionBar().setTitle(album.name);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+    }
+
+    @Override
+    public void onPickImage(AlbumUtil.PhotoEntry photoEntry) {
+
+        sChosenImagePaths.put(photoEntry.imageId, photoEntry.path);
+        updateTextAndBadge();
+
+    }
+
+    @Override
+    public void onUnpickImage(AlbumUtil.PhotoEntry photo) {
+        sChosenImagePaths.remove(photo.imageId);
+        updateTextAndBadge();
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        if (mImagesFragment != null && mImagesFragment.isVisible()) {
+            finish();
+            return true;
+        }
+
+        return false;
+    }
 }

@@ -3,6 +3,8 @@ package net.whitedesert.photosign.threads;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Point;
+import android.graphics.PointF;
 import android.net.Uri;
 import android.os.Looper;
 
@@ -13,7 +15,6 @@ import net.whitedesert.photosign.utils.RandomUtil;
 import net.whitedesert.photosign.utils.SaveUtil;
 import net.whitedesert.photosign.utils.SigningOptions;
 import net.whitedesert.photosign.utils.SigningUtil;
-import net.whitedesert.photosign.utils.XY;
 
 /**
  * Created by yazeed44 on 8/7/14.
@@ -26,8 +27,8 @@ public final class SigningThread extends Thread {
     private final String signName;
 
     private final Bitmap photo, signBitmap;
-    private final XY.Float signingXY;
-    private final XY orgPhotoDimen;
+    private final PointF signingXY;
+    private final Point orgPhotoDimen;
     private String pathSigned;
 
     public SigningThread(SigningOptions options, Activity activity) {
@@ -43,7 +44,7 @@ public final class SigningThread extends Thread {
     @Override
     public void run() {
 
-        final float x = signingXY.getX(), y = signingXY.getY();
+        final float x = signingXY.x, y = signingXY.y;
 
         Looper.prepare();
         //TODO clean this
@@ -52,7 +53,7 @@ public final class SigningThread extends Thread {
         //ThreadUtil.showDialog(progressDialog, activity);
 
 
-        final Bitmap signed = Bitmap.createScaledBitmap(SigningUtil.signOnPhoto(photo, signBitmap, x, y), orgPhotoDimen.getX(), orgPhotoDimen.getY(), true);//sign on photo then return it to it's originial size
+        final Bitmap signed = Bitmap.createScaledBitmap(SigningUtil.signOnPhoto(photo, signBitmap, x, y), orgPhotoDimen.x, orgPhotoDimen.y, true);//sign on photo then return it to it's originial size
 
         final String signedPhotoFileName = "Signed Photo - " + signName + RandomUtil.getRandomInt((int) Math.abs(x + 1));
 

@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:weightSum="1">
 
-    <net.whitedesert.photosign.views.TypeSignPreviewView
+    <net.whitedesert.photosign.ui.TypeSignPreviewView
         android:id="@+id/signTextPreview"
         style="@style/text_view"
         android:layout_width="match_parent"

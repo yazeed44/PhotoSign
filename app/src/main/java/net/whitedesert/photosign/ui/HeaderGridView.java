@@ -1,4 +1,4 @@
-package net.whitedesert.photosign.views;
+package net.whitedesert.photosign.ui;
 
 import android.content.Context;
 import android.database.DataSetObservable;
@@ -22,7 +22,7 @@ import java.util.ArrayList;
 public class HeaderGridView extends GridView {
 
     private static final String TAG = "HeaderGridView";
-    private ArrayList<FixedViewInfo> mHeaderViewInfos = new ArrayList<FixedViewInfo>();
+    private final ArrayList<FixedViewInfo> mHeaderViewInfos = new ArrayList<FixedViewInfo>();
 
     public HeaderGridView(Context context) {
         super(context);

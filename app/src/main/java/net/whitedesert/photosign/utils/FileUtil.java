@@ -84,11 +84,11 @@ public final class FileUtil {
 
         if (path.exists()) {
             File[] files = path.listFiles();
-            for (int i = 0; i < files.length; i++) {
-                if (files[i].isDirectory()) {
-                    deleteDirectory(files[i]);
+            for (File file : files) {
+                if (file.isDirectory()) {
+                    deleteDirectory(file);
                 } else {
-                    files[i].delete();
+                    file.delete();
                 }
             }
 
@@ -97,7 +97,7 @@ public final class FileUtil {
         return (path.delete());
     }
 
-    public static boolean deleteSignature(final String name) {
+    public static boolean deleteSignatureFile(final String name) {
         final File signFile = new File(Environment.getExternalStorageDirectory(), SaveUtil.SIGNS_FOLDER_NAME + "/" + name);
 
         return signFile.delete();

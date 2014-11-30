@@ -56,14 +56,6 @@
     </style>
 
 
-    <style name="MainActivityBtn" parent="button">
-        <item name="android:textColor">#ffffff</item>
-        <item name="android:textSize">@dimen/text_medium</item>
-        <item name="android:textStyle">bold</item>
-
-    </style>
-
-
     <style name="text_edit" parent="Widget.AppCompat.EditText">
         <!--
 

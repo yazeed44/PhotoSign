@@ -1,4 +1,4 @@
-package net.whitedesert.photosign.activities;
+package net.whitedesert.photosign.ui;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;

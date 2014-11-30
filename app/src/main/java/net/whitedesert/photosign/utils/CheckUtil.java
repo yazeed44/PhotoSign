@@ -87,7 +87,7 @@ public final class CheckUtil {
         if (id != -1) {
             Log.i("CheckSign", "it has successfully added the sign");
             if (toast)
-                ToastUtil.toastSavedSignSuccess();
+                ViewUtil.toastSavedSignSuccess();
 
             return true;
         } else {
@@ -106,7 +106,7 @@ public final class CheckUtil {
                 Log.e("checkSigns", "Failed to add sign ");
 
                 if (toast)
-                    ToastUtil.toastLong(R.string.error_save_sign);
+                    ViewUtil.toastLong(R.string.error_save_sign);
             }
         }
 

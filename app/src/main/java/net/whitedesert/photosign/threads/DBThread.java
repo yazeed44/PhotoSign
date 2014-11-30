@@ -92,7 +92,7 @@ public final class DBThread {
 
     public static class IsDuplicatedSignThread extends Thread {
 
-        private String name;
+        private final String name;
         private boolean duplicated = false;
 
         public IsDuplicatedSignThread(final String name) {

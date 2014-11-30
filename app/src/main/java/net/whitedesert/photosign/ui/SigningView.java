@@ -1,8 +1,9 @@
-package net.whitedesert.photosign.views;
+package net.whitedesert.photosign.ui;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Point;
+import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
@@ -12,7 +13,6 @@ import android.widget.ImageView;
 
 import net.whitedesert.photosign.utils.Signature;
 import net.whitedesert.photosign.utils.ViewUtil;
-import net.whitedesert.photosign.utils.XY;
 
 /**
  * Created by yazeed44 on 8/9/14.
@@ -20,13 +20,13 @@ import net.whitedesert.photosign.utils.XY;
 public class SigningView extends ImageView {
 
 
+    private final Point orgPhotoDimen = new Point();//Original photo size
     private Bitmap photo;
     private Bitmap signBitmap;
     private Signature signature;
-    private XY orgPhotoDimen = new XY();//Original photo size
     private float signingX = -1, signingY = -1;
     private float touchX, touchY;
-    private SignatureView signatureView;
+    private ImageView signatureView;
 
     public SigningView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -41,8 +41,8 @@ public class SigningView extends ImageView {
         Log.i("Signing View : onSizeChanged", "Width  :  " + w + "    , height :  " + h);
 
         if (photo != null) {
-            orgPhotoDimen.setX(photo.getWidth());
-            orgPhotoDimen.setY(photo.getHeight());
+            orgPhotoDimen.x = (photo.getWidth());
+            orgPhotoDimen.y = (photo.getHeight());
             photo = Bitmap.createScaledBitmap(photo, w, h, true);
             setImageBitmap(photo);
 
@@ -116,9 +116,9 @@ public class SigningView extends ImageView {
         setSign(signature.getBitmap());
     }
 
-    public void setSignatureView(final SignatureView signatureView) {
+    public void setSignatureView(final ImageView signatureView) {
         this.signatureView = signatureView;
-        setSignature(signatureView.getSignature());
+        // setSignature(signatureView.getSignature());
     }
 
     public void setSign(Bitmap bitmap) {
@@ -138,40 +138,40 @@ public class SigningView extends ImageView {
         setImageBitmap(photo);
     }
 
-    private void setXY(XY xy) {
-        this.signingX = xy.getX();
-        this.signingY = xy.getY();
+    private void setXY(final Point xy) {
+        this.signingX = xy.x;
+        this.signingY = xy.y;
     }
 
 
-    public XY getSignWidthHeight() {
-        return new XY(getSignBitmap().getWidth(), getSignBitmap().getHeight());
+    public Point getSignWidthHeight() {
+        return new Point(getSignBitmap().getWidth(), getSignBitmap().getHeight());
     }
 
-    private void fixXY(XY.Float touches) {
+    private void fixXY(PointF touches) {
 
         final int signW = signBitmap.getWidth(), signH = signBitmap.getHeight();
-        touches.setX(touches.getX() - signW / 2);
-        touches.setY(touches.getY() - signH / 2);
+        touches.x = (touches.x - signW / 2);
+        touches.y = (touches.y - signH / 2);
         setXY(touches);
     }
 
-    public XY.Float getXY() {
-        XY.Float xy = fixXY(touchX, touchY);
+    public PointF getXY() {
+        final PointF xy = fixXY(touchX, touchY);
         Log.i("getXY : Fixed coordiantes to save a signed photo", xy.toString());
         return xy;
     }
 
-    private void setXY(XY.Float xy) {
-        this.signingX = xy.getX();
-        this.signingY = xy.getY();
+    private void setXY(PointF xy) {
+        this.signingX = xy.x;
+        this.signingY = xy.y;
     }
 
-    public XY getOrgPhotoDimen() {
+    public Point getOrgPhotoDimen() {
         return orgPhotoDimen;
     }
 
-    private XY.Float fixXY(float pX, float pY) {
+    private PointF fixXY(float pX, float pY) {
         //Finally i fixed it XY problem compleatly
         //the alogrithm : make the photo expand till it fills the View , then sign on it , then return it to it's originial size
         //that's way there won't be any problem
@@ -213,11 +213,11 @@ public class SigningView extends ImageView {
         final float originalImageOffsetX = scaledImageOffsetX * widthRatio;
         final float originalImageOffsetY = scaledImageOffsetY * heightRatio;
 
-        return new XY.Float(originalImageOffsetX, originalImageOffsetY);
+        return new PointF(originalImageOffsetX, originalImageOffsetY);
 
     }
 
-    public XY getSignDimension() {
-        return new XY(signBitmap.getWidth(), signBitmap.getHeight());
+    public Point getSignDimension() {
+        return new Point(signBitmap.getWidth(), signBitmap.getHeight());
     }
 }
