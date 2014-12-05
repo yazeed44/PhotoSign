@@ -5,6 +5,10 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,6 +18,7 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 
+import com.astuetz.PagerSlidingTabStrip;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -31,14 +36,19 @@ import java.util.ArrayList;
  */
 public class SigningActivity extends BaseActivity {
 
+    public static final String PHOTO_PATH_KEY = "photoPathKey";
     private final int mFragmentContainer = R.id.container;
     private Signature signature;
     private AlertDialog changeDialog;
+    private ViewPager mPager;
+    private PagerSlidingTabStrip mTabs;
+    private MyPagerAdapter mAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
-        this.setContentView(R.layout.fragment_signing);
+        setContentView(R.layout.activity_signing);
 
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -49,16 +59,22 @@ public class SigningActivity extends BaseActivity {
         setupTabs();
 
 
-
     }
 
+
     private void setupTabs() {
+
+        mPager = (ViewPager) findViewById(R.id.pager);
+        mTabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
+
         final Intent i = this.getIntent();
 
         final String[] imagesPath = i.getStringArrayExtra(MainActivity.TO_SIGN_IMAGES_KEY);
 
-        //TODO create tabs for every image
+        mAdapter = new MyPagerAdapter(getSupportFragmentManager(), imagesPath);
 
+        mPager.setAdapter(mAdapter);
+        mTabs.setViewPager(mPager);
 
 
     }
@@ -77,24 +93,9 @@ public class SigningActivity extends BaseActivity {
     }
 
 
-
-
-
-
-
-
     private void onClickChangeSignature() {
-        //TODO Fix bug
 
         final String title = getResources().getString(R.string.choose_signature_title);
-
-       /* changeDialog = ViewUtil.createDialog(title, null, this)
-                .customView(getChooseView())
-                .build();
-
-
-        changeDialog.show();
-*/
 
 
         changeDialog = new AlertDialog.Builder(this)
@@ -173,6 +174,37 @@ public class SigningActivity extends BaseActivity {
     private static class ViewHolder {
         ImageView image;
     }
+
+
+    private class MyPagerAdapter extends FragmentPagerAdapter {
+
+        private final String[] mPhotos;
+
+        public MyPagerAdapter(final FragmentManager fm, final String[] photos) {
+            super(fm);
+            this.mPhotos = photos;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return position + "";
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            final Fragment fragment = new SigningPhotoFragment();
+            final Bundle bundle = new Bundle();
+            bundle.putString(PHOTO_PATH_KEY, mPhotos[position]);
+            fragment.setArguments(bundle);
+            return fragment;
+        }
+
+        @Override
+        public int getCount() {
+            return mPhotos.length;
+        }
+    }
+
 
     private class ChooseSignatureAdapter extends BaseAdapter {
 

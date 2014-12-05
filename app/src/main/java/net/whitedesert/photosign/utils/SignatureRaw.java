@@ -1,5 +1,6 @@
 package net.whitedesert.photosign.utils;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -14,32 +15,19 @@ import android.graphics.Typeface;
 public final class SignatureRaw {
 
 
-    private Paint paint = new Paint();
-    private String text = "Preview";
-    private int color = Color.WHITE;
-    private float textSize = 50f;
-    private int width = SignatureUtil.DEFAULT_SIGN_WIDTH, height = SignatureUtil.DEFAULT_SIGN_HEIGHT;
-
+    public static final int WIDTH = 1024, HEIGHT = 1024;
+    private Paint mPaint = new Paint();
+    private String mText = "Preview";
+    private int mColor = Color.WHITE;
     private Typeface tf;
 
-    public Paint getPaint() {
-
-        paint.setColor(getColor());
-        paint.setTextSize(getTextSize());
-        paint.setTypeface(tf);
-        return paint;
-    }
-
-    public void setPaint(final Paint paint) {
-        this.paint = paint;
-    }
 
     public String getText() {
-        return this.text;
+        return this.mText;
     }
 
     public void setText(String text) {
-        this.text = text;
+        this.mText = text;
     }
 
 
@@ -48,71 +36,43 @@ public final class SignatureRaw {
     }
 
     public int getColor() {
-        return this.color;
+        return this.mColor;
     }
 
     public void setColor(int color) {
-        this.color = color;
+        this.mColor = color;
+        mPaint.setColor(mColor);
     }
 
 
-    public float getTextSize() {
-        return this.textSize;
-    }
+    private float calculateTextSize(final Context context) {
 
-    public void setTextSize(float textSize) {
-        this.textSize = textSize;
-    }
+        final Rect bounds = new Rect();
+        float textSize = 50f;
+        mPaint.setTextSize(textSize);
 
-    private Rect getRect() {
-        Rect rect = new Rect();
-        getPaint().getTextBounds(getText(), 0, getText().length(), rect);
-        return rect;
-    }
+        mPaint.getTextBounds(getText(), 0, getText().length(), bounds);
 
-    public int getMeasuredWidth() {
-
-        return getRect().width() + 30;
-    }
-
-    public int getMeasuredHeight() {
-        return getRect().height() + 30;
-    }
-
-    public int getWidth() {
-        return this.width;
-    }
-
-    public void setWidth(int width) {
-        this.width = width;
-    }
-
-    public int getHeight() {
-        return this.height;
-    }
-
-    public void setHeight(int height) {
-        this.height = height;
-    }
-
-    public Bitmap createBitmap(int width, int height) {
-        final Paint paint = getPaint();
-
-        final float baseline = (int) (-paint.ascent() + 0.5f); // ascent() is negative
-        final Bitmap image = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-        final Canvas canvas = new Canvas(image);
-        canvas.drawText(getText(), 0, baseline, paint);
-        return image;
-    }
-
-
-    public Bitmap createBitmap(boolean measured) {
-
-        if (measured)
-            return createBitmap(getMeasuredWidth(), getMeasuredHeight());
-        else {
-            return createBitmap(getWidth(), getHeight());
+        while (WIDTH > bounds.width() && HEIGHT > bounds.height()) {
+            textSize++;
+            mPaint.setTextSize(textSize);
+            mPaint.getTextBounds(getText(), 0, getText().length(), bounds);
         }
+
+
+        return textSize;
     }
+
+
+    public Bitmap createBitmap(final Context context) {
+        mPaint.setTextSize(calculateTextSize(context));
+        final float baseline = (int) (-mPaint.ascent() + 0.5f); // ascent() is negative
+        final Bitmap bitmap = Bitmap.createBitmap(WIDTH, HEIGHT, Bitmap.Config.ARGB_8888);
+        final Canvas canvas = new Canvas(bitmap);
+
+        canvas.drawText(getText(), 0, HEIGHT / 2, mPaint);
+        return bitmap;
+    }
+
 
 }

@@ -19,21 +19,8 @@ import yuku.ambilwarna.AmbilWarnaDialog;
 /**
  * Created by yazeed44 on 8/15/14.
  */
-public class DrawSignActivity extends BaseActivity {
+public class DrawSignActivity extends BaseActivity implements AmbilWarnaDialog.OnAmbilWarnaListener {
 
-
-    private final AmbilWarnaDialog.OnAmbilWarnaListener chooseColorListener = new AmbilWarnaDialog.OnAmbilWarnaListener() {
-        @Override
-        public void onCancel(AmbilWarnaDialog dialog) {
-
-        }
-
-        @Override
-        public void onOk(AmbilWarnaDialog dialog, int color) {
-
-            draw.getDrawPaint().setColor(color); // update color
-        }
-    };
     private final SeekBar.OnSeekBarChangeListener widthListener = new SeekBar.OnSeekBarChangeListener() {
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -125,15 +112,25 @@ public class DrawSignActivity extends BaseActivity {
 
 
         final MaterialDialog.Builder dialog = ViewUtil.createDialog(brushCustomizeTitle, "", this);
-        setUpSize(widthText, widthSeek);
-        setUpOpacity(opacityText, opacitySeek);
-        dialog.customView(brushCustomizeLayout);
+        setupSize(widthText, widthSeek);
+        setupOpacity(opacityText, opacitySeek);
 
-        dialog.build().show();
+        dialog.customView(brushCustomizeLayout)
+                .positiveText(R.string.dismiss_btn)
+                .callback(new MaterialDialog.SimpleCallback() {
+                    @Override
+                    public void onPositive(MaterialDialog materialDialog) {
+                        materialDialog.dismiss();
+                    }
+                })
+                .show()
+        ;
+
+
     }
 
 
-    private void setUpSize(final TextView sizeText, final SeekBar widthSeek) {
+    private void setupSize(final TextView sizeText, final SeekBar widthSeek) {
         widthSeek.setProgress((int) ViewUtil.convertPixelsToDp(draw.getDrawPaint().getStrokeWidth(), this));
         sizeText.setText(sizeText.getResources().getText(R.string.draw_size_text) + "" + widthSeek.getProgress());
 
@@ -141,7 +138,7 @@ public class DrawSignActivity extends BaseActivity {
     }
 
 
-    private void setUpOpacity(final TextView opacityText, final SeekBar opacitySeek) {
+    private void setupOpacity(final TextView opacityText, final SeekBar opacitySeek) {
 
         opacitySeek.setProgress(draw.getDrawPaint().getAlpha());
         opacityText.setText(opacityString + opacitySeek.getProgress());
@@ -154,7 +151,7 @@ public class DrawSignActivity extends BaseActivity {
 
 
         final int initalColor = draw.getDrawPaint().getColor();
-        new AmbilWarnaDialog(DrawSignActivity.this, initalColor, chooseColorListener).show();
+        new AmbilWarnaDialog(this, initalColor, this).show();
     }
 
     public void onClickReset() {
@@ -203,4 +200,13 @@ public class DrawSignActivity extends BaseActivity {
     }
 
 
+    @Override
+    public void onCancel(AmbilWarnaDialog dialog) {
+
+    }
+
+    @Override
+    public void onOk(AmbilWarnaDialog dialog, int color) {
+        draw.getDrawPaint().setColor(color); // update color
+    }
 }

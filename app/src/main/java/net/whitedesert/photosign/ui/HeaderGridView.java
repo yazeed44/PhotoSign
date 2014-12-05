@@ -180,7 +180,7 @@ public class HeaderGridView extends GridView {
      * <p>This is intended as a base class; you will probably not need to
      * use this class directly in your own code.
      */
-    private static class HeaderViewGridAdapter implements WrapperListAdapter, Filterable {
+    public static class HeaderViewGridAdapter implements WrapperListAdapter, Filterable {
         // This is used to notify the container of updates relating to number of columns
         // or headers changing, which changes the number of placeholders needed
         private final DataSetObservable mDataSetObservable = new DataSetObservable();

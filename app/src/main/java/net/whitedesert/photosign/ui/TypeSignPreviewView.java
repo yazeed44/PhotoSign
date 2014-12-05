@@ -30,12 +30,11 @@ public class TypeSignPreviewView extends AutofitTextView {
     }
 
 
-    public SignatureRaw getSignRaw() {
+    public SignatureRaw createSignatureRaw() {
         final SignatureRaw raw = new SignatureRaw();
         raw.setColor(getCurrentTextColor());
         raw.setText(getText().toString());
         raw.setTypeface(getTypeface());
-        raw.setTextSize(getTextSize());
         return raw;
     }
 

@@ -8,7 +8,6 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.widget.ImageView;
 
 import net.whitedesert.photosign.utils.Signature;
@@ -65,7 +64,7 @@ public class SigningView extends ImageView {
     }*/
 
 
-    @Override
+  /*  @Override
     public boolean onTouchEvent(MotionEvent event) {
 //detect user touch
 
@@ -104,7 +103,7 @@ public class SigningView extends ImageView {
 
         return true;
 
-    }
+    }*/
 
 
     public Signature getSignature() {

@@ -19,7 +19,7 @@
     <item
         android:id="@+id/menu_brush_settings"
         android:icon="@drawable/ic_brush"
-        android:title="@string/brush_settings"
+        android:title="@string/brush_customization"
         photoSign:showAsAction="ifRoom" />
 
 

@@ -9,7 +9,10 @@ import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+
 import net.whitedesert.photosign.R;
+import net.whitedesert.photosign.utils.Signature;
 
 /**
  * Created by yazeed44 on 12/1/14.
@@ -17,10 +20,12 @@ import net.whitedesert.photosign.R;
 public class SigningPhotoFragment extends Fragment {
 
 
+    public Signature signature;
     SigningView signingView;
     private LinearLayout mLayout;
     private TextView mOpacityText;
     private SeekBar mOpacityBar;
+    private String mPhotoPath;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -28,6 +33,7 @@ public class SigningPhotoFragment extends Fragment {
         mLayout = (LinearLayout) inflater.inflate(R.layout.fragment_signing, container, false);
 
 
+        initPath();
         initViews();
         setupOpacity();
         return mLayout;
@@ -37,6 +43,13 @@ public class SigningPhotoFragment extends Fragment {
         mOpacityBar = (SeekBar) mLayout.findViewById(R.id.opacity_seek);
         mOpacityText = (TextView) mLayout.findViewById(R.id.opacity_text);
         signingView = (SigningView) mLayout.findViewById(R.id.signing_view);
+
+        ImageLoader.getInstance().displayImage("file://" + mPhotoPath, signingView);
+    }
+
+    private void initPath() {
+
+        mPhotoPath = getArguments().getString(SigningActivity.PHOTO_PATH_KEY);
     }
 
     private void setupOpacity() {

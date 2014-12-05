@@ -6,7 +6,7 @@
 
     <string name="redo_drawing">Redo the drawing</string>
     <string name="brush_color_customize">Change brush color</string>
-    <string name="brush_settings">Brush settings</string>
+    <string name="brush_customization">Brush customization</string>
     <string name="sign_draw_reminder">When you are done signing click the save button</string>
 
 
@@ -96,6 +96,8 @@
     <string-array name="main_navigation_list">
         <item>Photos</item>
         <item>Signatures</item>
+
+
     </string-array>
 
 

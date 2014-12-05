@@ -36,12 +36,12 @@ public class TextSignActivity extends BaseActivity {
 
         setPreviewText("Preview");
         preview.setTypeface(null, Typeface.BOLD);
-        setUpText();
+        setupText();
 
     }
 
     public void onClickDone() {
-        SaveUtil.saveSignature(preview.getSignRaw().createBitmap(true), this);
+        SaveUtil.saveSignature(preview.createSignatureRaw().createBitmap(this), this);
     }
 
 
@@ -81,7 +81,7 @@ public class TextSignActivity extends BaseActivity {
     }
 
 
-    private void setUpText() {
+    private void setupText() {
 
 
         text.addTextChangedListener(new TextWatcher() {

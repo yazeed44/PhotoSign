@@ -6,6 +6,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <!--TODO improve dialog -->
+
     <TextView
         android:id="@+id/drawSizeText"
 

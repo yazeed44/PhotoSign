@@ -116,4 +116,10 @@ public class SignaturesFragment extends Fragment {
     }
 
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        setupAdapter();
+    }
+
 }

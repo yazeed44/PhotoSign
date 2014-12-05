@@ -14,28 +14,19 @@
         <item name="android:spinnerStyle">@style/Widget.AppCompat.Light.Spinner.DropDown.ActionBar
         </item>
         <item name="spinnerStyle">@style/Widget.AppCompat.Light.Spinner.DropDown.ActionBar</item>
-        <!--<item name="toolbarStyle">@style/ToolbarStyle</item> -->
+        <item name="toolbarStyle">@style/ToolbarStyle</item>
 
 
     </style>
 
-    <style name="MyActionBarStyle" parent="Widget.AppCompat.Light.ActionBar">
-
-        <item name="android:background">@color/app_primary</item>
-        <item name="background">@color/app_primary</item>
-
-        <item name="android:titleTextStyle">@style/TextAppearance.Widget.AppCompat.Toolbar.Title
-        </item>
-        <item name="titleTextStyle">@style/TextAppearance.Widget.AppCompat.Toolbar.Title</item>
-
-        <item name="android:actionButtonStyle">@style/Widget.AppCompat.ActionButton</item>
-        <item name="actionButtonStyle">@style/Widget.AppCompat.ActionButton</item>
-
-
-    </style>
 
     <style name="ToolbarStyle" parent="Widget.AppCompat.Toolbar">
 
+        <item name="android:background">?attr/colorPrimary</item>
+        <item name="background">?attr/colorPrimary</item>
+        <item name="elevation">5dp</item>
+        <item name="theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+        <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
     </style>
 
     <style name="text_view" parent="TextAppearance.AppCompat.Medium">
@@ -104,6 +95,10 @@
 
     <style name="PopupMenu" parent="@style/Widget.AppCompat.Light.PopupMenu">
 
+
+    </style>
+
+    <style name="SpinnerStyle" parent="Widget.AppCompat.Spinner.DropDown.ActionBar">
 
     </style>
 

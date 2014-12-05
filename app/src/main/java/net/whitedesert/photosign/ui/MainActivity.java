@@ -88,10 +88,10 @@ public class MainActivity extends BaseActivity implements AlbumsFragment.OnClick
 
     private void initViews() {
 
-        mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        //  getSupportActionBar().setIcon(R.drawable.ic_launcher);
+        //getSupportActionBar().setIcon(R.drawable.ic_launcher);
 
         mSignBtnLayout = (FrameLayout) findViewById(R.id.sign_btn_layout);
         mSignBtn = (Button) findViewById(R.id.sign_btn);
@@ -105,18 +105,20 @@ public class MainActivity extends BaseActivity implements AlbumsFragment.OnClick
         final ArrayAdapter spinnerAdapter = ArrayAdapter.createFromResource(getSupportActionBar().getThemedContext(),
                 R.array.main_navigation_list, R.layout.spinner_text);
         spinnerAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+
         mNavigationTags = getResources().getStringArray(R.array.main_navigation_list);
 
 
         mNavigationSpinner = new Spinner(getSupportActionBar().getThemedContext(), Spinner.MODE_DROPDOWN);
+        mNavigationSpinner.setOnItemSelectedListener(this);
+        mNavigationSpinner.setMinimumWidth(120);
+
+
         mNavigationSpinner.setAdapter(spinnerAdapter);
 
+        mNavigationSpinner.setPadding(0, 0, 0, 0);
 
-        mNavigationSpinner.setOnItemSelectedListener(this);
         mToolbar.addView(mNavigationSpinner);
-        mNavigationSpinner.setLayoutParams(new Toolbar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-
-
 
 
     }
@@ -461,7 +463,7 @@ public class MainActivity extends BaseActivity implements AlbumsFragment.OnClick
                 .replace(R.id.main_container, newFragment)
                 .commit();
 
-        mNavigationSpinner.setLayoutParams(new Toolbar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
     }
 
     @Override
