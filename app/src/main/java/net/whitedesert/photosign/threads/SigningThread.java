@@ -13,6 +13,7 @@ import net.whitedesert.photosign.utils.BitmapUtil;
 import net.whitedesert.photosign.utils.CheckUtil;
 import net.whitedesert.photosign.utils.RandomUtil;
 import net.whitedesert.photosign.utils.SaveUtil;
+import net.whitedesert.photosign.utils.Signature;
 import net.whitedesert.photosign.utils.SigningOptions;
 import net.whitedesert.photosign.utils.SigningUtil;
 
@@ -59,7 +60,7 @@ public final class SigningThread extends Thread {
 
         pathSigned = SaveUtil.saveSignedPhoto(signed, activity, signedPhotoFileName);
 
-        CheckUtil.checkSign(pathSigned, activity);
+        CheckUtil.checkSign(new Signature(pathSigned));
 
 
 //        ThreadUtil.dismissDialog(progressDialog, activity);
@@ -76,7 +77,7 @@ public final class SigningThread extends Thread {
 
         share.putExtra(Intent.EXTRA_STREAM, Uri.parse(BitmapUtil.GLOBAL_PATH + getPath()));
 
-        final String title = activity.getResources().getString(R.string.share_signed_photo);
+        final String title = activity.getResources().getString(R.string.share_signed_photo_title);
 
         activity.startActivity(Intent.createChooser(share, title));
 

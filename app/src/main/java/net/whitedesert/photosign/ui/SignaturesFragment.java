@@ -17,14 +17,14 @@ import net.whitedesert.photosign.R;
 import net.whitedesert.photosign.adapters.SignaturesGridAdapter;
 import net.whitedesert.photosign.utils.BitmapUtil;
 import net.whitedesert.photosign.utils.CheckUtil;
-import net.whitedesert.photosign.utils.DialogUtil;
 import net.whitedesert.photosign.utils.Signature;
 import net.whitedesert.photosign.utils.SignatureUtil;
+import net.whitedesert.photosign.utils.ViewUtil;
 
 /**
  * Created by yazeed44 on 11/4/14.
  */
-public class MySignaturesFragment extends Fragment {
+public class SignaturesFragment extends Fragment {
 
     private HeaderGridView mSignaturesGrid;
 
@@ -68,7 +68,7 @@ public class MySignaturesFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DialogUtil.createChooseMethodToSignDialog(MySignaturesFragment.this.getActivity()).build().show();
+                ViewUtil.createChooseMethodToSignDialog(SignaturesFragment.this.getActivity()).show();
             }
         });
 
@@ -90,7 +90,7 @@ public class MySignaturesFragment extends Fragment {
         final int width = getResources().getDimensionPixelSize(R.dimen.signature_column_width) * 2;
         final int height = width;
 
-        final View defSignLayout = LayoutInflater.from(getActivity()).inflate(R.layout.item_default_sign, null);
+        final View defSignLayout = LayoutInflater.from(getActivity()).inflate(R.layout.item_default_sign, (ViewGroup) getView(), false);
 
         defSignLayout.setLayoutParams(new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height));
 

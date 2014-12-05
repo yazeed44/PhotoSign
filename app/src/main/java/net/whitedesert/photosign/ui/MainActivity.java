@@ -1,10 +1,13 @@
 package net.whitedesert.photosign.ui;
 
+
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.v4.app.Fragment;
+import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.Spanned;
 import android.util.Log;
@@ -12,7 +15,14 @@ import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -28,16 +38,15 @@ import net.whitedesert.photosign.R;
 import net.whitedesert.photosign.database.MyDBHelper;
 import net.whitedesert.photosign.database.SignsDB;
 import net.whitedesert.photosign.utils.CheckUtil;
-import net.whitedesert.photosign.utils.DialogUtil;
 import net.whitedesert.photosign.utils.FileUtil;
 import net.whitedesert.photosign.utils.SaveUtil;
 import net.whitedesert.photosign.utils.Signature;
 import net.whitedesert.photosign.utils.SignatureUtil;
-import net.whitedesert.photosign.utils.SigningUtil;
 import net.whitedesert.photosign.utils.ThreadUtil;
 import net.whitedesert.photosign.utils.ViewUtil;
 import net.yazeed44.imagepicker.AlbumUtil;
 import net.yazeed44.imagepicker.AlbumsFragment;
+import net.yazeed44.imagepicker.ImagesAdapter;
 import net.yazeed44.imagepicker.ImagesFragment;
 import net.yazeed44.imagepicker.PickerActivity;
 
@@ -45,28 +54,82 @@ import java.io.File;
 import java.util.ArrayList;
 
 
-public class MainActivity extends AdActivity implements AlbumsFragment.OnClickAlbum, ImagesFragment.OnPickImage {
+public class MainActivity extends BaseActivity implements AlbumsFragment.OnClickAlbum, ImagesFragment.OnPickImage, AdapterView.OnItemSelectedListener {
 
 
-    public static final String IS_FOR_SIGNING_KEY = "isForSigningKey";
+    public static final String TO_SIGN_IMAGES_KEY = "toSignImageKey";
     public static SparseArray<String> sChosenImagePaths = new SparseArray<String>();
     private AlbumsFragment mAlbumsFragment;
     private ImagesFragment mImagesFragment;
-    private MySignaturesFragment mSignaturesFragment;
+    private SignaturesFragment mSignaturesFragment;
     private TextView mSignBtnBadge;
     private Button mSignBtn;
+    private FrameLayout mSignBtnLayout;
+    private String[] mNavigationTags;
+    private Toolbar mToolbar;
+    private Spinner mNavigationSpinner;
+    private boolean mIsFirstTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mIsFirstTime = CheckUtil.isFirstTimeOpened(this);
+
+
         initUtils();
-
-
-        initSignBtn();
+        initViews();
+        setupToolbarSpinner();
         updateTextAndBadge();
-        setupGalleryFragment(savedInstanceState);
-        checkSigns();
+        retrieveLostSignatures();
+
+
+    }
+
+    private void initViews() {
+
+        mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        //  getSupportActionBar().setIcon(R.drawable.ic_launcher);
+
+        mSignBtnLayout = (FrameLayout) findViewById(R.id.sign_btn_layout);
+        mSignBtn = (Button) findViewById(R.id.sign_btn);
+        mSignBtnBadge = (TextView) findViewById(R.id.sign_btn_badge);
+    }
+
+
+    private void setupToolbarSpinner() {
+
+
+        final ArrayAdapter spinnerAdapter = ArrayAdapter.createFromResource(getSupportActionBar().getThemedContext(),
+                R.array.main_navigation_list, R.layout.spinner_text);
+        spinnerAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+        mNavigationTags = getResources().getStringArray(R.array.main_navigation_list);
+
+
+        mNavigationSpinner = new Spinner(getSupportActionBar().getThemedContext(), Spinner.MODE_DROPDOWN);
+        mNavigationSpinner.setAdapter(spinnerAdapter);
+
+
+        mNavigationSpinner.setOnItemSelectedListener(this);
+        mToolbar.addView(mNavigationSpinner);
+        mNavigationSpinner.setLayoutParams(new Toolbar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+
+
+
+    }
+
+    private Fragment getSignaturesFragment() {
+        mSignaturesFragment = new SignaturesFragment();
+
+        return mSignaturesFragment;
+    }
+
+    private Fragment getAlbumsFragment() {
+        mAlbumsFragment = new AlbumsFragment();
+        return mAlbumsFragment;
 
     }
 
@@ -79,24 +142,6 @@ public class MainActivity extends AdActivity implements AlbumsFragment.OnClickAl
 
     }
 
-    private void initSignBtn() {
-        mSignBtn = (Button) findViewById(R.id.sign_btn);
-        mSignBtnBadge = (TextView) findViewById(R.id.sign_btn_badge);
-    }
-
-    private void setupGalleryFragment(final Bundle savedInstanceState) {
-
-
-        if (savedInstanceState == null && findViewById(R.id.main_container) != null) {
-
-            mAlbumsFragment = new AlbumsFragment();
-
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.main_container, mAlbumsFragment)
-                    .commit();
-        }
-
-    }
 
 
 
@@ -110,10 +155,9 @@ public class MainActivity extends AdActivity implements AlbumsFragment.OnClickAl
                     CACHE_DIR);
 
             DisplayImageOptions displayImageOptions = new DisplayImageOptions.Builder()
-                    .cacheOnDisc(true).imageScaleType(ImageScaleType.EXACTLY)
+                    .cacheOnDisk(true).imageScaleType(ImageScaleType.EXACTLY)
                     .bitmapConfig(Bitmap.Config.RGB_565)
                     .showImageOnFail(R.drawable.ic_error)
-                            //.showImageOnLoading(R.drawable.no_media)
                     .resetViewBeforeLoading(true)
                     .build();
 
@@ -121,7 +165,7 @@ public class MainActivity extends AdActivity implements AlbumsFragment.OnClickAl
             ImageLoaderConfiguration.Builder builder = new ImageLoaderConfiguration.Builder(
                     getBaseContext())
                     .defaultDisplayImageOptions(displayImageOptions)
-                    .discCache(new UnlimitedDiscCache(cacheDir))
+                    .diskCache(new UnlimitedDiscCache(cacheDir))
                     .memoryCache(new WeakMemoryCache());
 
 
@@ -134,9 +178,10 @@ public class MainActivity extends AdActivity implements AlbumsFragment.OnClickAl
     }
 
     //Check the signs in /signs folder , and then ask user if he want to retrieve them
-    private void checkSigns() {
+    private void retrieveLostSignatures() {
 
-        if (SignatureUtil.noSigns()) {
+
+        if (mIsFirstTime && SignatureUtil.noSigns()) {
 
 
             final File[] filesOfSignatures = FileUtil.getFilesOfSigns();
@@ -145,7 +190,7 @@ public class MainActivity extends AdActivity implements AlbumsFragment.OnClickAl
 
             if (filesOfSignatures != null && filesOfSignatures.length != 0) {
 
-                Log.d("checkSigns", "The count of files  " + filesOfSignatures.length);
+                Log.d("retrieveLostSignatures", "The count of files  " + filesOfSignatures.length);
                 for (File signatureFile : filesOfSignatures) {
                     final Signature signature = createSign(signatureFile);
                     signatures.add(signature);
@@ -164,7 +209,7 @@ public class MainActivity extends AdActivity implements AlbumsFragment.OnClickAl
     private void showRetrieveDialog(final ArrayList<Signature> signatures) {
         final String title = getResources().getString(R.string.retrieve_title);
 
-        final MaterialDialog.Builder retrieveDialog = DialogUtil.createDialog(title, getRetrieveMsg(signatures.size()), this);
+        final MaterialDialog.Builder retrieveDialog = ViewUtil.createDialog(title, getRetrieveMsg(signatures.size()), this);
 
         retrieveDialog.negativeText(R.string.delete_unused_signatures_btn)
                 .positiveText(R.string.yes_btn)
@@ -224,13 +269,7 @@ public class MainActivity extends AdActivity implements AlbumsFragment.OnClickAl
     }
 
     private Signature createSign(File signatureFile) {
-        final String name = signatureFile.getName();
-        final String path = signatureFile.getPath();
-        final Signature signature = new Signature();
-        signature.setPath(path);
-        signature.setName(name);
-        signature.setDefault(false);
-        return signature;
+        return new Signature(signatureFile.getPath());
     }
 
     private String getRetrieveMsg(int signaturesCount) {
@@ -240,21 +279,12 @@ public class MainActivity extends AdActivity implements AlbumsFragment.OnClickAl
     }
 
 
-    public void onClickChoose(View view) {
-
-
-        SigningUtil.openGalleryToSignSingle(this);
-
-
-    }
-
-
     private void showAbout() {
 
 
         final String title = getString(R.string.about_title);
         final Spanned content = Html.fromHtml(getString(R.string.about_body_html));
-        DialogUtil.createDialog(title, null, this)
+        ViewUtil.createDialog(title, null, this)
                 .content(content)
                 .contentLineSpacing(1.6f)
                 .positiveText(R.string.dismiss_btn)
@@ -275,10 +305,35 @@ public class MainActivity extends AdActivity implements AlbumsFragment.OnClickAl
         };
     }
 
+    public void onClickSign(View view) {
+
+        final Intent signIntent = new Intent(this, SigningActivity.class);
+        signIntent.putExtra(TO_SIGN_IMAGES_KEY, castPaths());
+        resetImages();
+        updateTextAndBadge();
+        startActivity(signIntent);
+
+
+    }
+
+    private void resetImages() {
+        sChosenImagePaths.clear();
+        ((BaseAdapter) mImagesFragment.gridView.getAdapter()).notifyDataSetChanged();
+    }
+
+    private String[] castPaths() {
+        final String[] paths = new String[sChosenImagePaths.size()];
+
+        for (int i = 0; i < paths.length; i++) {
+            paths[i] = sChosenImagePaths.valueAt(i);
+        }
+
+        return paths;
+
+    }
+
 
     private void updateTextAndBadge() {
-
-        Log.d("updateTextAndBadge", sChosenImagePaths.toString());
 
         if (sChosenImagePaths.size() == 0) {
             mSignBtn.setBackgroundColor(getResources().getColor(R.color.sign_btn_layout_disabled));
@@ -322,28 +377,6 @@ public class MainActivity extends AdActivity implements AlbumsFragment.OnClickAl
         }
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        //When user import external images to use as signatures
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (resultCode == RESULT_OK && requestCode == PickerActivity.PICK_REQUEST) {
-            final String[] paths = data.getStringArrayExtra(PickerActivity.PICKED_IMAGES_KEY);
-            final Signature[] chosenImages = new Signature[paths.length];
-
-            for (int i = 0; i < paths.length; i++) {
-                //TODO move this to utils
-                final String path = paths[i];
-                Signature image = chosenImages[i];
-                image = new Signature(path);
-                SignatureUtil.addSign(image, false);
-            }
-
-            ViewUtil.toastShort(R.string.saved_sign_success);
-
-        }
-    }
 
     @Override
     public void finish() {
@@ -363,10 +396,9 @@ public class MainActivity extends AdActivity implements AlbumsFragment.OnClickAl
     public void onClickAlbum(AlbumUtil.AlbumEntry album) {
         final Bundle albumBundle = new Bundle();
         albumBundle.putSerializable(PickerActivity.ALBUM_KEY, album);
-        albumBundle.putBoolean(IS_FOR_SIGNING_KEY, true);
 
 
-        mImagesFragment = new ImagesFragment();
+        mImagesFragment = new ToSignImagesFragment();
         mImagesFragment.setArguments(albumBundle);
 
 
@@ -401,5 +433,92 @@ public class MainActivity extends AdActivity implements AlbumsFragment.OnClickAl
         }
 
         return false;
+    }
+
+    @Override
+    public boolean toolbarUsed() {
+        return true;
+    }
+
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+        final Fragment newFragment;
+
+        if (position == 0) {
+            final float weight = 0.92F;
+            newFragment = getAlbumsFragment();
+            mSignBtnLayout.setVisibility(View.VISIBLE);
+            (findViewById(R.id.main_container)).setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, weight));
+        } else {
+            newFragment = getSignaturesFragment();
+            mSignBtnLayout.setVisibility(View.GONE);
+            (findViewById(R.id.main_container)).setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        }
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.main_container, newFragment)
+                .commit();
+
+        mNavigationSpinner.setLayoutParams(new Toolbar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.main_container, getAlbumsFragment())
+                .commit();
+    }
+
+
+    public static class ToSignImagesAdapter extends ImagesAdapter {
+        public ToSignImagesAdapter(AlbumUtil.AlbumEntry album, ImagesFragment fragment) {
+            super(album, fragment);
+        }
+
+        @Override
+        public boolean isPicked(final AlbumUtil.PhotoEntry photoEntry) {
+
+            boolean isPicked = false;
+
+            for (int i = 0; i < sChosenImagePaths.size(); i++) {
+
+                if (photoEntry.path.equals(sChosenImagePaths.valueAt(i))) {
+
+                    isPicked = true;
+                }
+            }
+
+
+            return isPicked;
+        }
+
+        @Override
+        public void pickImage(final View convertView, final ViewHolder holder, final AlbumUtil.PhotoEntry photo) {
+            final boolean isPicked = isPicked(photo);
+
+            if (isPicked) {
+                //Unpick
+                mFragment.pickListener.onUnpickImage(photo);
+            } else {
+                //pick
+                mFragment.pickListener.onPickImage(photo);
+            }
+
+            drawGrid(convertView, holder, photo);
+        }
+    }
+
+    public static class ToSignImagesFragment extends ImagesFragment {
+
+        @Override
+        public void setupAdapter() {
+            final AlbumUtil.AlbumEntry album = (AlbumUtil.AlbumEntry) getArguments().getSerializable(PickerActivity.ALBUM_KEY);
+            final ToSignImagesAdapter adapter = new ToSignImagesAdapter(album, this);
+
+            gridView.setAdapter(adapter);
+        }
     }
 }

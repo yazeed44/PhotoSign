@@ -43,7 +43,6 @@ public final class DBThread {
                     signatures = db.getSigns(true);
                 } else if (name.equals(GET_ALL_SIGNS_NO_DEFAULT)) {
                     signatures = db.getSigns(false);
-                    Log.d("GET_ALL_SIGNS_NO_DEFAULT", signatures.toString());
                     return;
                 } else if (name.equals(GET_DEFAULT_SIGN)) {
                     signature = db.getDefaultSignature();

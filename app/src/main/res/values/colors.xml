@@ -11,6 +11,10 @@
     <drawable name="fab_pressed">#F50075</drawable>
     <drawable name="fab_ripple">#fff551a6</drawable>
 
+    <drawable name="spinner">#ffffff</drawable>
+    <drawable name="spinner_pressed">#ffc3c3c3</drawable>
+    <drawable name="spinner_selected">#ffc3c3c3</drawable>
+
 
     <color name="app_primary">#3F51B5</color>
     <color name="app_primary_dark">#303F9F</color>
@@ -24,7 +28,7 @@
     <color name="def_sign_image">@color/app_primary</color>
 
     <color name="sign_btn_layout">#3F51B5</color>
-    <color name="sign_btn_layout_disabled">#ff253378</color>
+    <color name="sign_btn_layout_disabled">#ff264376</color>
 
     <color name="sign_btn_text">#ffffff</color>
     <color name="sign_btn_disabled_text">#ffc4c4c4</color>

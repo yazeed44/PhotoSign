@@ -11,7 +11,6 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import net.whitedesert.photosign.R;
-import net.whitedesert.photosign.utils.DialogUtil;
 import net.whitedesert.photosign.utils.SaveUtil;
 import net.whitedesert.photosign.utils.ViewUtil;
 
@@ -20,7 +19,7 @@ import yuku.ambilwarna.AmbilWarnaDialog;
 /**
  * Created by yazeed44 on 8/15/14.
  */
-public class DrawSignActivity extends AdActivity {
+public class DrawSignActivity extends BaseActivity {
 
 
     private final AmbilWarnaDialog.OnAmbilWarnaListener chooseColorListener = new AmbilWarnaDialog.OnAmbilWarnaListener() {
@@ -91,7 +90,9 @@ public class DrawSignActivity extends AdActivity {
         setContentView(R.layout.activity_sign_drawing);
         draw = (DrawSignView) this.findViewById(R.id.drawView);
 
+
         getSupportActionBar().setTitle(R.string.sign_draw_title);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
     }
@@ -123,7 +124,7 @@ public class DrawSignActivity extends AdActivity {
         initializeBrushCustomizeDialog();
 
 
-        final MaterialDialog.Builder dialog = DialogUtil.createDialog(brushCustomizeTitle, "", this);
+        final MaterialDialog.Builder dialog = ViewUtil.createDialog(brushCustomizeTitle, "", this);
         setUpSize(widthText, widthSeek);
         setUpOpacity(opacityText, opacitySeek);
         dialog.customView(brushCustomizeLayout);
@@ -161,7 +162,7 @@ public class DrawSignActivity extends AdActivity {
     }
 
     public void onClickDone() {
-        SaveUtil.askNameAndAddSign(draw, this);
+        SaveUtil.saveSignature(draw, this);
 
     }
 

@@ -1,14 +1,17 @@
 package net.whitedesert.photosign.utils;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.util.Log;
 
 import net.whitedesert.photosign.threads.DBThread;
+import net.yazeed44.imagepicker.PickerActivity;
 
 import java.util.ArrayList;
 
 /**
  * Created by yazeed44 on 8/8/14.
- * Class for dealing with signatures
+ * Class for dealing with signatures , almost of it is referencing to DB
  */
 public final class SignatureUtil {
 
@@ -31,6 +34,18 @@ public final class SignatureUtil {
         CheckUtil.checkSign(id, toast);
 
         return id;
+    }
+
+    public static long[] addSigns(final String[] paths) {
+        final long[] ids = new long[paths.length];
+
+        for (int i = 0; i < paths.length; i++) {
+            ids[i] = SignatureUtil.addSign(new Signature(paths[i]), false);
+        }
+
+
+        return ids;
+
     }
 
     public static long[] addSigns(final ArrayList<Signature> signatures) {
@@ -89,17 +104,17 @@ public final class SignatureUtil {
         return thread.getSignature();
     }
 
+    public static void setDefaultSignature(final Signature signature) {
+        setDefaultSignature(signature.getName());
+        signature.setDefault(true);
+        Log.d("setDefaultSignature", signature.getName() + "   is default now");
+    }
+
     public static void setDefaultSignature(String name) {
         final DBThread.SetDefaultSignThread thread = new DBThread.SetDefaultSignThread(name);
         ThreadUtil.startAndJoin(thread);
 
 
-    }
-
-    public static void setDefaultSignature(final Signature signature) {
-        setDefaultSignature(signature.getName());
-        signature.setDefault(true);
-        Log.d("setDefaultSignature", signature.getName() + "   is default now");
     }
 
     public static int deleteSignature(Signature signature, boolean deleteFile) {
@@ -119,8 +134,13 @@ public final class SignatureUtil {
 
 
     public static boolean noSigns() {
-        return SignatureUtil.getSigns(true).isEmpty();
+
+        return !CheckUtil.checkSign(getLatestSign());
     }
 
 
+    public static void openGalleryToImport(final Activity activity) {
+        final Intent i = new Intent(activity, PickerActivity.class);
+        activity.startActivityForResult(i, PickerActivity.PICK_REQUEST);
+    }
 }

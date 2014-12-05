@@ -11,7 +11,7 @@ import com.nostra13.universalimageloader.core.assist.ImageSize;
 public final class BitmapUtil {
 
     public static final String GLOBAL_PATH = "file://";
-    public static Bitmap bitmap;
+    private static Bitmap bitmap;
 
     private BitmapUtil() {
         throw new AssertionError();

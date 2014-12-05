@@ -4,16 +4,14 @@
     style="@style/AppTheme"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:weightSum="1">
+    android:orientation="vertical">
 
     <net.whitedesert.photosign.ui.TypeSignPreviewView
         android:id="@+id/signTextPreview"
         style="@style/text_view"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:layout_weight="0.2"
         android:contentDescription="@string/sign_text_preview"
         android:gravity="center"
         android:textSize="30sp"

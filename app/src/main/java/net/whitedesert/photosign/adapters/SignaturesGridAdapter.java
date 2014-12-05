@@ -12,10 +12,9 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import net.whitedesert.photosign.R;
-import net.whitedesert.photosign.ui.MySignaturesFragment;
+import net.whitedesert.photosign.ui.SignaturesFragment;
 import net.whitedesert.photosign.utils.BitmapUtil;
 import net.whitedesert.photosign.utils.CheckUtil;
-import net.whitedesert.photosign.utils.DialogUtil;
 import net.whitedesert.photosign.utils.Signature;
 import net.whitedesert.photosign.utils.SignatureUtil;
 import net.whitedesert.photosign.utils.ViewUtil;
@@ -28,13 +27,13 @@ import java.util.ArrayList;
 public class SignaturesGridAdapter extends BaseAdapter {
 
 
-    private final MySignaturesFragment mFragment;
+    private final SignaturesFragment mFragment;
 
 
     private final ArrayList<Signature> signatures;
 
 
-    public SignaturesGridAdapter(final ArrayList<Signature> signatures, final MySignaturesFragment fragment) {
+    public SignaturesGridAdapter(final ArrayList<Signature> signatures, final SignaturesFragment fragment) {
         this.signatures = signatures;
         this.mFragment = fragment;
     }
@@ -170,7 +169,7 @@ public class SignaturesGridAdapter extends BaseAdapter {
 
     private MaterialDialog createDeleteFileDialog(final Signature signature) {
         final String msg = getMsg(signature);
-        final MaterialDialog.Builder deleteFileDialog = DialogUtil.createDialog(null, msg, mFragment.getActivity());
+        final MaterialDialog.Builder deleteFileDialog = ViewUtil.createDialog(null, msg, mFragment.getActivity());
 
         return deleteFileDialog.positiveText(R.string.yes_btn)
                 .negativeText(R.string.delete_only_signature_btn)

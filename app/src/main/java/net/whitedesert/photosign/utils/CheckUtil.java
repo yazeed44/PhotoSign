@@ -1,11 +1,8 @@
 package net.whitedesert.photosign.utils;
 
 import android.app.Activity;
-import android.graphics.Bitmap;
+import android.content.SharedPreferences;
 import android.util.Log;
-import android.view.View;
-
-import com.afollestad.materialdialogs.MaterialDialog;
 
 import net.whitedesert.photosign.R;
 
@@ -19,67 +16,6 @@ public final class CheckUtil {
 
     private CheckUtil() {
         throw new AssertionError();
-    }
-
-    public static boolean checkSign(final String name, final Bitmap bitmap, final Activity activity) {
-
-        final MaterialDialog.FullCallback askAgain = new MaterialDialog.FullCallback() {
-            @Override
-            public void onNeutral(MaterialDialog materialDialog) {
-
-            }
-
-            @Override
-            public void onPositive(MaterialDialog materialDialog) {
-
-            }
-
-            @Override
-            public void onNegative(MaterialDialog materialDialog) {
-                SaveUtil.askNameAndAddSign(bitmap, activity);
-            }
-        };
-
-
-        final MaterialDialog.Builder errorDialog = DialogUtil.createErrorDialog(null, activity);
-        errorDialog.
-                negativeText(R.string.dismiss_btn).
-                callback(askAgain);
-
-
-        if (!checkString(name)) {
-            errorDialog.content(R.string.error_name_empty);
-
-            errorDialog.build().show();
-            //ToastUtil.toastShort(R.string.error_name_empty);
-            return false;
-        } else if (SignatureUtil.isDuplicatedSign(name)) {
-            errorDialog.content(R.string.error_name_repeated);
-            errorDialog.build().show();
-            //ToastUtil.toastShort(R.string.error_name_repeated);
-            return false;
-
-        }
-        return true;
-
-    }
-
-    public static boolean checkSign(final String name, final View drawView, final Activity activity) {
-        return checkSign(name, drawView.getDrawingCache(true), activity);
-    }
-
-    public static boolean checkSign(final String path, Activity activity) {
-
-
-        if (!checkString(path)) {
-            final MaterialDialog.Builder errorDialog = DialogUtil.createErrorDialog(R.string.error_save_sign, activity);
-            errorDialog.build().show();
-            //ToastUtil.toastLong(R.string.error_save_sign);
-            return false;
-        }
-
-        return true;
-
     }
 
 
@@ -121,11 +57,17 @@ public final class CheckUtil {
             SignatureUtil.deleteSignature(signature, true);
             return false;
         }
+
+
         return true;
     }
 
     public static boolean checkPath(final String path) {
         boolean exists;
+
+        if (!checkString(path)) {
+            return false;
+        }
 
         try {
             exists = new File(path).exists();
@@ -138,7 +80,35 @@ public final class CheckUtil {
     }
 
     public static boolean checkString(String s) {
-        return !s.isEmpty();
+
+        boolean isEmpty;
+
+
+        try {
+            isEmpty = s.isEmpty();
+        } catch (NullPointerException ex) {
+            Log.e("checkString", "String is NULL !!");
+            return false;
+        }
+
+        return !isEmpty;
+    }
+
+    //Detrmine if app is opened for the first time
+    public static boolean isFirstTimeOpened(final Activity activity) {
+
+        final String PREFS_NAME = "MyPrefsFile";
+
+        SharedPreferences settings = activity.getSharedPreferences(PREFS_NAME, 0);
+
+        final String firstTimeKey = "myFirstTime";
+
+        final boolean firstTime = settings.getBoolean(firstTimeKey, true);
+
+        settings.edit().putBoolean(firstTimeKey, false).apply();
+
+        return firstTime;
+
     }
 
 }

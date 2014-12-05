@@ -18,7 +18,7 @@ import yuku.ambilwarna.AmbilWarnaDialog;
 /**
  * Created by yazeed44 on 9/20/14.
  */
-public class TextSignActivity extends AdActivity {
+public class TextSignActivity extends BaseActivity {
 
 
     private TypeSignPreviewView preview;
@@ -32,6 +32,7 @@ public class TextSignActivity extends AdActivity {
         text = (EditText) this.findViewById(R.id.signTextEdit);
 
         getSupportActionBar().setTitle(R.string.type_sign_title);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         setPreviewText("Preview");
         preview.setTypeface(null, Typeface.BOLD);
@@ -40,7 +41,7 @@ public class TextSignActivity extends AdActivity {
     }
 
     public void onClickDone() {
-        SaveUtil.askNameAndAddSign(preview.getSignRaw().createBitmap(true), this);
+        SaveUtil.saveSignature(preview.getSignRaw().createBitmap(true), this);
     }
 
 
@@ -141,4 +142,6 @@ public class TextSignActivity extends AdActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
+
 }

@@ -5,18 +5,12 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.PointF;
-import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
-
-import com.afollestad.materialdialogs.MaterialDialog;
 
 import net.whitedesert.photosign.R;
 import net.whitedesert.photosign.threads.SaveBitmapThread;
 import net.whitedesert.photosign.threads.SigningThread;
 import net.whitedesert.photosign.ui.SigningView;
-
-import java.io.File;
 
 /**
  * Created by yazeed44 on 8/16/14.
@@ -34,123 +28,86 @@ public final class SaveUtil {
         throw new AssertionError();
     }
 
-    public static void askNameAndAddSign(final String picPath, final Activity activity) {
 
-        final File pic = new File(picPath);
-        final EditText nameInput = ViewUtil.createEditTextForAskingName(pic.getName(), activity);
-        nameInput.setText(pic.getName());
-        final MaterialDialog.FullCallback posListener = getPosListenerForAskingName(BitmapUtil.decodeFile(picPath), nameInput, activity);
+    public static void saveSignatures(final String[] photosPath, final Activity activity) {
 
-        getTypeNameDialog(nameInput, posListener, activity)
-                .build()
-                .show();
+        final long[] results = SignatureUtil.addSigns(photosPath);
 
+        final boolean noException = CheckUtil.checkSigns(results, true);
+
+        if (noException) {
+            ViewUtil.toastShort(R.string.saved_signatures_success);
+        }
+
+        showWannaSignDialog(activity);
+    }
+
+    public static void saveSignature(final Bitmap sign, final Activity activity) {
+        final Signature signature = new Signature();
+
+        final String signatureName = generateRandomSignName(sign.getDensity() + activity.toString());
+        signature.setName(signatureName);
+
+        final String path = saveSign(sign, signatureName, activity);
+        signature.setPath(path);
+
+        if (!CheckUtil.checkSign(signature)) {
+            return;
+        }
+        addSignature(signature, true);
+        showWannaSignDialog(activity);
+    }
+
+    public static void saveSignature(final View drawView, final Activity activity) {
+
+        final Signature signature = new Signature();
+
+        final String signatureName = generateRandomSignName(drawView.getDrawingTime() + activity.toString());
+        signature.setName(signatureName);
+
+        drawView.setBackgroundColor(Color.TRANSPARENT);
+        final String path = saveDrawSign(drawView, signatureName, activity);
+        signature.setPath(path);
+        drawView.setBackgroundColor(Color.WHITE);
+
+        if (!CheckUtil.checkSign(signature)) {
+            return;
+        }
+
+        addSignature(signature, true);
+        showWannaSignDialog(activity);
 
     }
 
-    private static MaterialDialog.FullCallback getPosListenerForAskingName(final Bitmap signBitmap, final EditText nameInput, final Activity activity) {
-        return new MaterialDialog.FullCallback() {
-            @Override
-            public void onNeutral(MaterialDialog materialDialog) {
-                materialDialog.dismiss();
+    private static String generateRandomSignName(final String name) {
+
+        String randomName = name + " - Signature " + RandomUtil.getRandomInt((9 * 1 * 2 * 3) * (2 * 1) * (6 * 1)); //Puzzle. Hint:old phone
+
+        while (SignatureUtil.isDuplicatedSign(randomName)) {
+            randomName += RandomUtil.getRandomInt(44);
+            if (!SignatureUtil.isDuplicatedSign(randomName)) {
+                break;
             }
+        }
 
-            @Override
-            public void onPositive(MaterialDialog materialDialog) {
-                final String signName = nameInput.getText().toString();
+        return randomName;
 
-                if (!CheckUtil.checkSign(signName, signBitmap, activity)) {
-                    return;
-                }
-
-                final Signature signature = new Signature();
-                signature.setName(signName);
-
-                final String savedPath = SaveUtil.saveSign(signBitmap, signName, activity);
-
-                if (!CheckUtil.checkSign(savedPath, activity)) {
-                    return;
-                }
-
-                signature.setPath(savedPath);
-                showWannaSignDialog(signature, activity);
-            }
-
-            @Override
-            public void onNegative(MaterialDialog materialDialog) {
-
-            }
-        };
     }
 
+    private static void showWannaSignDialog(final Activity activity) {
+        ViewUtil.createWannaSignDialog(activity).build().show();
 
-    public static void askNameAndAddSign(final Bitmap sign, final Activity activity) {
-        // Don't waste your time on this
-        final EditText nameInput = ViewUtil.createEditTextForAskingName(RandomUtil.getRandomInt(SIGNED_PHOTO_DIR.length() + SIGNS_DIR.length()) + sign.getWidth() + sign.getDensity(), activity);//Random
-
-        final MaterialDialog.FullCallback posListener = getPosListenerForAskingName(sign, nameInput, activity);
-
-        getTypeNameDialog(nameInput, posListener, activity)
-                .build()
-                .show();
     }
 
-    public static void askNameAndAddSign(final View drawView, final Activity activity) {
-        final EditText nameInput = ViewUtil.createEditTextForAskingName(RandomUtil.getRandomInt(drawView.getWidth()), activity);
+    private static void addSignature(final Signature signature, boolean toast) {
+        final boolean isFirstSignature = SignatureUtil.noSigns();
 
-        final MaterialDialog.FullCallback posListener = getPosListenerForAskingName(drawView, nameInput, activity);
-
-        getTypeNameDialog(nameInput, posListener, activity)
-                .build()
-                .show();
-    }
-
-    private static MaterialDialog.FullCallback getPosListenerForAskingName(final View drawView, final EditText nameInput, final Activity activity) {
-        return new MaterialDialog.FullCallback() {
-            @Override
-            public void onNeutral(MaterialDialog materialDialog) {
-                materialDialog.dismiss();
-            }
-
-            @Override
-            public void onPositive(MaterialDialog materialDialog) {
-                final String signName = nameInput.getText().toString();
-                final Signature signature = new Signature();
-                if (!CheckUtil.checkSign(signName, drawView, activity)) {
-                    return;
-                }
-
-                signature.setName(signName);
-
-                drawView.setBackgroundColor(Color.TRANSPARENT);
-                final String savedPath = saveDrawSign(drawView, signName, activity);
-                drawView.setBackgroundColor(Color.WHITE);
-
-                if (!CheckUtil.checkSign(savedPath, activity)) {
-                    return;
-                }
-
-                signature.setPath(savedPath);
-                showWannaSignDialog(signature, activity);
-            }
-
-            @Override
-            public void onNegative(MaterialDialog materialDialog) {
-
-            }
-        };
-    }
+        if (isFirstSignature) {
+            SignatureUtil.setDefaultSignature(signature);
+        }
 
 
-    public static MaterialDialog.Builder getTypeNameDialog(final EditText nameInput, MaterialDialog.FullCallback callback, final Activity activity) {
-        final MaterialDialog.Builder dialog = DialogUtil.createDialog(R.string.save_title, R.string.save_msg, activity);
-        dialog.customView(nameInput)
-                .callback(callback)
-                .positiveText(R.string.ok_btn)
-                .neutralText(R.string.dismiss_btn)
-        ;
-
-        return dialog;
+        SignatureUtil.addSign(signature, toast);
 
     }
 
@@ -190,6 +147,10 @@ public final class SaveUtil {
         return savePicFromBitmap(signBitmap, activity, SIGNS_DIR, name, false);
     }
 
+    public static String saveDrawSign(final View drawView, final String name, final Activity activity) {
+        return savePicFromView(drawView, activity, SIGNS_DIR, name, false);
+    }
+
     public static String savePicFromView(View drawView, Activity activity, String dir, String name, boolean toast) {
 
         drawView.setDrawingCacheEnabled(true);
@@ -198,29 +159,9 @@ public final class SaveUtil {
         return path;
     }
 
-    public static String saveDrawSign(final View drawView, final String name, final Activity activity) {
-        return savePicFromView(drawView, activity, SIGNS_DIR, name, false);
-    }
-
 
     public static String saveSignedPhoto(final Bitmap signedPhoto, final Activity activity, final String name) {
         return savePicFromBitmap(signedPhoto, activity, SIGNED_PHOTO_DIR, name, false);
-    }
-
-
-    public static void showWannaSignDialog(final Signature signature, final Activity activity) {
-        Log.d("DrawSignActivity : onClickSave", "sign name : " + signature.getName() + " , sign Path : " + signature.getPath());
-        final boolean isFirstSignature = SignatureUtil.noSigns();
-
-        if (isFirstSignature) {
-            signature.setDefault(true);
-        }
-
-        SignatureUtil.addSign(signature, true);
-
-
-        DialogUtil.createWannaSignDialog(activity).build().show();
-
     }
 
 

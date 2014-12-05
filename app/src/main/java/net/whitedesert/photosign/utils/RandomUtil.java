@@ -12,7 +12,7 @@ public final class RandomUtil {
     }
 
     public static String getRandomInt(int n) {
-        Random random = new Random(System.currentTimeMillis());
+        final Random random = new Random(System.currentTimeMillis());
         return random.nextInt(n) + "";
     }
 }

@@ -18,9 +18,8 @@
         >
 
         <activity android:name="net.yazeed44.imagepicker.PickerActivity" />
-        <activity android:name="net.whitedesert.photosign.ui.DrawSignActivity"
-
-            />
+        <activity android:name="net.whitedesert.photosign.ui.DrawSignActivity" />
+        <activity android:name="net.whitedesert.photosign.ui.SigningActivity" />
 
         <activity
             android:name="net.whitedesert.photosign.ui.MainActivity"

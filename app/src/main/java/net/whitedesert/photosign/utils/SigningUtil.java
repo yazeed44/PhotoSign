@@ -7,8 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Point;
 
 import net.whitedesert.photosign.R;
-import net.whitedesert.photosign.ui.SigningActivity;
-import net.whitedesert.photosign.ui.Types;
+import net.whitedesert.photosign.ui.MainActivity;
 
 /**
  * Created by yazeed44 on 8/6/14.
@@ -56,27 +55,14 @@ public final class SigningUtil {
     }
 
 
-    public static void openGalleryToSignSingle(final Activity activity) {
+    public static void showGalleryToSign(final Activity activity) {
         if (SignatureUtil.noSigns()) {
             ViewUtil.toastShort(R.string.oops_no_sign);
-            DialogUtil.createChooseMethodToSignDialog(activity);
-            return;
-        }
-        // Intent i = new Intent(activity, GalleryActivity.class);
-        // i.putExtra(Types.TYPE, Types.OPEN_GALLERY_SINGLE_SIGNING_TYPE);
-        // activity.startActivity(i);
-        //TODO implement new image picker
-    }
-
-    public static void signSingle(final String path, final Activity activity) {
-        if (SignatureUtil.noSigns()) {
-            ViewUtil.toastShort(R.string.oops_no_sign);
-            DialogUtil.createChooseMethodToSignDialog(activity);
+            ViewUtil.createChooseMethodToSignDialog(activity).show();
             return;
         }
 
-        Intent i = new Intent(activity, SigningActivity.class);
-        i.putExtra(Types.PATH_TYPE, path);
+        final Intent i = new Intent(activity, MainActivity.class);
         activity.startActivity(i);
     }
 

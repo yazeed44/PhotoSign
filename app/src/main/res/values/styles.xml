@@ -10,6 +10,11 @@
 
         <item name="popupMenuStyle">@style/PopupMenu</item>
         <item name="android:popupMenuStyle">@style/PopupMenu</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:spinnerStyle">@style/Widget.AppCompat.Light.Spinner.DropDown.ActionBar
+        </item>
+        <item name="spinnerStyle">@style/Widget.AppCompat.Light.Spinner.DropDown.ActionBar</item>
+        <!--<item name="toolbarStyle">@style/ToolbarStyle</item> -->
 
 
     </style>
@@ -26,6 +31,10 @@
         <item name="android:actionButtonStyle">@style/Widget.AppCompat.ActionButton</item>
         <item name="actionButtonStyle">@style/Widget.AppCompat.ActionButton</item>
 
+
+    </style>
+
+    <style name="ToolbarStyle" parent="Widget.AppCompat.Toolbar">
 
     </style>
 
