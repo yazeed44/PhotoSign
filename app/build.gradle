@@ -6,10 +6,11 @@ android {
 
     defaultConfig {
         applicationId "net.whitedesert.photosign"
-        minSdkVersion 16
+        minSdkVersion 14
         targetSdkVersion 21
         versionCode 1
         versionName "1.0"
+
     }
     buildTypes {
         release {
@@ -22,9 +23,8 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:21.0.2'
-    compile 'com.melnykov:floatingactionbutton:1.0.7'
+    compile 'com.melnykov:floatingactionbutton:1.1.0'
     compile 'com.afollestad:material-dialogs:0.3.4'
-    // compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.3'
     compile 'me.grantland:autofittextview:0.2.+'
     compile project(':MultiImagePicker')
     compile 'com.jpardogo.materialtabstrip:library:1.0.6'

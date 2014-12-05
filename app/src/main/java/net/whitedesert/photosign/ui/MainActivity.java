@@ -4,9 +4,11 @@ package net.whitedesert.photosign.ui;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.Spanned;
@@ -16,13 +18,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -54,7 +53,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 
-public class MainActivity extends BaseActivity implements AlbumsFragment.OnClickAlbum, ImagesFragment.OnPickImage, AdapterView.OnItemSelectedListener {
+public class MainActivity extends BaseActivity implements AlbumsFragment.OnClickAlbum, ImagesFragment.OnPickImage {
 
 
     public static final String TO_SIGN_IMAGES_KEY = "toSignImageKey";
@@ -65,10 +64,9 @@ public class MainActivity extends BaseActivity implements AlbumsFragment.OnClick
     private TextView mSignBtnBadge;
     private Button mSignBtn;
     private FrameLayout mSignBtnLayout;
-    private String[] mNavigationTags;
     private Toolbar mToolbar;
-    private Spinner mNavigationSpinner;
     private boolean mIsFirstTime;
+    private Button mSpinnerLikeBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,32 +94,93 @@ public class MainActivity extends BaseActivity implements AlbumsFragment.OnClick
         mSignBtnLayout = (FrameLayout) findViewById(R.id.sign_btn_layout);
         mSignBtn = (Button) findViewById(R.id.sign_btn);
         mSignBtnBadge = (TextView) findViewById(R.id.sign_btn_badge);
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.main_container, getPhotosFragment())
+                .commit();
     }
 
 
     private void setupToolbarSpinner() {
 
+        mSpinnerLikeBtn = new Button(this);
 
-        final ArrayAdapter spinnerAdapter = ArrayAdapter.createFromResource(getSupportActionBar().getThemedContext(),
-                R.array.main_navigation_list, R.layout.spinner_text);
-        spinnerAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+        mSpinnerLikeBtn.setText(getResources().getString(R.string.main_navigation_photos_popup));
 
-        mNavigationTags = getResources().getStringArray(R.array.main_navigation_list);
+        mSpinnerLikeBtn.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+
+        final Drawable arrowDrawable = getResources().getDrawable(R.drawable.ic_arrow_down);
+
+        mSpinnerLikeBtn.setCompoundDrawablesWithIntrinsicBounds(null, null, arrowDrawable, null);
+
+        mSpinnerLikeBtn.setTextAppearance(getSupportActionBar().getThemedContext(), R.style.SpinnerLikeBtn);
 
 
-        mNavigationSpinner = new Spinner(getSupportActionBar().getThemedContext(), Spinner.MODE_DROPDOWN);
-        mNavigationSpinner.setOnItemSelectedListener(this);
-        mNavigationSpinner.setMinimumWidth(120);
+        mSpinnerLikeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showNavigationPopup();
+            }
+        });
 
 
-        mNavigationSpinner.setAdapter(spinnerAdapter);
-
-        mNavigationSpinner.setPadding(0, 0, 0, 0);
-
-        mToolbar.addView(mNavigationSpinner);
+        mToolbar.addView(mSpinnerLikeBtn);
 
 
     }
+
+    private PopupMenu showNavigationPopup() {
+
+        final PopupMenu menu = new PopupMenu(mSpinnerLikeBtn.getContext(), mSpinnerLikeBtn);
+        menu.getMenuInflater().inflate(R.menu.popup_main_navigation, menu.getMenu());
+        menu.setOnMenuItemClickListener(createListenerForNavigation());
+        menu.show();
+
+        return menu;
+    }
+
+    private PopupMenu.OnMenuItemClickListener createListenerForNavigation() {
+        return new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+
+                if (menuItem.getItemId() == R.id.action_main_navigation_photos) {
+                    showPhotos();
+                } else if (menuItem.getItemId() == R.id.action_main_navigation_signatures) {
+                    showSignatures();
+                }
+
+                return true;
+            }
+        };
+    }
+
+    private void showPhotos() {
+        final float weight = 0.92F;
+
+        mSignBtnLayout.setVisibility(View.VISIBLE);
+        (findViewById(R.id.main_container)).setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, weight));
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.main_container, getPhotosFragment())
+                .commit();
+        mSpinnerLikeBtn.setText(getResources().getString(R.string.main_navigation_photos_popup));
+
+    }
+
+    private void showSignatures() {
+        mSignBtnLayout.setVisibility(View.GONE);
+        (findViewById(R.id.main_container)).setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.main_container, getSignaturesFragment())
+                .commit();
+
+        mSpinnerLikeBtn.setText(getResources().getString(R.string.main_navigation_signatures_popup));
+    }
+
+
+
 
     private Fragment getSignaturesFragment() {
         mSignaturesFragment = new SignaturesFragment();
@@ -129,7 +188,7 @@ public class MainActivity extends BaseActivity implements AlbumsFragment.OnClick
         return mSignaturesFragment;
     }
 
-    private Fragment getAlbumsFragment() {
+    private Fragment getPhotosFragment() {
         mAlbumsFragment = new AlbumsFragment();
         return mAlbumsFragment;
 
@@ -443,36 +502,6 @@ public class MainActivity extends BaseActivity implements AlbumsFragment.OnClick
     }
 
 
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-        final Fragment newFragment;
-
-        if (position == 0) {
-            final float weight = 0.92F;
-            newFragment = getAlbumsFragment();
-            mSignBtnLayout.setVisibility(View.VISIBLE);
-            (findViewById(R.id.main_container)).setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, weight));
-        } else {
-            newFragment = getSignaturesFragment();
-            mSignBtnLayout.setVisibility(View.GONE);
-            (findViewById(R.id.main_container)).setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        }
-
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.main_container, newFragment)
-                .commit();
-
-
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.main_container, getAlbumsFragment())
-                .commit();
-    }
 
 
     public static class ToSignImagesAdapter extends ImagesAdapter {

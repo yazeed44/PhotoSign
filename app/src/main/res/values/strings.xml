@@ -43,6 +43,8 @@
 
     <string name="set_default_signature_popup">Set default</string>
     <string name="delete_signature_popup">Delete</string>
+    <string name="main_navigation_photos_popup">Photos</string>
+    <string name="main_navigation_signatures_popup">Signatures</string>
 
 
     <string name="about_title">About</string>
@@ -93,12 +95,7 @@
         <item>Import a signature </item>
         <item>Type a signature</item>
     </string-array>
-    <string-array name="main_navigation_list">
-        <item>Photos</item>
-        <item>Signatures</item>
 
-
-    </string-array>
 
 
 </resources>
