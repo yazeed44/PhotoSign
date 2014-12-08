@@ -57,7 +57,7 @@ public class MainActivity extends BaseActivity implements AlbumsFragment.OnClick
 
 
     public static final String TO_SIGN_IMAGES_KEY = "toSignImageKey";
-    public static SparseArray<String> sChosenImagePaths = new SparseArray<String>();
+    public static SparseArray<String> mChosenPhotosPath = new SparseArray<String>();
     private AlbumsFragment mAlbumsFragment;
     private ImagesFragment mImagesFragment;
     private SignaturesFragment mSignaturesFragment;
@@ -82,6 +82,12 @@ public class MainActivity extends BaseActivity implements AlbumsFragment.OnClick
         retrieveLostSignatures();
 
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateTextAndBadge();
     }
 
     private void initViews() {
@@ -129,14 +135,12 @@ public class MainActivity extends BaseActivity implements AlbumsFragment.OnClick
 
     }
 
-    private PopupMenu showNavigationPopup() {
+    private void showNavigationPopup() {
 
         final PopupMenu menu = new PopupMenu(mSpinnerLikeBtn.getContext(), mSpinnerLikeBtn);
         menu.getMenuInflater().inflate(R.menu.popup_main_navigation, menu.getMenu());
         menu.setOnMenuItemClickListener(createListenerForNavigation());
         menu.show();
-
-        return menu;
     }
 
     private PopupMenu.OnMenuItemClickListener createListenerForNavigation() {
@@ -370,25 +374,26 @@ public class MainActivity extends BaseActivity implements AlbumsFragment.OnClick
 
     public void onClickSign(View view) {
 
+
         final Intent signIntent = new Intent(this, SigningActivity.class);
         signIntent.putExtra(TO_SIGN_IMAGES_KEY, castPaths());
-        resetImages();
-        updateTextAndBadge();
+
         startActivity(signIntent);
+        resetImages();
 
 
     }
 
     private void resetImages() {
-        sChosenImagePaths.clear();
+        mChosenPhotosPath.clear();
         ((BaseAdapter) mImagesFragment.gridView.getAdapter()).notifyDataSetChanged();
     }
 
     private String[] castPaths() {
-        final String[] paths = new String[sChosenImagePaths.size()];
+        final String[] paths = new String[mChosenPhotosPath.size()];
 
         for (int i = 0; i < paths.length; i++) {
-            paths[i] = sChosenImagePaths.valueAt(i);
+            paths[i] = mChosenPhotosPath.valueAt(i);
         }
 
         return paths;
@@ -398,7 +403,7 @@ public class MainActivity extends BaseActivity implements AlbumsFragment.OnClick
 
     private void updateTextAndBadge() {
 
-        if (sChosenImagePaths.size() == 0) {
+        if (mChosenPhotosPath.size() == 0) {
             mSignBtn.setBackgroundColor(getResources().getColor(R.color.sign_btn_layout_disabled));
             mSignBtn.setClickable(false);
             mSignBtn.setTextColor(getResources().getColor(R.color.sign_btn_disabled_text));
@@ -409,7 +414,7 @@ public class MainActivity extends BaseActivity implements AlbumsFragment.OnClick
             mSignBtn.setBackgroundColor(getResources().getColor(R.color.sign_btn_layout));
             mSignBtn.setClickable(true);
             mSignBtn.setTextColor(getResources().getColor(R.color.sign_btn_text));
-            mSignBtnBadge.setText(sChosenImagePaths.size() + "");
+            mSignBtnBadge.setText(mChosenPhotosPath.size() + "");
             mSignBtnBadge.setVisibility(View.VISIBLE);
             mSignBtn.setTypeface(Typeface.create("", Typeface.BOLD));
 
@@ -476,14 +481,14 @@ public class MainActivity extends BaseActivity implements AlbumsFragment.OnClick
     @Override
     public void onPickImage(AlbumUtil.PhotoEntry photoEntry) {
 
-        sChosenImagePaths.put(photoEntry.imageId, photoEntry.path);
+        mChosenPhotosPath.put(photoEntry.imageId, photoEntry.path);
         updateTextAndBadge();
 
     }
 
     @Override
     public void onUnpickImage(AlbumUtil.PhotoEntry photo) {
-        sChosenImagePaths.remove(photo.imageId);
+        mChosenPhotosPath.remove(photo.imageId);
         updateTextAndBadge();
     }
 
@@ -515,9 +520,9 @@ public class MainActivity extends BaseActivity implements AlbumsFragment.OnClick
 
             boolean isPicked = false;
 
-            for (int i = 0; i < sChosenImagePaths.size(); i++) {
+            for (int i = 0; i < mChosenPhotosPath.size(); i++) {
 
-                if (photoEntry.path.equals(sChosenImagePaths.valueAt(i))) {
+                if (photoEntry.path.equals(mChosenPhotosPath.valueAt(i))) {
 
                     isPicked = true;
                 }
