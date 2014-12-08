@@ -9,7 +9,6 @@
         <item name="colorAccent">@color/app_accent</item>
 
         <item name="popupMenuStyle">@style/PopupMenu</item>
-        <item name="android:popupMenuStyle">@style/PopupMenu</item>
         <item name="windowActionBar">false</item>
         <item name="android:spinnerStyle">@style/SpinnerStyle</item>
 
@@ -22,9 +21,6 @@
         <item name="spinnerDropDownItemStyle">@style/Widget.AppCompat.Light.DropDownItem.Spinner
         </item>
 
-        <item name="android:actionDropDownStyle">
-            @style/Widget.AppCompat.Light.DropDownItem.Spinner
-        </item>
         <item name="actionDropDownStyle">@style/Widget.AppCompat.Light.DropDownItem.Spinner</item>
 
     </style>
@@ -47,6 +43,17 @@
 
     </style>
 
+    <style name="EditTextForSliderBar" parent="TextViewTitle">
+
+
+        <item name="android:textStyle">normal</item>
+        <item name="android:inputType">numberSigned</item>
+        <item name="android:textSize">@dimen/text_medium</item>
+        <item name="android:textColor">#ff202020</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:gravity">center</item>
+    </style>
+
     <style name="button" parent="TextAppearance.AppCompat.Button">
 
 
@@ -67,11 +74,6 @@
     </style>
 
     <style name="list_view">
-        <!--
-        <item name="android:textColor">#ffff</item>
-        <item name="android:background">#222326</item>
-        <item name="android:textSize">18sp</item>
-        -->
 
         <item name="android:clipToPadding">false</item>
         <item name="android:scrollbarStyle">outsideOverlay</item>

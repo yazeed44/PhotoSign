@@ -8,45 +8,50 @@
 
     <!--TODO improve dialog -->
 
-    <TextView
-        android:id="@+id/drawSizeText"
 
-        style="@style/TextViewTitle"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="@string/draw_size_text" />
+        android:orientation="horizontal"
+        android:weightSum="1">
 
-    <SeekBar
+        <TextView
+            style="@style/TextViewTitle"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.20"
+            android:gravity="center"
+
+            android:text="@string/brush_width_text" />
+
+        <SeekBar
+            android:id="@+id/brush_width_bar"
+            style="@style/SeekBar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_weight="0.65"
+            android:max="@integer/size_max"
+            android:progress="20" />
+
+        <EditText
+            android:id="@+id/brush_width_edit"
+            style="@style/EditTextForSliderBar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.15"
+
+            android:text="10" />
 
 
-        android:id="@+id/baseSizeSeek"
+    </LinearLayout>
 
-        style="@style/SeekBar"
+
+    <include
+        layout="@layout/color_picker"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:max="@integer/size_max"
-        android:progress="20" />
-
-
-    <TextView
-        android:id="@+id/drawOpacityText"
-
-        style="@style/TextViewTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:gravity="center"
-        android:text="@string/draw_opacity_text" />
-
-    <SeekBar
-        android:id="@+id/drawOpacitySeek"
-        style="@style/SeekBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:max="@integer/opacity_max"
-        android:progress="@integer/opacity_max"
-
-        />
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp" />
 
 </LinearLayout>

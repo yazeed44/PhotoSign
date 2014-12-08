@@ -23,7 +23,6 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import net.whitedesert.photosign.R;
-import net.whitedesert.photosign.utils.BitmapUtil;
 import net.whitedesert.photosign.utils.CheckUtil;
 import net.whitedesert.photosign.utils.Signature;
 import net.whitedesert.photosign.utils.SignatureUtil;
@@ -157,7 +156,7 @@ public class SigningActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle presses on the action bar items
         switch (item.getItemId()) {
-            case R.id.menu_done:
+            case R.id.action_done:
                 onClickDone();
                 return true;
 
@@ -270,7 +269,7 @@ public class SigningActivity extends BaseActivity {
 
             grid.setLayoutParams(new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height));
 
-            final String contentPath = BitmapUtil.GLOBAL_PATH + selectedSignature.getPath();
+            final String contentPath = ViewUtil.GLOBAL_PATH + selectedSignature.getPath();
 
 
             ImageLoader.getInstance().displayImage(contentPath, holder.image, getOptions());

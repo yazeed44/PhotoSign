@@ -9,13 +9,13 @@ import android.net.Uri;
 import android.os.Looper;
 
 import net.whitedesert.photosign.R;
-import net.whitedesert.photosign.utils.BitmapUtil;
 import net.whitedesert.photosign.utils.CheckUtil;
 import net.whitedesert.photosign.utils.RandomUtil;
 import net.whitedesert.photosign.utils.SaveUtil;
 import net.whitedesert.photosign.utils.Signature;
 import net.whitedesert.photosign.utils.SigningOptions;
 import net.whitedesert.photosign.utils.SigningUtil;
+import net.whitedesert.photosign.utils.ViewUtil;
 
 /**
  * Created by yazeed44 on 8/7/14.
@@ -75,7 +75,7 @@ public final class SigningThread extends Thread {
         final Intent share = new Intent(Intent.ACTION_SEND);
         share.setType("image/png");
 
-        share.putExtra(Intent.EXTRA_STREAM, Uri.parse(BitmapUtil.GLOBAL_PATH + getPath()));
+        share.putExtra(Intent.EXTRA_STREAM, Uri.parse(ViewUtil.GLOBAL_PATH + getPath()));
 
         final String title = activity.getResources().getString(R.string.share_signed_photo_title);
 

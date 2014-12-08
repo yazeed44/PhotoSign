@@ -2,8 +2,8 @@ package net.whitedesert.photosign.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.view.WindowCompat;
 import android.support.v7.app.ActionBarActivity;
-import android.view.Window;
 
 import net.whitedesert.photosign.R;
 import net.whitedesert.photosign.utils.SaveUtil;
@@ -19,10 +19,10 @@ public class BaseActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
 
         if (!toolbarUsed()) {
-            supportRequestWindowFeature(Window.FEATURE_ACTION_BAR);
+            supportRequestWindowFeature(WindowCompat.FEATURE_ACTION_BAR);
         }
 
-        if (getParentActivityIntent() != null) {
+        if (getSupportParentActivityIntent() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
         if (getSupportActionBar() != null) {

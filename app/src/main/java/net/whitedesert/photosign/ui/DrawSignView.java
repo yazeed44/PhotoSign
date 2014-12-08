@@ -98,7 +98,7 @@ public class DrawSignView extends View {
     /**
      * @return the default paint for drawing a signature
      */
-    public Paint getDefaultPaintForDraw() {
+    private Paint getDefaultPaintForDraw() {
         final Paint paint = new Paint();
         paint.setColor(Color.BLACK);
         paint.setAntiAlias(true);

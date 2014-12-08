@@ -11,21 +11,21 @@ import me.grantland.widget.AutofitTextView;
  * Created by yazeed44 on 10/9/14.
  * A Text View that re size itself based on text
  */
-public class TypeSignPreviewView extends AutofitTextView {
+public class TypeSignaturePreviewView extends AutofitTextView {
 
 
     // Default constructor override
-    public TypeSignPreviewView(Context context) {
+    public TypeSignaturePreviewView(Context context) {
         this(context, null);
     }
 
     // Default constructor when inflating from XML file
-    public TypeSignPreviewView(Context context, AttributeSet attrs) {
+    public TypeSignaturePreviewView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
     // Default constructor override
-    public TypeSignPreviewView(Context context, AttributeSet attrs, int defStyle) {
+    public TypeSignaturePreviewView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
 

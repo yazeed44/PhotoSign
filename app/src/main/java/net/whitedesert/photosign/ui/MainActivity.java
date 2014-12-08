@@ -165,6 +165,7 @@ public class MainActivity extends BaseActivity implements AlbumsFragment.OnClick
                 .replace(R.id.main_container, getPhotosFragment())
                 .commit();
         mSpinnerLikeBtn.setText(getResources().getString(R.string.main_navigation_photos_popup));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
     }
 
@@ -177,6 +178,7 @@ public class MainActivity extends BaseActivity implements AlbumsFragment.OnClick
                 .commit();
 
         mSpinnerLikeBtn.setText(getResources().getString(R.string.main_navigation_signatures_popup));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
 
@@ -273,7 +275,7 @@ public class MainActivity extends BaseActivity implements AlbumsFragment.OnClick
         final MaterialDialog.Builder retrieveDialog = ViewUtil.createDialog(title, getRetrieveMsg(signatures.size()), this);
 
         retrieveDialog.negativeText(R.string.delete_unused_signatures_btn)
-                .positiveText(R.string.yes_btn)
+                .positiveText(android.R.string.yes)
                 .neutralText(R.string.dismiss_btn)
                 .callback(getCallBackForRetrieveDialog(signatures))
                 .build()
@@ -313,7 +315,7 @@ public class MainActivity extends BaseActivity implements AlbumsFragment.OnClick
 
 
         } else {
-            //TODO handle the error
+
             Log.e("retrieveSigns", "Some error happened when retrieving the signatures ");
 
         }
@@ -443,11 +445,10 @@ public class MainActivity extends BaseActivity implements AlbumsFragment.OnClick
     public void finish() {
 
         if (mImagesFragment != null && mImagesFragment.isVisible()) {
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.main_container, mAlbumsFragment)
-                    .commit();
-            getSupportActionBar().setTitle(R.string.albums_title);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+            showPhotos();
+
+        } else if (mSignaturesFragment != null && mSignaturesFragment.isVisible()) {
+            showPhotos();
         } else {
             super.finish();
         }
@@ -488,7 +489,7 @@ public class MainActivity extends BaseActivity implements AlbumsFragment.OnClick
 
     @Override
     public boolean onSupportNavigateUp() {
-        if (mImagesFragment != null && mImagesFragment.isVisible()) {
+        if ((mImagesFragment != null && mImagesFragment.isVisible()) || (mSignaturesFragment != null && mSignaturesFragment.isVisible())) {
             finish();
             return true;
         }

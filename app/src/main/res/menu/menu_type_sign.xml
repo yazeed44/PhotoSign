@@ -3,7 +3,7 @@
     xmlns:photoSign="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/menu_type_sign"
+        android:id="@+id/action_choose_color"
         android:icon="@drawable/ic_color_lens"
         android:title="@string/choose_color"
         photoSign:showAsAction="always"

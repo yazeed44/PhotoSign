@@ -1,6 +1,5 @@
 package net.whitedesert.photosign.utils;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -45,7 +44,7 @@ public final class SignatureRaw {
     }
 
 
-    private float calculateTextSize(final Context context) {
+    private float calculateTextSize() {
 
         final Rect bounds = new Rect();
         float textSize = 50f;
@@ -63,10 +62,14 @@ public final class SignatureRaw {
         return textSize;
     }
 
+    private void initPaint() {
+        mPaint.setColor(getColor());
+        mPaint.setTextSize(calculateTextSize());
+    }
 
-    public Bitmap createBitmap(final Context context) {
-        mPaint.setTextSize(calculateTextSize(context));
-        final float baseline = (int) (-mPaint.ascent() + 0.5f); // ascent() is negative
+
+    public Bitmap createBitmap() {
+        initPaint();
         final Bitmap bitmap = Bitmap.createBitmap(WIDTH, HEIGHT, Bitmap.Config.ARGB_8888);
         final Canvas canvas = new Canvas(bitmap);
 

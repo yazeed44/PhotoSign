@@ -11,7 +11,6 @@ import android.util.Log;
 import android.widget.ImageView;
 
 import net.whitedesert.photosign.utils.Signature;
-import net.whitedesert.photosign.utils.ViewUtil;
 
 /**
  * Created by yazeed44 on 8/9/14.
@@ -179,7 +178,6 @@ public class SigningView extends ImageView {
 
         final Drawable drawable = this.getDrawable();
         final Rect imageBounds = drawable.getBounds();
-        final Point display = ViewUtil.getDisplay(getContext());
         Log.i("fixXY : Orignial values ", "Touch X  = " + touchX + "   , Touch Y  =  " + touchY);
 
 //original height and width of the bitmap

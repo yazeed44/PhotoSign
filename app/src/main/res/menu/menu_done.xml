@@ -3,7 +3,7 @@
     xmlns:photoSign="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/menu_done"
+        android:id="@+id/action_done"
         android:icon="@drawable/ic_done"
         android:title="@string/done_signing_text"
         photoSign:showAsAction="always" />

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="net.whitedesert.photosign">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -7,6 +8,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
+    <uses-sdk tools:overrideLibrary="me.grantland.widget" />
 
     <application
 
@@ -23,8 +25,7 @@
 
         <activity
             android:name="net.whitedesert.photosign.ui.MainActivity"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait">
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -34,7 +35,7 @@
         </activity>
 
 
-        <activity android:name=".ui.TextSignActivity" />
+        <activity android:name=".ui.TypeSignatureActivity" />
 
 
     </application>

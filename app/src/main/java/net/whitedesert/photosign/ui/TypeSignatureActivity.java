@@ -4,31 +4,36 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.larswerkman.holocolorpicker.ColorPicker;
+import com.larswerkman.holocolorpicker.OpacityBar;
+import com.larswerkman.holocolorpicker.SVBar;
+
 import net.whitedesert.photosign.R;
 import net.whitedesert.photosign.utils.SaveUtil;
-
-import yuku.ambilwarna.AmbilWarnaDialog;
+import net.whitedesert.photosign.utils.ViewUtil;
 
 /**
  * Created by yazeed44 on 9/20/14.
  */
-public class TextSignActivity extends BaseActivity {
+public class TypeSignatureActivity extends BaseActivity {
 
 
-    private TypeSignPreviewView preview;
+    private TypeSignaturePreviewView preview;
     private EditText text;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_text_sign_customize);
-        preview = (TypeSignPreviewView) this.findViewById(R.id.signTextPreview);
+        preview = (TypeSignaturePreviewView) this.findViewById(R.id.signTextPreview);
         text = (EditText) this.findViewById(R.id.signTextEdit);
 
         getSupportActionBar().setTitle(R.string.type_sign_title);
@@ -41,7 +46,7 @@ public class TextSignActivity extends BaseActivity {
     }
 
     public void onClickDone() {
-        SaveUtil.saveSignature(preview.createSignatureRaw().createBitmap(this), this);
+        SaveUtil.saveSignature(preview.createSignatureRaw().createBitmap(), this);
     }
 
 
@@ -62,24 +67,47 @@ public class TextSignActivity extends BaseActivity {
     //When user click on choose color btn
     private void onClickChooseColor() {
 
-        AmbilWarnaDialog.OnAmbilWarnaListener listener = new AmbilWarnaDialog.OnAmbilWarnaListener() {
-            @Override
-            public void onOk(AmbilWarnaDialog dialog, int color) {
+        final String title = getResources().getString(R.string.choose_color);
 
-                preview.setTextColor(color);
+        ViewUtil.createDialog(title, null, this)
+                .customView(createColorPickerView())
+                .positiveText(android.R.string.ok)
+                .negativeText(android.R.string.cancel)
+                .callback(new MaterialDialog.Callback() {
 
-            }
+                    @Override
+                    public void onNegative(MaterialDialog materialDialog) {
+                        materialDialog.dismiss();
+                    }
 
-            @Override
-            public void onCancel(AmbilWarnaDialog dialog) {
+                    @Override
+                    public void onPositive(MaterialDialog materialDialog) {
 
-            }
-        };
+                        final int newColor = ((ColorPicker) materialDialog.getCustomView().findViewById(R.id.color_picker)).getColor();
 
-        final int initalColor = preview.getCurrentTextColor();
-        new AmbilWarnaDialog(this, initalColor, listener).show();
+                        preview.setTextColor(newColor);
+                    }
+                })
+                .show();
     }
 
+    private View createColorPickerView() {
+
+        final View pickerLayout = LayoutInflater.from(this).inflate(R.layout.color_picker, null);
+
+        final OpacityBar opacityBar = (OpacityBar) pickerLayout.findViewById(R.id.opacity_bar);
+
+        final SVBar svBar = (SVBar) pickerLayout.findViewById(R.id.sv_bar);
+
+        final ColorPicker picker = (ColorPicker) pickerLayout.findViewById(R.id.color_picker);
+
+        picker.addOpacityBar(opacityBar);
+        picker.addSVBar(svBar);
+        picker.setOldCenterColor(preview.getCurrentTextColor());
+
+
+        return pickerLayout;
+    }
 
     private void setupText() {
 
@@ -128,12 +156,12 @@ public class TextSignActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle presses on the action bar items
         switch (item.getItemId()) {
-            case R.id.menu_done:
+            case R.id.action_done:
                 onClickDone();
                 return true;
 
 
-            case R.id.menu_type_sign:
+            case R.id.action_choose_color:
                 onClickChooseColor();
                 return true;
 

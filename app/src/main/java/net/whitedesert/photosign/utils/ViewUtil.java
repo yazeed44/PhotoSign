@@ -4,21 +4,21 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.graphics.Point;
+import android.graphics.Bitmap;
 import android.support.v7.widget.PopupMenu;
 import android.util.DisplayMetrics;
 import android.view.ContextThemeWrapper;
-import android.view.Display;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.ImageSize;
 
 import net.whitedesert.photosign.R;
 import net.whitedesert.photosign.ui.DrawSignActivity;
-import net.whitedesert.photosign.ui.TextSignActivity;
+import net.whitedesert.photosign.ui.TypeSignatureActivity;
 
 /**
  * Created by yazeed44 on 9/12/14.
@@ -42,9 +42,11 @@ public final class ViewUtil {
             materialDialog.dismiss();
         }
     };
-    public static Activity activity;
-    public static MaterialDialog.Builder dialog; //Used for optimzation
-    public static Resources r;
+    public static final String GLOBAL_PATH = "file://";
+    private static Activity mActivity;
+    private static MaterialDialog.Builder mDialog; //Used for optimzation
+    private static Resources mResources;
+    private static Bitmap mBitmap;
 
     private ViewUtil() {
         throw new AssertionError();
@@ -53,20 +55,11 @@ public final class ViewUtil {
 
     public static synchronized void initInstance(Activity pActivity) {
 
-        activity = pActivity;
+        mActivity = pActivity;
 
 
     }
 
-
-    public static Point getDisplay(Context context) {
-        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        Display display = wm.getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-
-        return size;
-    }
 
     /**
      * This method converts device specific pixels to density independent pixels.
@@ -98,30 +91,30 @@ public final class ViewUtil {
 
 
     public static void toastShort(final String message) {
-        activity.runOnUiThread(new Runnable() {
+        mActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
+                Toast.makeText(mActivity, message, Toast.LENGTH_SHORT).show();
             }
         });
 
     }
 
     public static void toastShort(final int resId) {
-        toastShort(activity.getResources().getString(resId));
+        toastShort(mActivity.getResources().getString(resId));
     }
 
     public static void toastLong(final String message) {
-        activity.runOnUiThread(new Runnable() {
+        mActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(activity, message, Toast.LENGTH_LONG).show();
+                Toast.makeText(mActivity, message, Toast.LENGTH_LONG).show();
             }
         });
     }
 
     public static void toastLong(final int resId) {
-        toastLong(activity.getResources().getString(resId));
+        toastLong(mActivity.getResources().getString(resId));
     }
 
     public static void toastSavedSignSuccess() {
@@ -144,32 +137,32 @@ public final class ViewUtil {
     public static MaterialDialog.Builder createDialog(String title, String msg, final Activity activity) {
 
 
-        dialog = new MaterialDialog.Builder(activity)
+        mDialog = new MaterialDialog.Builder(activity)
                 .title(title)
                 .content(msg)
                 .theme(Theme.LIGHT)
         ;
 
 
-        return dialog;
+        return mDialog;
     }
 
     public static MaterialDialog.Builder createDialog(int titleId, int msgId, final Activity activity) {
-        r = activity.getResources();
-        return createDialog(r.getString(titleId), r.getString(msgId), activity);
+        mResources = activity.getResources();
+        return createDialog(mResources.getString(titleId), mResources.getString(msgId), activity);
     }
 
     public static MaterialDialog.Builder createErrorDialog(String msg, final Activity activity) {
 
-        final String title = r.getString(R.string.error_title);
+        final String title = mResources.getString(R.string.error_title);
         return createDialog(title, msg, activity);
 
 
     }
 
     public static MaterialDialog.Builder createErrorDialog(int msgId, final Activity activity) {
-        r = activity.getResources();
-        return createErrorDialog(r.getString(msgId), activity);
+        mResources = activity.getResources();
+        return createErrorDialog(mResources.getString(msgId), activity);
 
     }
 
@@ -178,7 +171,7 @@ public final class ViewUtil {
         //the choices won't appear if you set a message !!
 
         dialog.items(choices)
-                .negativeText(R.string.cancel_btn)
+                .negativeText(android.R.string.cancel)
                 .callback(DISMISS_CALLBACK);
 
 
@@ -187,9 +180,9 @@ public final class ViewUtil {
 
     public static MaterialDialog.Builder createSingleChooseDialog(int titleId, int choicesId, final Activity activity) {
 
-        r = activity.getResources();
-        String title = r.getString(titleId);
-        String[] choices = r.getStringArray(choicesId);
+        mResources = activity.getResources();
+        String title = mResources.getString(titleId);
+        String[] choices = mResources.getStringArray(choicesId);
         return createSingleChooseDialog(title, choices, activity);
     }
 
@@ -238,7 +231,7 @@ public final class ViewUtil {
                     Intent i = new Intent(activity, DrawSignActivity.class);
                     activity.startActivity(i);
                 } else if (chosenMethod.equals(text)) {
-                    Intent i = new Intent(activity, TextSignActivity.class);
+                    Intent i = new Intent(activity, TypeSignatureActivity.class);
                     activity.startActivity(i);
                 } else if (chosenMethod.equals(external)) {
                     SignatureUtil.openGalleryToImport(activity);
@@ -249,8 +242,19 @@ public final class ViewUtil {
         return createSingleChooseDialog(res.getString(R.string.sign_method_title), choices, activity)
                 .itemsCallbackSingleChoice(-1, listener)
                 .positiveText(R.string.choose_btn)
-                .negativeText(R.string.cancel_btn);
+                .negativeText(android.R.string.cancel);
 
 
+    }
+
+    public static Bitmap decodeFile(String path) throws NullPointerException {
+        mBitmap = ImageLoader.getInstance().loadImageSync(GLOBAL_PATH + path);
+        return mBitmap;
+    }
+
+    public static Bitmap decodeFile(String path, int width, int height) {
+
+        mBitmap = ImageLoader.getInstance().loadImageSync(GLOBAL_PATH + path, new ImageSize(width, height));
+        return Bitmap.createScaledBitmap(mBitmap, width, height, true);
     }
 }

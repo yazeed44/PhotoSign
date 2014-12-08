@@ -90,7 +90,8 @@
     <orderEntry type="library" exported="" name="support-annotations-21.0.2" level="project" />
     <orderEntry type="library" exported="" name="recyclerview-v7-21.0.0" level="project" />
     <orderEntry type="library" exported="" name="universal-image-loader-1.9.3" level="project" />
-    <orderEntry type="library" exported="" name="material-dialogs-0.3.4" level="project" />
+    <orderEntry type="library" exported="" name="HoloColorPicker-1.4" level="project" />
+    <orderEntry type="library" exported="" name="material-dialogs-0.4.3" level="project" />
     <orderEntry type="library" exported="" name="autofittextview-0.2.0" level="project" />
     <orderEntry type="library" exported="" name="appcompat-v7-21.0.2" level="project" />
     <orderEntry type="module" module-name="MultiImagePicker" exported="" />

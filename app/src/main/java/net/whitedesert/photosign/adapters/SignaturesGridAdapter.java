@@ -13,7 +13,6 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 import net.whitedesert.photosign.R;
 import net.whitedesert.photosign.ui.SignaturesFragment;
-import net.whitedesert.photosign.utils.BitmapUtil;
 import net.whitedesert.photosign.utils.CheckUtil;
 import net.whitedesert.photosign.utils.Signature;
 import net.whitedesert.photosign.utils.SignatureUtil;
@@ -109,7 +108,7 @@ public class SignaturesGridAdapter extends BaseAdapter {
         //      int signColor = getSignColor();
         grid.setLayoutParams(new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, colHeight));
 
-        final String path = BitmapUtil.GLOBAL_PATH + signature.getPath();
+        final String path = ViewUtil.GLOBAL_PATH + signature.getPath();
 
         ImageLoader.getInstance().displayImage(path, holder.image);
 
@@ -168,22 +167,22 @@ public class SignaturesGridAdapter extends BaseAdapter {
     }
 
     private MaterialDialog createDeleteFileDialog(final Signature signature) {
-        final String msg = getMsg(signature);
+        final String msg = createMsgForDeleteDialog(signature);
         final MaterialDialog.Builder deleteFileDialog = ViewUtil.createDialog(null, msg, mFragment.getActivity());
 
-        return deleteFileDialog.positiveText(R.string.yes_btn)
+        return deleteFileDialog.positiveText(android.R.string.yes)
                 .negativeText(R.string.delete_only_signature_btn)
                 .neutralText(R.string.dismiss_btn)
-                .callback(getCallBackForDeleteFileDialog(signature))
+                .callback(createCallBackForDeleteDialog(signature))
                 .build();
 
     }
 
-    private String getMsg(final Signature signature) {
+    private String createMsgForDeleteDialog(final Signature signature) {
         return mFragment.getResources().getString(R.string.delete_sign_file_msg).replace("0", signature.getName());
     }
 
-    private MaterialDialog.FullCallback getCallBackForDeleteFileDialog(final Signature signature) {
+    private MaterialDialog.FullCallback createCallBackForDeleteDialog(final Signature signature) {
         return new MaterialDialog.FullCallback() {
             @Override
             public void onNeutral(MaterialDialog materialDialog) {
@@ -219,6 +218,7 @@ public class SignaturesGridAdapter extends BaseAdapter {
                 .commit()
         ;
 
+        refresh();
     }
 
     public static class ViewHolder {

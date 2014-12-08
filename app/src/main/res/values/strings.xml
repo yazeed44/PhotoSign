@@ -25,8 +25,7 @@
 
     <string name="saving_sign">Adding signature to database so you can use it later</string>
     <string name="choose_color">Choose color</string>
-    <string name="draw_size_text">Brush Width : </string>
-    <string name="draw_opacity_text">Opacity : </string>
+    <string name="brush_width_text">Width</string>
 
     <string name="sign_text_preview">Preview the signature</string>
     <string name="check_mark_bold">Bold</string>
@@ -64,8 +63,6 @@
 
     <string name="sign_on_photo_btn">SIGN</string>
     <string name="delete_unused_signatures_btn">DELETE THEM</string>
-    <string name="yes_btn">@android:string/yes</string>
-    <string name="cancel_btn">@android:string/cancel</string>
     <string name="dismiss_btn">DISMISS</string>
     <string name="signature_menu">Signature menu</string>
     <string name="delete_only_signature_btn">NO , JUST THE SIGNATURE</string>

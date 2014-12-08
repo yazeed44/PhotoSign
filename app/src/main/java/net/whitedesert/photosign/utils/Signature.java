@@ -72,7 +72,7 @@ public final class Signature {
 
     public Bitmap getBitmap(boolean originalSize) {
         if (originalSize) {
-            return BitmapUtil.decodeFile(getPath());
+            return ViewUtil.decodeFile(getPath());
         } else {
             return getBitmap();
         }
@@ -86,7 +86,7 @@ public final class Signature {
 
         if (counter == 0) {
 
-            mBitmap = BitmapUtil.decodeFile(getPath(), width, height);
+            mBitmap = ViewUtil.decodeFile(getPath(), width, height);
 
 
             handleNull(mBitmap);
@@ -98,7 +98,7 @@ public final class Signature {
             return mBitmap;
         } else {
 
-            mBitmap = BitmapUtil.decodeFile(getPath(), width, height);
+            mBitmap = ViewUtil.decodeFile(getPath(), width, height);
 
 
             handleNull(mBitmap);

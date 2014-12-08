@@ -15,7 +15,6 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 import net.whitedesert.photosign.R;
 import net.whitedesert.photosign.adapters.SignaturesGridAdapter;
-import net.whitedesert.photosign.utils.BitmapUtil;
 import net.whitedesert.photosign.utils.CheckUtil;
 import net.whitedesert.photosign.utils.Signature;
 import net.whitedesert.photosign.utils.SignatureUtil;
@@ -36,7 +35,7 @@ public class SignaturesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        mLayout = (FrameLayout) inflater.inflate(R.layout.fragment_my_signatures, container, false);
+        mLayout = (FrameLayout) inflater.inflate(R.layout.fragment_signatures, container, false);
 
         mSignaturesGrid = (HeaderGridView) mLayout.findViewById(R.id.list_signatures);
 
@@ -97,7 +96,7 @@ public class SignaturesFragment extends Fragment {
         final ImageView defImage = (ImageView) defSignLayout.findViewById(R.id.signature_image);
 
 
-        ImageLoader.getInstance().displayImage(BitmapUtil.GLOBAL_PATH + defSign.getPath(), defImage);
+        ImageLoader.getInstance().displayImage(ViewUtil.GLOBAL_PATH + defSign.getPath(), defImage);
 
 
         final ImageView starImage = (ImageView) defSignLayout.findViewById(R.id.def_sign_star);

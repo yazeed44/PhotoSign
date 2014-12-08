@@ -81,7 +81,7 @@ public final class SaveUtil {
 
     private static String generateRandomSignName(final String name) {
 
-        String randomName = name + " - Signature " + RandomUtil.getRandomInt((9 * 1 * 2 * 3) * (2 * 1) * (6 * 1)); //Puzzle. Hint:old phone
+        String randomName = name + " - Signature " + System.currentTimeMillis() + RandomUtil.getRandomInt((9 * 1 * 2 * 3) * (2 * 1) * (6 * 1)); //Puzzle. Hint:old phone
 
         while (SignatureUtil.isDuplicatedSign(randomName)) {
             randomName += RandomUtil.getRandomInt(44);

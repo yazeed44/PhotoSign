@@ -1,73 +1,34 @@
 package net.whitedesert.photosign.ui;
 
-import android.graphics.Paint;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.SeekBar;
-import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.larswerkman.holocolorpicker.ColorPicker;
+import com.larswerkman.holocolorpicker.OpacityBar;
+import com.larswerkman.holocolorpicker.SVBar;
 
 import net.whitedesert.photosign.R;
 import net.whitedesert.photosign.utils.SaveUtil;
 import net.whitedesert.photosign.utils.ViewUtil;
 
-import yuku.ambilwarna.AmbilWarnaDialog;
 
 /**
  * Created by yazeed44 on 8/15/14.
  */
-public class DrawSignActivity extends BaseActivity implements AmbilWarnaDialog.OnAmbilWarnaListener {
+public class DrawSignActivity extends BaseActivity {
 
-    private final SeekBar.OnSeekBarChangeListener widthListener = new SeekBar.OnSeekBarChangeListener() {
-        @Override
-        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-            final float px = ViewUtil.convertDpToPixel(progress, draw.getContext());
-            final Paint paint = draw.getDrawPaint();
-            paint.setStrokeWidth(px);
-            draw.setDrawPaint(paint);
-            widthText.setText(widthText.getResources().getText(R.string.draw_size_text) + "" + progress);
-        }
 
-        @Override
-        public void onStartTrackingTouch(SeekBar seekBar) {
-
-        }
-
-        @Override
-        public void onStopTrackingTouch(SeekBar seekBar) {
-
-        }
-    };
     private DrawSignView draw;
-    private View brushCustomizeLayout;
-    private String brushCustomizeTitle;
-    private TextView widthText;
-    private SeekBar widthSeek;
-    private TextView opacityText;
+
+
     private String opacityString;
-    private final SeekBar.OnSeekBarChangeListener opacityListener = new SeekBar.OnSeekBarChangeListener() {
-        @Override
-        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-            draw.getDrawPaint().setAlpha(progress);
-
-            opacityText.setText(opacityString + progress);
-        }
-
-        @Override
-        public void onStartTrackingTouch(SeekBar seekBar) {
-
-        }
-
-        @Override
-        public void onStopTrackingTouch(SeekBar seekBar) {
-
-        }
-    };
-    private SeekBar opacitySeek;
-
 
     @Override
     public void onCreate(Bundle savedInstance) {
@@ -76,29 +37,11 @@ public class DrawSignActivity extends BaseActivity implements AmbilWarnaDialog.O
 
         setContentView(R.layout.activity_sign_drawing);
         draw = (DrawSignView) this.findViewById(R.id.drawView);
+        opacityString = getResources().getString(R.string.opacity_text) + " : ";
 
 
         getSupportActionBar().setTitle(R.string.sign_draw_title);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-
-    }
-
-    private void initializeBrushCustomizeDialog() {
-        brushCustomizeLayout = this.getLayoutInflater().inflate(R.layout.dialog_draw_sign_customize, null);
-
-
-        opacityText = (TextView) brushCustomizeLayout.findViewById(R.id.drawOpacityText);
-        opacitySeek = (SeekBar) brushCustomizeLayout.findViewById(R.id.drawOpacitySeek);
-        opacitySeek.setOnSeekBarChangeListener(opacityListener);
-
-
-        widthText = (TextView) brushCustomizeLayout.findViewById(R.id.drawSizeText);
-        widthSeek = (SeekBar) brushCustomizeLayout.findViewById(R.id.baseSizeSeek);
-        widthSeek.setOnSeekBarChangeListener(widthListener);
-
-        opacityString = getResources().getString(R.string.draw_opacity_text);
-        brushCustomizeTitle = getResources().getString(R.string.draw_sign_customize_title);
 
 
     }
@@ -108,19 +51,32 @@ public class DrawSignActivity extends BaseActivity implements AmbilWarnaDialog.O
     public void onClickBrushCustomize() {
 
 
-        initializeBrushCustomizeDialog();
+        final String title = getResources().getString(R.string.draw_sign_customize_title);
+
+        final MaterialDialog.Builder dialog = ViewUtil.createDialog(title, null, this);
 
 
-        final MaterialDialog.Builder dialog = ViewUtil.createDialog(brushCustomizeTitle, "", this);
-        setupSize(widthText, widthSeek);
-        setupOpacity(opacityText, opacitySeek);
+        dialog.customView(createBrushCustomizeView())
+                .positiveText(android.R.string.ok)
+                .negativeText(android.R.string.cancel)
+                .callback(new MaterialDialog.Callback() {
 
-        dialog.customView(brushCustomizeLayout)
-                .positiveText(R.string.dismiss_btn)
-                .callback(new MaterialDialog.SimpleCallback() {
+                    @Override
+                    public void onNegative(MaterialDialog materialDialog) {
+                        materialDialog.dismiss();
+                    }
+
                     @Override
                     public void onPositive(MaterialDialog materialDialog) {
-                        materialDialog.dismiss();
+
+                        final int newColor = ((ColorPicker) materialDialog.getCustomView().findViewById(R.id.color_picker)).getColor();
+
+                        final String newWidthString = ((EditText) materialDialog.getCustomView().findViewById(R.id.brush_width_edit)).getText().toString();
+                        final int newWidth = Integer.parseInt(newWidthString);
+
+                        draw.getDrawPaint().setStrokeWidth(newWidth);
+                        draw.getDrawPaint().setColor(newColor);
+
                     }
                 })
                 .show()
@@ -129,30 +85,88 @@ public class DrawSignActivity extends BaseActivity implements AmbilWarnaDialog.O
 
     }
 
-
-    private void setupSize(final TextView sizeText, final SeekBar widthSeek) {
-        widthSeek.setProgress((int) ViewUtil.convertPixelsToDp(draw.getDrawPaint().getStrokeWidth(), this));
-        sizeText.setText(sizeText.getResources().getText(R.string.draw_size_text) + "" + widthSeek.getProgress());
+    private View createBrushCustomizeView() {
+        final View brushCustomizeLayout = this.getLayoutInflater().inflate(R.layout.dialog_draw_sign_customize, null);
 
 
+        final int width = (int) draw.getDrawPaint().getStrokeWidth();
+
+        final EditText widthEditText = (EditText) brushCustomizeLayout.findViewById(R.id.brush_width_edit);
+        widthEditText.setText(width + "");
+
+        final SeekBar widthBar = (SeekBar) brushCustomizeLayout.findViewById(R.id.brush_width_bar);
+        widthBar.setProgress(width);
+
+
+        widthBar.setOnSeekBarChangeListener(createWidthListener(widthEditText));
+        widthEditText.addTextChangedListener(createWatcherForWidthEdit(widthBar));
+
+
+        final OpacityBar opacityBar = (OpacityBar) brushCustomizeLayout.findViewById(R.id.opacity_bar);
+
+
+        final SVBar svBar = (SVBar) brushCustomizeLayout.findViewById(R.id.sv_bar);
+
+        final ColorPicker colorPicker = (ColorPicker) brushCustomizeLayout.findViewById(R.id.color_picker);
+
+        colorPicker.setOldCenterColor(draw.getDrawPaint().getColor());
+
+        colorPicker.addSVBar(svBar);
+        colorPicker.addOpacityBar(opacityBar);
+
+
+        return brushCustomizeLayout;
     }
 
 
-    private void setupOpacity(final TextView opacityText, final SeekBar opacitySeek) {
+    private SeekBar.OnSeekBarChangeListener createWidthListener(final EditText widthEditText) {
+        return new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 
-        opacitySeek.setProgress(draw.getDrawPaint().getAlpha());
-        opacityText.setText(opacityString + opacitySeek.getProgress());
+
+                if (fromUser) {
+                    widthEditText.setText(progress + "");
+                }
 
 
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        };
     }
 
 
-    private void onClickChooseColor() {
+    private TextWatcher createWatcherForWidthEdit(final SeekBar widthBar) {
+        return new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
 
 
-        final int initalColor = draw.getDrawPaint().getColor();
-        new AmbilWarnaDialog(this, initalColor, this).show();
+                widthBar.setProgress(Integer.parseInt(s.toString()));
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        };
     }
+
 
     public void onClickReset() {
         draw.reset();
@@ -177,36 +191,23 @@ public class DrawSignActivity extends BaseActivity implements AmbilWarnaDialog.O
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle presses on the action bar items
         switch (item.getItemId()) {
-            case R.id.menu_done:
+            case R.id.action_done:
                 onClickDone();
                 return true;
 
-            case R.id.menu_redo_drawing:
+            case R.id.action_redo_drawing:
                 onClickReset();
                 return true;
 
-            case R.id.menu_brush_settings:
+            case R.id.action_brush_customization:
                 onClickBrushCustomize();
-                return true;
-
-            case R.id.menu_brush_color:
-                onClickChooseColor();
                 return true;
 
 
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-
-    @Override
-    public void onCancel(AmbilWarnaDialog dialog) {
 
     }
 
-    @Override
-    public void onOk(AmbilWarnaDialog dialog, int color) {
-        draw.getDrawPaint().setColor(color); // update color
-    }
 }
