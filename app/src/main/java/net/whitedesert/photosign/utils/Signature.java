@@ -4,8 +4,6 @@ import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.util.Log;
 
-import java.io.File;
-
 /**
  * Created by yazeed44 on 8/9/14.
  * Signature class
@@ -34,7 +32,7 @@ public final class Signature {
 
     public Signature(final String path) {
         this.mPath = path;
-        this.mName = new File(path).getName();
+        this.mName = RandomUtil.generateRandomName(mPath);
         this.mIsDefault = false;
     }
 

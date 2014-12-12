@@ -1,2 +1,1 @@
-include ':app', ':ImagePicker', ':MultiImagePicker'
-include ':rippleView'
+include ':app', ':MultiImagePicker'

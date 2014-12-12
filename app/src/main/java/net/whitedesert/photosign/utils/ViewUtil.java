@@ -5,20 +5,30 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.os.Environment;
 import android.support.v7.widget.PopupMenu;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
+import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiscCache;
+import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.assist.ImageSize;
+import com.nostra13.universalimageloader.utils.StorageUtils;
 
 import net.whitedesert.photosign.R;
 import net.whitedesert.photosign.ui.DrawSignActivity;
 import net.whitedesert.photosign.ui.TypeSignatureActivity;
+
+import java.io.File;
 
 /**
  * Created by yazeed44 on 9/12/14.
@@ -256,5 +266,37 @@ public final class ViewUtil {
 
         mBitmap = ImageLoader.getInstance().loadImageSync(GLOBAL_PATH + path, new ImageSize(width, height));
         return Bitmap.createScaledBitmap(mBitmap, width, height, true);
+    }
+
+    public static void initImageLoader(final Activity activity) {
+        try {
+            String CACHE_DIR = Environment.getExternalStorageDirectory()
+                    .getAbsolutePath() + "/.temp_tmp";
+            new File(CACHE_DIR).mkdirs();
+
+            File cacheDir = StorageUtils.getOwnCacheDirectory(activity.getBaseContext(),
+                    CACHE_DIR);
+
+            DisplayImageOptions displayImageOptions = new DisplayImageOptions.Builder()
+                    .cacheOnDisk(true).imageScaleType(ImageScaleType.EXACTLY)
+                    .bitmapConfig(Bitmap.Config.RGB_565)
+                    .showImageOnFail(R.drawable.ic_error)
+                    .resetViewBeforeLoading(true)
+                    .build();
+
+
+            ImageLoaderConfiguration.Builder builder = new ImageLoaderConfiguration.Builder(
+                    activity.getBaseContext())
+                    .defaultDisplayImageOptions(displayImageOptions)
+                    .diskCache(new UnlimitedDiscCache(cacheDir))
+                    .memoryCache(new WeakMemoryCache());
+
+
+            final ImageLoaderConfiguration config = builder.build();
+            ImageLoader.getInstance().init(config);
+
+        } catch (Exception e) {
+            Log.e("MainActivity", e.getMessage());
+        }
     }
 }

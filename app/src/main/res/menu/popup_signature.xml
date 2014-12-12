@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/popup_set_default_signature"
+        android:title="@string/set_default_signature_popup" />
+
+
+    <item
+        android:id="@+id/popup_delete_signature"
+        android:title="@string/delete_signature_popup" />
+</menu>

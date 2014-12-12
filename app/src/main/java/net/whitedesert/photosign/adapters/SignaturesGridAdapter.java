@@ -101,9 +101,7 @@ public class SignaturesGridAdapter extends BaseAdapter {
     private void loadNormalSign(ViewHolder holder, final View grid, final Signature signature) {
 
 
-        int colWidth = mFragment.getResources().getDimensionPixelSize(R.dimen.signature_column_width);
-
-        int colHeight = (int) (colWidth * 1.5);
+        final int colHeight = mFragment.getResources().getDimensionPixelSize(R.dimen.signature_column_height);
 
         //      int signColor = getSignColor();
         grid.setLayoutParams(new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, colHeight));

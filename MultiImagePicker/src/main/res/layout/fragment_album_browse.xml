@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:columnWidth="@dimen/album_width"
     android:horizontalSpacing="@dimen/horizontal_spacing"
-    android:numColumns="2"
+    android:numColumns="@integer/num_columns_albums"
 
     android:verticalSpacing="@dimen/vertical_spacing" />
 

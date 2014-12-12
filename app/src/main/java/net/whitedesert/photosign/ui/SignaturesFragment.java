@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.melnykov.fab.FloatingActionButton;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -30,6 +31,7 @@ public class SignaturesFragment extends Fragment {
     private boolean mIsListEmpty = false;
 
     private FrameLayout mLayout;
+    private TextView mEmptyView;
 
 
     @Override
@@ -39,25 +41,37 @@ public class SignaturesFragment extends Fragment {
 
         mSignaturesGrid = (HeaderGridView) mLayout.findViewById(R.id.list_signatures);
 
+        mEmptyView = (TextView) mLayout.findViewById(R.id.empty_signatures_view);
 
         mIsListEmpty = SignatureUtil.noSigns();
 
-        setupAddFab();
 
         setupEmptyView();
+        setupAddFab();
 
-        if (!mIsListEmpty) {
-            setupDefaultSign();
-            setupAdapter();
-        }
+
+        setupDefaultSign();
+
+
+        setupAdapter();
 
 
         return mLayout;
     }
 
     private void setupEmptyView() {
+        updateVisibility();
+    }
+
+    private void updateVisibility() {
+        mIsListEmpty = SignatureUtil.noSigns();
+
         if (mIsListEmpty) {
-            mSignaturesGrid.setEmptyView(LayoutInflater.from(getActivity()).inflate(R.layout.empty_view_signatures, mLayout, false));
+            mSignaturesGrid.setVisibility(View.GONE);
+            mEmptyView.setVisibility(View.VISIBLE);
+        } else {
+            mSignaturesGrid.setVisibility(View.VISIBLE);
+            mEmptyView.setVisibility(View.GONE);
         }
     }
 
@@ -86,8 +100,8 @@ public class SignaturesFragment extends Fragment {
         }
 
 
-        final int width = getResources().getDimensionPixelSize(R.dimen.signature_column_width) * 2;
-        final int height = width;
+        // final int width = getResources().getDimensionPixelSize(R.dimen.signature_column_width) * 2;
+        final int height = getResources().getDimensionPixelSize(R.dimen.def_signature_height);
 
         final View defSignLayout = LayoutInflater.from(getActivity()).inflate(R.layout.item_default_sign, (ViewGroup) getView(), false);
 
@@ -109,8 +123,10 @@ public class SignaturesFragment extends Fragment {
     public void setupAdapter() {
 
 
-        SignaturesGridAdapter adapter = new SignaturesGridAdapter(SignatureUtil.getSigns(false), this);
-        mSignaturesGrid.setAdapter(adapter);
+        if (!mIsListEmpty) {
+            SignaturesGridAdapter adapter = new SignaturesGridAdapter(SignatureUtil.getSigns(false), this);
+            mSignaturesGrid.setAdapter(adapter);
+        }
 
     }
 
@@ -118,7 +134,11 @@ public class SignaturesFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        updateVisibility();
+        setupDefaultSign();
         setupAdapter();
+
+
     }
 
 }

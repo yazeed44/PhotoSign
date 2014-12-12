@@ -14,10 +14,11 @@ import java.io.File;
  */
 public final class CheckUtil {
 
+    public static boolean isFirstTime;
+
     private CheckUtil() {
         throw new AssertionError();
     }
-
 
     public static boolean checkSign(final long id, boolean toast) {
         if (id != -1) {
@@ -95,7 +96,7 @@ public final class CheckUtil {
     }
 
     //Detrmine if app is opened for the first time
-    public static boolean isFirstTimeOpened(final Activity activity) {
+    public static void initIsFirstTimeOpened(final Activity activity) {
 
         final String PREFS_NAME = "MyPrefsFile";
 
@@ -103,11 +104,10 @@ public final class CheckUtil {
 
         final String firstTimeKey = "myFirstTime";
 
-        final boolean firstTime = settings.getBoolean(firstTimeKey, true);
+        isFirstTime = settings.getBoolean(firstTimeKey, true);
 
         settings.edit().putBoolean(firstTimeKey, false).apply();
 
-        return firstTime;
 
     }
 

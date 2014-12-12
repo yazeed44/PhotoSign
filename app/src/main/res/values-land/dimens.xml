@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="def_signature_height">150dp</dimen>
+    <dimen name="signature_column_height">130dp</dimen>
+
+
+    <item name="main_fragment_weight" format="float" type="dimen">0.86</item>
+    <item name="sign_btn_weight" format="float" type="dimen">0.14</item>
+
+
+</resources>

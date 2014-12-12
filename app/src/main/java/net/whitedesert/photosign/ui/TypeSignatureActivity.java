@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
@@ -93,7 +94,7 @@ public class TypeSignatureActivity extends BaseActivity {
 
     private View createColorPickerView() {
 
-        final View pickerLayout = LayoutInflater.from(this).inflate(R.layout.color_picker, null);
+        final View pickerLayout = LayoutInflater.from(this).inflate(R.layout.color_picker, (ViewGroup) findViewById(R.id.container), false);
 
         final OpacityBar opacityBar = (OpacityBar) pickerLayout.findViewById(R.id.opacity_bar);
 

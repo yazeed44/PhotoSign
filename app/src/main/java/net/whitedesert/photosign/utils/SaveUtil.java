@@ -62,7 +62,7 @@ public final class SaveUtil {
 
         final Signature signature = new Signature();
 
-        final String signatureName = generateRandomSignName(drawView.getDrawingTime() + activity.toString());
+        final String signatureName = generateRandomSignName(drawView.getDrawingTime() + drawView.getBottom() + "");
         signature.setName(signatureName);
 
         drawView.setBackgroundColor(Color.TRANSPARENT);
@@ -130,7 +130,7 @@ public final class SaveUtil {
 
     }
 
-    public static String savePicFromBitmap(Bitmap finalBitmap, Activity activity, String dir, String name, boolean toast) {
+    private static String savePicFromBitmap(Bitmap finalBitmap, Activity activity, String dir, String name, boolean toast) {
         final SaveBitmapThread thread = new SaveBitmapThread.Builder(activity)
                 .bitmap(finalBitmap)
                 .dir(dir)
@@ -151,7 +151,7 @@ public final class SaveUtil {
         return savePicFromView(drawView, activity, SIGNS_DIR, name, false);
     }
 
-    public static String savePicFromView(View drawView, Activity activity, String dir, String name, boolean toast) {
+    private static String savePicFromView(View drawView, Activity activity, String dir, String name, boolean toast) {
 
         drawView.setDrawingCacheEnabled(true);
         final String path = savePicFromBitmap(drawView.getDrawingCache(true), activity, dir, name, toast);

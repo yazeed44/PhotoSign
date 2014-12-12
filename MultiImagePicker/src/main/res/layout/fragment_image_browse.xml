@@ -7,5 +7,5 @@
     android:layout_height="match_parent"
     android:columnWidth="@dimen/image_width"
     android:horizontalSpacing="@dimen/horizontal_spacing"
-    android:numColumns="3"
+    android:numColumns="@integer/num_columns_images"
     android:verticalSpacing="@dimen/vertical_spacing" />

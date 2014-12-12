@@ -6,6 +6,7 @@ import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.SeekBar;
 
@@ -36,7 +37,7 @@ public class DrawSignActivity extends BaseActivity {
         super.onCreate(savedInstance);
 
         setContentView(R.layout.activity_sign_drawing);
-        draw = (DrawSignView) this.findViewById(R.id.drawView);
+        draw = (DrawSignView) this.findViewById(R.id.draw_view);
         opacityString = getResources().getString(R.string.opacity_text) + " : ";
 
 
@@ -86,7 +87,7 @@ public class DrawSignActivity extends BaseActivity {
     }
 
     private View createBrushCustomizeView() {
-        final View brushCustomizeLayout = this.getLayoutInflater().inflate(R.layout.dialog_draw_sign_customize, null);
+        final View brushCustomizeLayout = this.getLayoutInflater().inflate(R.layout.dialog_draw_sign_customize, (ViewGroup) findViewById(R.id.container), false);
 
 
         final int width = (int) draw.getDrawPaint().getStrokeWidth();

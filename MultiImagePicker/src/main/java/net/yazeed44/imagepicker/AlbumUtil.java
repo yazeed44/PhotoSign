@@ -204,8 +204,8 @@ public final class AlbumUtil {
                 this.mPath = path;
             }
 
-            public Builder albumId(int mAlbumId) {
-                this.mAlbumId = mAlbumId;
+            public Builder albumId(int albumId) {
+                this.mAlbumId = albumId;
                 return this;
             }
 
