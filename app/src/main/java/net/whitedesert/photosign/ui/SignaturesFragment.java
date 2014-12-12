@@ -113,8 +113,17 @@ public class SignaturesFragment extends Fragment {
         ImageLoader.getInstance().displayImage(ViewUtil.GLOBAL_PATH + defSign.getPath(), defImage);
 
 
-        final ImageView starImage = (ImageView) defSignLayout.findViewById(R.id.def_sign_star);
+        final ImageView starImage = (ImageView) defSignLayout.findViewById(R.id.def_signature_star);
         starImage.setColorFilter(getResources().getColor(R.color.star_default_color));
+
+        final View shareView = defSignLayout.findViewById(R.id.def_signature_share);
+        shareView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final String title = getResources().getString(R.string.share_signature_title);
+                ViewUtil.shareImage(title, defSign.getPath(), v.getContext());
+            }
+        });
 
 
         mSignaturesGrid.addHeaderView(defSignLayout);

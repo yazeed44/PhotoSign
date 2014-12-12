@@ -1,16 +1,13 @@
 package net.whitedesert.photosign.threads;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.graphics.PointF;
-import android.net.Uri;
 import android.os.Looper;
 
 import net.whitedesert.photosign.R;
 import net.whitedesert.photosign.utils.CheckUtil;
-import net.whitedesert.photosign.utils.RandomUtil;
 import net.whitedesert.photosign.utils.SaveUtil;
 import net.whitedesert.photosign.utils.Signature;
 import net.whitedesert.photosign.utils.SigningOptions;
@@ -56,7 +53,7 @@ public final class SigningThread extends Thread {
 
         final Bitmap signed = Bitmap.createScaledBitmap(SigningUtil.signOnPhoto(photo, signBitmap, x, y), orgPhotoDimen.x, orgPhotoDimen.y, true);//sign on photo then return it to it's originial size
 
-        final String signedPhotoFileName = "Signed Photo - " + signName + RandomUtil.getRandomInt((int) Math.abs(x + 1));
+        final String signedPhotoFileName = "Signed Photo - " + System.currentTimeMillis();
 
         pathSigned = SaveUtil.saveSignedPhoto(signed, activity, signedPhotoFileName);
 
@@ -72,14 +69,11 @@ public final class SigningThread extends Thread {
     }
 
     private void showShare() {
-        final Intent share = new Intent(Intent.ACTION_SEND);
-        share.setType("image/png");
 
-        share.putExtra(Intent.EXTRA_STREAM, Uri.parse(ViewUtil.GLOBAL_PATH + getPath()));
 
         final String title = activity.getResources().getString(R.string.share_signed_photo_title);
 
-        activity.startActivity(Intent.createChooser(share, title));
+        ViewUtil.shareImage(title, getPath(), activity);
 
     }
 

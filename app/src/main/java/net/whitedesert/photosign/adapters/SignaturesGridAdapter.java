@@ -145,6 +145,10 @@ public class SignaturesGridAdapter extends BaseAdapter {
                         delete(signature);
                         break;
 
+                    case R.id.popup_share_signature:
+                        share(signature);
+                        break;
+
                     default:
                         break;
                 }
@@ -162,6 +166,14 @@ public class SignaturesGridAdapter extends BaseAdapter {
 
     private void delete(final Signature signature) {
         createDeleteFileDialog(signature).show();
+    }
+
+    private void share(final Signature signature) {
+
+        final String title = this.mFragment.getResources().getString(R.string.share_signature_title);
+
+        ViewUtil.shareImage(title, signature.getPath(), mFragment.getActivity());
+
     }
 
     private MaterialDialog createDeleteFileDialog(final Signature signature) {

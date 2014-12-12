@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Environment;
 import android.support.v7.widget.PopupMenu;
 import android.util.DisplayMetrics;
@@ -298,5 +299,14 @@ public final class ViewUtil {
         } catch (Exception e) {
             Log.e("MainActivity", e.getMessage());
         }
+    }
+
+    public static void shareImage(final String shareDialogTitle, final String path, final Context context) {
+        final Intent share = new Intent(Intent.ACTION_SEND);
+        share.setType("image/png");
+
+        share.putExtra(Intent.EXTRA_STREAM, Uri.parse(ViewUtil.GLOBAL_PATH + path));
+
+        context.startActivity(Intent.createChooser(share, shareDialogTitle));
     }
 }

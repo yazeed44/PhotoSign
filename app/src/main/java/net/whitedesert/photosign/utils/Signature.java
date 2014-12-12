@@ -132,6 +132,6 @@ public final class Signature {
 
     @Override
     public String toString() {
-        return "Name  :  " + getName() + "   ,    Path   :  " + getPath() + "   ,  mIsDefault  :  " + isDefault();
+        return "Name  :  " + getName() + "   ,    Path   :  " + getPath() + "   ,  IsDefault  :  " + isDefault();
     }
 }

@@ -11,13 +11,24 @@
         android:layout_height="match_parent" />
 
     <ImageView
-        android:id="@+id/def_sign_star"
+        android:id="@+id/def_signature_star"
         android:layout_width="wrap_content"
 
         android:layout_height="wrap_content"
         android:layout_gravity="end"
-        android:contentDescription="@string/signature_is_default"
+        android:contentDescription="@string/signature_is_default_desc"
         android:src="@drawable/ic_star"
+
+        />
+
+    <ImageView
+        android:id="@+id/def_signature_share"
+        style="@style/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:contentDescription="@string/default_signature_share_desc"
+        android:src="@android:drawable/ic_menu_share"
 
         />
 

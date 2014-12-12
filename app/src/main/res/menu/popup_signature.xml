@@ -5,8 +5,12 @@
         android:id="@+id/popup_set_default_signature"
         android:title="@string/set_default_signature_popup" />
 
+    <item
+        android:id="@+id/popup_share_signature"
+        android:title="@string/share_signature_popup" />
 
     <item
         android:id="@+id/popup_delete_signature"
         android:title="@string/delete_signature_popup" />
+
 </menu>

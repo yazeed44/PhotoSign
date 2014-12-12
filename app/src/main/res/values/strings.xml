@@ -31,9 +31,8 @@
     <string name="check_mark_bold">Bold</string>
 
 
-
     <string name="signature_item_image">Signature image</string>
-    <string name="signature_is_default">Default</string>
+    <string name="signature_is_default_desc">Default signature</string>
 
     <string name="retrieved_signs_success_toast">Signatures has successfully retrieved</string>
     <string name="deleted_signs_toast">Signatures has been deleted</string>
@@ -44,6 +43,7 @@
     <string name="delete_signature_popup">Delete</string>
     <string name="main_navigation_photos_popup">Photos</string>
     <string name="main_navigation_signatures_popup">Signatures</string>
+    <string name="share_signature_popup">Share</string>
 
 
     <string name="about_title">About</string>
@@ -75,12 +75,14 @@
         <![CDATA[
 
 
-]]>
+            ]]>
     </string>
 
     <string name="about_body">Photo sign , app developed by</string>
     <string name="signing_title">Signing</string>
     <string name="you_have_to_create_signature_first">You have to create signature first</string>
+    <string name="share_signature_title">Share signature</string>
+    <string name="default_signature_share_desc">Default signature share</string>
 
 
     <string-array name="wanna_sign_choices">
@@ -92,7 +94,6 @@
         <item>Import a signature </item>
         <item>Type a signature</item>
     </string-array>
-
 
 
 </resources>
