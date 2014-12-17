@@ -13,7 +13,7 @@ import android.view.View;
 /**
  * Created by yazeed44 on 8/14/14.
  */
-public class DrawSignView extends View {
+public class DrawSignatureView extends View {
 
     //drawing path
     private Path drawPath;
@@ -25,7 +25,7 @@ public class DrawSignView extends View {
     private Bitmap canvasBitmap;
 
 
-    public DrawSignView(Context context, AttributeSet attrs) {
+    public DrawSignatureView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         setupDrawing();

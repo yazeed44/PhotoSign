@@ -9,13 +9,14 @@
 
 
     <color name="unchecked_photo">@android:color/transparent</color>
-    <color name="checked_photo">#ff28d41a</color>
+    <color name="checked_photo">#536DFE</color>
 
     <color name="no_checked_photos_text">#ffaeaeae</color>
 
     <color name="check_default_color">#b457585b</color>
 
     <color name="reached_limit_text">#ffff113b</color>
+    <color name="checked_photo_overlay">#28536dfe</color>
 
 
 </resources>

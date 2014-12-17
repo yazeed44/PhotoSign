@@ -20,5 +20,8 @@
     <item name="main_fragment_weight" format="float" type="dimen">0.92</item>
     <item name="sign_btn_weight" format="float" type="dimen">0.08</item>
 
+    <item name="type_signature_edit_view_weight" format="float" type="dimen">0.8</item>
+    <item name="type_signature_check_bold_weight" format="float" type="dimen">0.2</item>
+
 
 </resources>

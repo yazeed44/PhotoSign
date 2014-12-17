@@ -23,13 +23,11 @@ import net.whitedesert.photosign.utils.ViewUtil;
 /**
  * Created by yazeed44 on 8/15/14.
  */
-public class DrawSignActivity extends BaseActivity {
+public class DrawSignatureActivity extends BaseActivity {
 
 
-    private DrawSignView draw;
-
-
-    private String opacityString;
+    private DrawSignatureView mDrawSignatureView;
+    private int mNewColor = -1;
 
     @Override
     public void onCreate(Bundle savedInstance) {
@@ -37,8 +35,7 @@ public class DrawSignActivity extends BaseActivity {
         super.onCreate(savedInstance);
 
         setContentView(R.layout.activity_sign_drawing);
-        draw = (DrawSignView) this.findViewById(R.id.draw_view);
-        opacityString = getResources().getString(R.string.opacity_text) + " : ";
+        mDrawSignatureView = (DrawSignatureView) this.findViewById(R.id.draw_signature_view);
 
 
         getSupportActionBar().setTitle(R.string.sign_draw_title);
@@ -75,9 +72,11 @@ public class DrawSignActivity extends BaseActivity {
                         final String newWidthString = ((EditText) materialDialog.getCustomView().findViewById(R.id.brush_width_edit)).getText().toString();
                         final int newWidth = Integer.parseInt(newWidthString);
 
-                        draw.getDrawPaint().setStrokeWidth(newWidth);
-                        draw.getDrawPaint().setColor(newColor);
+                        mDrawSignatureView.getDrawPaint().setStrokeWidth(newWidth);
 
+                        if (mNewColor != -1) {
+                            mDrawSignatureView.getDrawPaint().setColor(mNewColor);
+                        }
                     }
                 })
                 .show()
@@ -90,7 +89,7 @@ public class DrawSignActivity extends BaseActivity {
         final View brushCustomizeLayout = this.getLayoutInflater().inflate(R.layout.dialog_draw_sign_customize, (ViewGroup) findViewById(R.id.container), false);
 
 
-        final int width = (int) draw.getDrawPaint().getStrokeWidth();
+        final int width = (int) mDrawSignatureView.getDrawPaint().getStrokeWidth();
 
         final EditText widthEditText = (EditText) brushCustomizeLayout.findViewById(R.id.brush_width_edit);
         widthEditText.setText(width + "");
@@ -110,11 +109,18 @@ public class DrawSignActivity extends BaseActivity {
 
         final ColorPicker colorPicker = (ColorPicker) brushCustomizeLayout.findViewById(R.id.color_picker);
 
-        colorPicker.setOldCenterColor(draw.getDrawPaint().getColor());
 
         colorPicker.addSVBar(svBar);
         colorPicker.addOpacityBar(opacityBar);
 
+        colorPicker.setOldCenterColor(mDrawSignatureView.getDrawPaint().getColor());
+
+        colorPicker.setOnColorSelectedListener(new ColorPicker.OnColorSelectedListener() {
+            @Override
+            public void onColorSelected(int color) {
+                mNewColor = color;
+            }
+        });
 
         return brushCustomizeLayout;
     }
@@ -170,11 +176,11 @@ public class DrawSignActivity extends BaseActivity {
 
 
     public void onClickReset() {
-        draw.reset();
+        mDrawSignatureView.reset();
     }
 
     public void onClickDone() {
-        SaveUtil.saveSignature(draw, this);
+        SaveUtil.saveSignature(mDrawSignatureView, this);
 
     }
 

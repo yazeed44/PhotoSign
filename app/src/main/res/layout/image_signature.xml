@@ -10,7 +10,7 @@
         android:layout_height="match_parent"
         android:background="#ffffff"
         android:contentDescription="@string/signature_item_image"
-        android:scaleType="fitXY"
+        android:scaleType="centerCrop"
 
         />
 

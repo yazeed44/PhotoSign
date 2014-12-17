@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -115,7 +116,9 @@ public class MainActivity extends BaseActivity implements AlbumsFragment.OnClick
 
         mSpinnerLikeBtn = new Button(this);
 
-        mSpinnerLikeBtn.setText(getResources().getString(R.string.main_navigation_photos_popup).toUpperCase());
+
+        mSpinnerLikeBtn.setText(getResources().getString(R.string.main_navigation_photos_popup));
+
 
         mSpinnerLikeBtn.setBackgroundColor(getResources().getColor(android.R.color.transparent));
 
@@ -124,6 +127,11 @@ public class MainActivity extends BaseActivity implements AlbumsFragment.OnClick
         mSpinnerLikeBtn.setCompoundDrawablesWithIntrinsicBounds(null, null, arrowDrawable, null);
 
         mSpinnerLikeBtn.setTextAppearance(getSupportActionBar().getThemedContext(), R.style.SpinnerLikeBtn);
+
+        if (Build.VERSION.SDK_INT >= 14) {
+            mSpinnerLikeBtn.setAllCaps(false);
+
+        }
 
 
         mSpinnerLikeBtn.setOnClickListener(new View.OnClickListener() {
@@ -174,7 +182,7 @@ public class MainActivity extends BaseActivity implements AlbumsFragment.OnClick
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.main_container, getPhotosFragment())
                 .commit();
-        mSpinnerLikeBtn.setText(getResources().getString(R.string.main_navigation_photos_popup).toUpperCase());
+        mSpinnerLikeBtn.setText(getResources().getString(R.string.main_navigation_photos_popup));
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
     }
@@ -187,12 +195,10 @@ public class MainActivity extends BaseActivity implements AlbumsFragment.OnClick
                 .replace(R.id.main_container, getSignaturesFragment())
                 .commit();
 
-        mSpinnerLikeBtn.setText(getResources().getString(R.string.main_navigation_signatures_popup).toUpperCase());
+        mSpinnerLikeBtn.setText(getResources().getString(R.string.main_navigation_signatures_popup));
         if (!SignatureUtil.noSigns())
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
-
-
 
 
     private Fragment getSignaturesFragment() {
@@ -219,10 +225,6 @@ public class MainActivity extends BaseActivity implements AlbumsFragment.OnClick
 
 
     }
-
-
-
-
 
 
     //Check the signs in /signs folder , and then ask user if he want to retrieve them
@@ -262,13 +264,13 @@ public class MainActivity extends BaseActivity implements AlbumsFragment.OnClick
         retrieveDialog.negativeText(R.string.delete_unused_signatures_btn)
                 .positiveText(android.R.string.yes)
                 .neutralText(R.string.dismiss_btn)
-                .callback(getCallBackForRetrieveDialog(signatures))
+                .callback(createCallBackForRetrieveDialog(signatures))
                 .build()
                 .show();
     }
 
 
-    private MaterialDialog.FullCallback getCallBackForRetrieveDialog(final ArrayList<Signature> signatures) {
+    private MaterialDialog.FullCallback createCallBackForRetrieveDialog(final ArrayList<Signature> signatures) {
         return new MaterialDialog.FullCallback() {
             @Override
             public void onNeutral(MaterialDialog materialDialog) {
@@ -397,7 +399,7 @@ public class MainActivity extends BaseActivity implements AlbumsFragment.OnClick
     private void updateTextAndBadge() {
 
         if (sChosenPhotosPath.size() == 0) {
-            mSignBtn.setRippleColor(Color.BLACK, 0.1f);
+            mSignBtn.setRippleColor(Color.BLACK, 0.5f);
             mSignBtn.setBackgroundColor(getResources().getColor(R.color.sign_btn_layout_disabled));
             mSignBtn.setClickable(false);
             mSignBtn.setTextColor(getResources().getColor(R.color.sign_btn_disabled_text));
@@ -405,7 +407,7 @@ public class MainActivity extends BaseActivity implements AlbumsFragment.OnClick
             mSignBtn.setTypeface(Typeface.create("", Typeface.NORMAL));
 
         } else {
-            mSignBtn.setRippleColor(getResources().getColor(R.color.checked_photo), 0.8f);
+            mSignBtn.setRippleColor(Color.WHITE, 0.5f);
             mSignBtn.setBackgroundColor(getResources().getColor(R.color.sign_btn_layout));
             mSignBtn.setClickable(true);
             mSignBtn.setTextColor(getResources().getColor(R.color.sign_btn_text));

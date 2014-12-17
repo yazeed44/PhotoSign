@@ -21,12 +21,12 @@
 
         android:id="@+id/list_signatures"
 
+
         style="@style/GridView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:columnWidth="@dimen/signature_column_width"
         android:horizontalSpacing="@dimen/signature_spacing"
-        android:listSelector="@drawable/list_selector"
         android:numColumns="2"
         android:verticalSpacing="@dimen/signature_spacing" />
 
@@ -38,9 +38,9 @@
         android:layout_gravity="bottom|right"
         android:layout_margin="16dp"
         android:src="@drawable/ic_add"
-        fab:fab_colorNormal="@color/app_accent"
-        fab:fab_colorPressed="@drawable/fab_pressed"
-        fab:fab_colorRipple="@drawable/fab_ripple" />
+        fab:fab_colorNormal="@color/app_primary"
+        fab:fab_colorPressed="@color/app_primary_dark"
+        fab:fab_colorRipple="@color/app_primary_dark" />
 
 
 </FrameLayout>

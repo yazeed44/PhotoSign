@@ -27,40 +27,48 @@ import net.whitedesert.photosign.utils.ViewUtil;
 public class TypeSignatureActivity extends BaseActivity {
 
 
-    private TypeSignaturePreviewView preview;
-    private EditText text;
+    private TypeSignaturePreviewView mPreview;
+    private EditText mText;
+    private boolean mBold;
+    private String mFont;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_text_sign_customize);
-        preview = (TypeSignaturePreviewView) this.findViewById(R.id.signTextPreview);
-        text = (EditText) this.findViewById(R.id.signTextEdit);
+        setContentView(R.layout.activity_type_signature);
+        mPreview = (TypeSignaturePreviewView) this.findViewById(R.id.sign_text_Preview);
+        mText = (EditText) this.findViewById(R.id.signTextEdit);
 
         getSupportActionBar().setTitle(R.string.type_sign_title);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         setPreviewText("Preview");
-        preview.setTypeface(null, Typeface.BOLD);
+        mPreview.setTypeface(null, Typeface.BOLD);
         setupText();
 
+        updateFont();
     }
 
     public void onClickDone() {
-        SaveUtil.saveSignature(preview.createSignatureRaw().createBitmap(), this);
+        SaveUtil.saveSignature(mPreview.createSignatureRaw().createBitmap(), this);
     }
 
 
     public void onClickBoldCheck(View view) {
         final CheckBox box = (CheckBox) view;
 
-        if (box.isChecked()) {
-            //TODO it will be a bug when we add fonts Because of null
+        mBold = box.isChecked();
 
-            preview.setTypeface(null, Typeface.BOLD);
-        } else {
-            preview.setTypeface(null, Typeface.NORMAL);
-        }
+        updateFont();
+
+    }
+
+    private void updateFont() {
+
+        final int style = mBold ? Typeface.BOLD : Typeface.NORMAL;
+
+        //TODO Implement this
+
 
 
     }
@@ -86,7 +94,7 @@ public class TypeSignatureActivity extends BaseActivity {
 
                         final int newColor = ((ColorPicker) materialDialog.getCustomView().findViewById(R.id.color_picker)).getColor();
 
-                        preview.setTextColor(newColor);
+                        mPreview.setTextColor(newColor);
                     }
                 })
                 .show();
@@ -104,7 +112,7 @@ public class TypeSignatureActivity extends BaseActivity {
 
         picker.addOpacityBar(opacityBar);
         picker.addSVBar(svBar);
-        picker.setOldCenterColor(preview.getCurrentTextColor());
+        picker.setOldCenterColor(mPreview.getCurrentTextColor());
 
 
         return pickerLayout;
@@ -113,7 +121,7 @@ public class TypeSignatureActivity extends BaseActivity {
     private void setupText() {
 
 
-        text.addTextChangedListener(new TextWatcher() {
+        mText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
 
@@ -133,14 +141,17 @@ public class TypeSignatureActivity extends BaseActivity {
     }
 
     private void setPreviewText(final String text) {
-        final String DOUBLE_BYTE_SPACE = "\u3000";
+        /*final String DOUBLE_BYTE_SPACE = "\u3000";
 
         String fixString = "";
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB_MR1
                 && android.os.Build.VERSION.SDK_INT <= android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
             fixString = DOUBLE_BYTE_SPACE;
         }
-        preview.setText(fixString + text + fixString);
+        mPreview.setText(fixString + text + fixString);
+        */
+
+        mPreview.setText(text);
     }
 
 

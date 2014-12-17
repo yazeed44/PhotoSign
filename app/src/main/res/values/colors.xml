@@ -8,17 +8,10 @@
     <drawable name="main_btn_sign_background">@color/sign_btn_layout</drawable>
     <drawable name="main_btn_sign_pressed_background">@color/sign_btn_layout_disabled</drawable>
 
-    <drawable name="fab_pressed">#F50075</drawable>
-    <drawable name="fab_ripple">#fff551a6</drawable>
-
-    <drawable name="spinner">#ffffff</drawable>
-    <drawable name="spinner_pressed">#ffc3c3c3</drawable>
-    <drawable name="spinner_selected">#ffc3c3c3</drawable>
-
 
     <color name="app_primary">#3F51B5</color>
     <color name="app_primary_dark">#303F9F</color>
-    <color name="app_accent">#FF80AB</color>
+    <color name="app_accent">#3D5AFE</color>
 
     <color name="star_default_color">#FACC37</color>
 

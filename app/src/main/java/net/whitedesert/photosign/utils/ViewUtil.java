@@ -26,7 +26,7 @@ import com.nostra13.universalimageloader.core.assist.ImageSize;
 import com.nostra13.universalimageloader.utils.StorageUtils;
 
 import net.whitedesert.photosign.R;
-import net.whitedesert.photosign.ui.DrawSignActivity;
+import net.whitedesert.photosign.ui.DrawSignatureActivity;
 import net.whitedesert.photosign.ui.TypeSignatureActivity;
 
 import java.io.File;
@@ -239,7 +239,7 @@ public final class ViewUtil {
             public void onSelection(MaterialDialog materialDialog, View view, int which, CharSequence chosenMethod) {
 
                 if (chosenMethod.equals(draw)) {
-                    Intent i = new Intent(activity, DrawSignActivity.class);
+                    Intent i = new Intent(activity, DrawSignatureActivity.class);
                     activity.startActivity(i);
                 } else if (chosenMethod.equals(text)) {
                     Intent i = new Intent(activity, TypeSignatureActivity.class);

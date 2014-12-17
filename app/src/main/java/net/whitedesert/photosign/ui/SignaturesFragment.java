@@ -100,7 +100,6 @@ public class SignaturesFragment extends Fragment {
         }
 
 
-        // final int width = getResources().getDimensionPixelSize(R.dimen.signature_column_width) * 2;
         final int height = getResources().getDimensionPixelSize(R.dimen.def_signature_height);
 
         final View defSignLayout = LayoutInflater.from(getActivity()).inflate(R.layout.item_default_sign, (ViewGroup) getView(), false);
@@ -108,6 +107,7 @@ public class SignaturesFragment extends Fragment {
         defSignLayout.setLayoutParams(new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height));
 
         final ImageView defImage = (ImageView) defSignLayout.findViewById(R.id.signature_image);
+        defImage.setScaleType(ImageView.ScaleType.FIT_XY);
 
 
         ImageLoader.getInstance().displayImage(ViewUtil.GLOBAL_PATH + defSign.getPath(), defImage);

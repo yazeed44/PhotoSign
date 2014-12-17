@@ -7,18 +7,27 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <net.whitedesert.photosign.ui.TypeSignaturePreviewView
-        android:id="@+id/signTextPreview"
-        style="@style/text_view"
+
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="10dp">
+
+        <net.whitedesert.photosign.ui.TypeSignaturePreviewView
+            android:id="@+id/sign_text_Preview"
+
+            style="@style/text_view"
+            android:layout_width="match_parent"
+
+            android:layout_height="match_parent"
         android:contentDescription="@string/sign_text_preview"
         android:gravity="center"
         android:textSize="30sp"
 
-
         />
+
+
+    </FrameLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -31,14 +40,14 @@
             style="@style/text_edit"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.8"
+            android:layout_weight="@dimen/type_signature_edit_view_weight"
             android:hint="@string/type_sign_hint"
             android:inputType="text" />
 
         <CheckBox
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.2"
+            android:layout_weight="@dimen/type_signature_check_bold_weight"
             android:checked="true"
             android:onClick="onClickBoldCheck"
             android:text="@string/check_mark_bold" />

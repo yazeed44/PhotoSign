@@ -2,17 +2,15 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-
     android:id="@+id/container"
-    style="@style/AppTheme"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".activities.DrawSignActivity">
 
 
-    <net.whitedesert.photosign.ui.DrawSignView
-        android:id="@+id/draw_view"
+    <net.whitedesert.photosign.ui.DrawSignatureView
+        android:id="@+id/draw_signature_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#ffffff"
